@@ -2,22 +2,20 @@ from django.db import models
 
 # Create your models here.
 class MostCheapBank(models.Model):
-    #bank_name = models.CharField(max_length=20, null=True,verbose_name='은행이름')
-    country_name = models.CharField(max_length=20, verbose_name='외화',primary_key=True)
+    bank_name = models.CharField(max_length=20, verbose_name='은행이름')
+    country_name = models.CharField(max_length=20, verbose_name='외화', primary_key=True)
     buy = models.FloatField(null=True, verbose_name='현찰 살 때')
     buyfeerate = models.CharField(max_length=30, null=True,verbose_name='수수료율')
     sell = models.FloatField(null=True,verbose_name='현찰 팔 때')
     sellfeerate = models.CharField(max_length=30, null=True, verbose_name='수수료율')
     tradingrate = models.FloatField(null=True, verbose_name='매매기준율')
-    updatedate = models.DateField(auto_now_add=True, verbose_name='등록날짜')
-
-    def __str__(self):
-        return self.country_name
+    updatedate = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
     
     class Meta:
         db_table = 'mybank'
         verbose_name = '국내환율'
         verbose_name_plural = '국내환율'
+        unique_together = (('bank_name', 'country_name'),)
 
 
 class BankgroupInfo(models.Model):
