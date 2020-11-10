@@ -5,7 +5,6 @@ backend/LetMEGo/LetMEGo/settings.py
 .gitignore
 backend/LetMEGo/manage.py
 backend/LetMEGo/app/build/index.html
-frondend/frontend/package.json
 frondend/frontend/README.md
 frondend/frontend/yarn.lock
 frondend/frontend/public/favicon.ico
