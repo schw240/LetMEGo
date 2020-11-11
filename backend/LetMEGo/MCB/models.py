@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class MostCheapBank(models.Model):
     bank_name = models.CharField(max_length=20, verbose_name='은행이름')
-    country_name = models.CharField(max_length=20, verbose_name='외화', primary_key=True)
+    country_name = models.CharField(max_length=20, verbose_name='외화')
     buy = models.FloatField(null=True, verbose_name='현찰 살 때')
     buyfeerate = models.CharField(max_length=30, null=True,verbose_name='수수료율')
     sell = models.FloatField(null=True,verbose_name='현찰 팔 때')
