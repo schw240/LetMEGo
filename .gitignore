@@ -3,7 +3,6 @@
 backend/LetMEGo/db.sqlite3
 backend/LetMEGo/LetMEGo/settings.py
 .gitignore
-backend/LetMEGo/manage.py
 backend/LetMEGo/app/build/index.html
 frondend/frontend/README.md
 frondend/frontend/yarn.lock
@@ -13,3 +12,4 @@ frondend/frontend/public/logo192.png
 frondend/frontend/public/logo512.png
 frondend/frontend/public/manifest.json
 frondend/frontend/public/robots.txt
+Crawling/helper_connect.py
