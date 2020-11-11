@@ -42,17 +42,15 @@ def mxp_craw():
     usd = usd_td[4].text.strip().replace("\n","")  # 쓸데없는 정보들이 붙어와서 없애주는 것.
     jpy = jpy_td[4].text.strip().replace("\n","")  # 쓸데없는 정보들이 붙어와서 없애주는 것.
     now = datetime.datetime.now()
-    country = "MXP"
+    country = "MXN"
     print(country,usd, jpy , now)
 
 
     conn = NewConnect()
     cursor = conn.cursor()
-    if exist_now('MXP'):
-        print("AAAA")
+    if exist_now('MXN'):
         sql = "UPDATE foreign_bank SET USD = %s, JPY = %s, UpdateDate = %s WHERE Country_name = %s;"
     else:
-        print("BBBB")
         sql = "insert into foreign_bank(USD, JPY, UpdateDate, Country_name) values(%s,%s,%s,%s);"
     cursor.execute(sql, (usd, jpy, now, country))
     conn.commit()

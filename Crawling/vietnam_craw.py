@@ -11,7 +11,6 @@ def viet_crawling():
     now = datetime.datetime.now()
     country = "VND"
     usd, jpy = 0,0
-    update = now
 
     headers = {
         "Accept": """text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9""",
@@ -42,7 +41,7 @@ def viet_crawling():
     usd = usd_td[4].text
     jpy = jpy_td[4].text
 
-    #print(usd, jpy, now, country)
+    print(usd, jpy, now, country)
     conn = NewConnect()
     cursor = conn.cursor()
     if exist_now('VND'):

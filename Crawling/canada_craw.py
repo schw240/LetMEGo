@@ -48,6 +48,7 @@ def cad_crawling():
 
     usd = (money_list.get("USD").get("NA").get("BUY"))
     jpy = (money_list.get("JPY").get("NA").get("BUY"))
+    
     print(usd, jpy, now, country)
     conn = NewConnect()
     cursor = conn.cursor()

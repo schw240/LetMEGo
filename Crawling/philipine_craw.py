@@ -19,9 +19,6 @@ def php_crawling():
     now = datetime.datetime.now()
     country = "PHP"
     usd, jpy = 0,0
-    update = now
-
-
 
     headers = {
         "Upgrade-Insecure-Requests" : "1",  
@@ -43,7 +40,7 @@ def php_crawling():
     jpy = buy_list[2][0].text     
 
 
-    #print(ph_bank.country_name, ph_bank.USD_buy, ph_bank.JPY_buy, ph_bank.UpdateDate)
+    print(country,usd, jpy, now)
 
     conn = NewConnect()
     cursor = conn.cursor()

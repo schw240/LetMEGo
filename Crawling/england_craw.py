@@ -34,7 +34,7 @@ def eng_crawling():
     site_json = json.loads(eng_bank.text.replace('data', '"data"'))
     usd = (site_json.get('data').get('fxList')[0].get('buy'))
     jpy = (site_json.get('data').get('fxList')[7].get('buy'))
-
+    jpy = float(jpy)/10000
     print(usd, jpy, now, country)
     conn = NewConnect()
     cursor = conn.cursor()

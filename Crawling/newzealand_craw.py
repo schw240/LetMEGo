@@ -55,6 +55,8 @@ def nzd_craw():
     jpy = (neo_result.get('value')[11].get('buysNotes'))
     now = datetime.datetime.now()
     country = "NZD"
+    usd = 1/float(usd)
+    jpy = 1/float(jpy)
     print(country,usd, jpy , now)
 
     conn = NewConnect()

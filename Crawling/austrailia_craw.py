@@ -34,7 +34,8 @@ def aus_crawling():
     site_json = json.loads(aus_bank.text)
     usd = (site_json.get('currencies')[0].get('bbfcash'))
     jpy = (site_json.get('currencies')[16].get('bbfcash'))
-
+    usd = 1/float(usd)
+    jpy = 1/float(jpy)
     print(usd, jpy, now, country)
     conn = NewConnect()
     cursor = conn.cursor()
@@ -42,7 +43,7 @@ def aus_crawling():
        sql = "UPDATE foreign_bank SET USD = %s, JPY = %s, UpdateDate = %s WHERE Country_name = %s;"
     else:
         sql = "insert into foreign_bank(USD, JPY, UpdateDate, Country_name) values(%s,%s,%s,%s);"
-    cursor.execute(sql, (usd.replace(',',''), jpy, now, country))
+    cursor.execute(sql, (usd, jpy, now, country))
     conn.commit()
     #threading.Timer(60*60,php_crawling).start()
 
