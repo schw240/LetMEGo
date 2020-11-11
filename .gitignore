@@ -14,3 +14,4 @@ frondend/frontend/public/logo512.png
 frondend/frontend/public/manifest.json
 frondend/frontend/public/robots.txt
 Crawling/helper_connect.py
+backend/LetMEGo/LetMEGo/secrets.py

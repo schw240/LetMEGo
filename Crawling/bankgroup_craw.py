@@ -2,7 +2,6 @@ import requests
 import datetime
 import pymysql
 from bs4 import BeautifulSoup
-from model_bank import ForeignBank
 from helper_connect import NewConnect, exist_now_bankgroup
 import threading
 import time

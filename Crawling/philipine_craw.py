@@ -2,7 +2,6 @@ import requests
 import datetime
 import pymysql
 from bs4 import BeautifulSoup
-from model_bank import ForeignBank
 from helper_connect import NewConnect
 import threading
 import time
@@ -42,7 +41,6 @@ def php_crawling():
 
     usd = buy_list[1][0].text
     jpy = buy_list[2][0].text     
-    ph_bank = ForeignBank(country, usd, jpy, update)
 
 
     #print(ph_bank.country_name, ph_bank.USD_buy, ph_bank.JPY_buy, ph_bank.UpdateDate)
