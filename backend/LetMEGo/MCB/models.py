@@ -39,9 +39,7 @@ class BankgroupInfo(models.Model):
 class ForeignBank(models.Model):
     country_name = models.CharField(max_length=20, verbose_name='나라' ,primary_key=True)
     usd = models.FloatField(null=True,verbose_name='달러 환율')
-    usd_to_local_money = models.FloatField(null=True, verbose_name='1달러 to 도착지 돈')
     jpy = models.FloatField(null=True,verbose_name='엔화 환율')
-    jpy_to_local_money = models.FloatField(null=True, verbose_name='1엔 to 도착지 돈')
     updatedate = models.DateTimeField(auto_now=True, verbose_name='등록날짜')
 
     def __str__(self):
