@@ -1,11 +1,12 @@
 import requests
-from bs4 import BeautifulSoup
-from helper_connect import NewConnect, exist_now
-import pymysql
 import datetime
+from bs4 import BeautifulSoup
+from db_connect import foreignbank_info
 
 
-def mxp_craw():
+def mxp_craw(conn):
+
+    now = datetime.datetime.now()
     
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -26,11 +27,8 @@ def mxp_craw():
     req = requests.get('https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadroAnalitico&idCuadro=CA113&sector=6&locale=en', headers=headers)
     
     html = req.text
-    
     soup = BeautifulSoup(html, 'html.parser')
-    
     table = soup.find_all("table")
-    
     trs = table[1].find_all("tr")
     
     usd_tr = trs[66]
@@ -41,19 +39,6 @@ def mxp_craw():
 
     usd = usd_td[4].text.strip().replace("\n","")  # 쓸데없는 정보들이 붙어와서 없애주는 것.
     jpy = jpy_td[4].text.strip().replace("\n","")  # 쓸데없는 정보들이 붙어와서 없애주는 것.
-    now = datetime.datetime.now()
-    country = "MXN"
-    print(country,usd, jpy , now)
 
-
-    conn = NewConnect()
-    cursor = conn.cursor()
-    if exist_now('MXN'):
-        sql = "UPDATE foreign_bank SET USD = %s, JPY = %s, UpdateDate = %s WHERE Country_name = %s;"
-    else:
-        sql = "insert into foreign_bank(USD, JPY, UpdateDate, Country_name) values(%s,%s,%s,%s);"
-    cursor.execute(sql, (usd, jpy, now, country))
-    conn.commit()
+    foreignbank_info(conn, 'MXN', usd, jpy, now)
     
-
-mxp_craw()

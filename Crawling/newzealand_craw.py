@@ -1,17 +1,12 @@
 import requests
 import json 
 import datetime
-from helper_connect import NewConnect, exist_now
-import pymysql
+from db_connect import foreignbank_info
 
 
-# json_data = '{ "p1": { "C_name": "USD", "rate": 20 }, "p2": { "c_name": "JPY", "rate": 22 } }'
+def nzd_craw(conn):
 
-# dict_data = { "p1": { "c_name": "USD", "rate": 20 }, "p2": { "c_name": "JPY", "rate": 22 } }
-
-# result = json.loads(json_data)
-
-def nzd_craw():
+    now = datetime.datetime.now()
 
     headers = {
         'Accept': '*/*',
@@ -31,8 +26,6 @@ def nzd_craw():
     req = requests.get('https://api.asb.co.nz/public/v1/exchange-rates', headers=headers) 
 
     # print(req.text) 이게 이미 위에서 json에서 딕셔너리 형태로 바뀐 form 이다.
-
-
     neo_result = json.loads(req.text)
 
 
@@ -40,9 +33,7 @@ def nzd_craw():
 
     # type을 확인해주면 dict라고 뜨는데 json에서 dict형태로 바꾸는데 성공한 것임!
     # print(type(neo_result))
-
     # print(neo_result) 를 해주면 json에서 dict형태로 바뀐 데이터들이 줄줄 나온다. 
-
 
     # 이제 JPY랑 USD 의 정보를 가져오려면
     # for 문을 돌려야한다.. 한번 돌려보자..! 
@@ -53,19 +44,8 @@ def nzd_craw():
     #11,18
     usd = (neo_result.get('value')[18].get('buysNotes'))
     jpy = (neo_result.get('value')[11].get('buysNotes'))
-    now = datetime.datetime.now()
-    country = "NZD"
+    
     usd = 1/float(usd)
     jpy = 1/float(jpy)
-    print(country,usd, jpy , now)
-
-    conn = NewConnect()
-    cursor = conn.cursor()
-    if exist_now('NZD'):
-        sql = "UPDATE foreign_bank SET USD = %s, JPY = %s, UpdateDate = %s WHERE Country_name = %s;"
-    else:
-        sql = "insert into foreign_bank(USD, JPY, UpdateDate, Country_name) values(%s,%s,%s,%s);"
-    cursor.execute(sql, (usd, jpy, now, country))
-    conn.commit()
-
-nzd_craw()
+    
+    foreignbank_info(conn, 'NZD', usd, jpy, now)

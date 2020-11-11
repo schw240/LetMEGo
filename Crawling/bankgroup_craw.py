@@ -1,14 +1,9 @@
 import requests
 import datetime
-import pymysql
 from bs4 import BeautifulSoup
-from helper_connect import NewConnect, exist_now_bankgroup
-import threading
-import time
-import json
-import re
+from db_connect import bankgroup_info
 
-def bankgroup_crawling():
+def bankgroup_crawling(conn):
 
     now = datetime.datetime.now()
     usd_data = ['USD','JPY','EUR','GBP','CAD','HKD','AUD','CNY','SGD','NZD','THB','VND','TWD','PHP']
@@ -43,19 +38,5 @@ def bankgroup_crawling():
             std_pref_rate = tds[1].text
             max_pref_rate = tds[2].text
             treat_and_event = tds[3].text
-            print(buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event)
 
-            conn = NewConnect()
-            cursor = conn.cursor()
-            if exist_now_bankgroup(data,bank_name):
-                sql = "UPDATE bankgroup SET BuyFeeRate = %s, StdPrefRate = %s, MaxPrefRate = %s, TreatAndEvent = %s, UpdateDate = %s WHERE Country_name = %s and Bank_name = %s;"
-            else:
-                sql = "insert into bankgroup(BuyFeeRate, StdPrefRate, MaxPrefRate, TreatAndEvent, UpdateDate, Country_name, Bank_name) values(%s,%s,%s,%s,%s,%s,%s);"
-            print(sql)
-            print(bank_name, data, buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event, now)
-            cursor.execute(sql, (buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event, now, data, bank_name))
-            conn.commit()
-    # #threading.Timer(60*60,php_crawling).start()
-
-
-bankgroup_crawling()
+            bankgroup_info(conn, bank_name, data, buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event, now)
