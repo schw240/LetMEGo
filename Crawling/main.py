@@ -62,10 +62,10 @@ def one_day():
 
     conn.close()
 
-
-
-sched.add_job(thirty_minute, 'interval', seconds=1800) #1800초마다 돌아감(30분)
-sched.add_job(one_hour, 'interval', seconds=3600) # 3600초마다 돌아감 (1시간)
-sched.add_job(one_day, 'cron', hour=12) # 매일 정해진 hour에 돌아가게 함 # 테스트로 오후 6시에 돌아가게
-
+sched.add_job(one_day, 'interval', seconds=60)
 sched.start()
+# sched.add_job(thirty_minute, 'interval', seconds=1800) #1800초마다 돌아감(30분)
+# sched.add_job(one_hour, 'interval', seconds=3600) # 3600초마다 돌아감 (1시간)
+# sched.add_job(one_day, 'cron', hour=12) # 매일 정해진 hour에 돌아가게 함 # 테스트로 오후 6시에 돌아가게
+
+# sched.start()

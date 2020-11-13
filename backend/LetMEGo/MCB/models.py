@@ -9,7 +9,7 @@ class MostCheapBank(models.Model):
     sell = models.FloatField(null=True,verbose_name='현찰 팔 때')
     sellfeerate = models.CharField(max_length=30, null=True, verbose_name='수수료율')
     tradingrate = models.FloatField(null=True, verbose_name='매매기준율')
-    updatedate = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
+    updatedate = models.DateTimeField(null=False,auto_now_add=True, verbose_name='등록날짜')
     
     class Meta:
         db_table = 'mybank'
@@ -25,7 +25,8 @@ class BankgroupInfo(models.Model):
     stdprefrate = models.TextField(max_length=20000, null=True,verbose_name='기본우대율(%)')
     maxprefrate = models.TextField(max_length=20000, null=True, verbose_name='최대우대율(%)')
     treatandevent = models.TextField(max_length=20000, null=True, verbose_name='우대사항&환전이벤트')
-    updatedate = models.DateTimeField(auto_now=True, verbose_name='등록날짜')
+    basedate = models.CharField(max_length=30,default='-' ,verbose_name='기준일')
+    updatedate = models.DateTimeField(auto_now=True, verbose_name='데이터 수정 시각')
 
     def __str__(self):
         return self.bank_name
@@ -49,3 +50,20 @@ class ForeignBank(models.Model):
         db_table = 'foreign_bank'
         verbose_name = '달러&엔화'
         verbose_name_plural = '달러&엔화'
+
+
+class NaverNews(models.Model):
+    title = models.CharField(max_length=100, verbose_name='뉴스 제목' ,primary_key=True)
+    link = models.TextField(max_length=200,null=True,verbose_name='링크')
+    news_company = models.CharField(max_length=30,null=True,verbose_name='신문사')
+    contents = models.TextField(max_length=max, verbose_name='내용')
+    craw_date = models.CharField(max_length=30, null=True, verbose_name='뉴스 날자')
+    updatedate = models.DateTimeField(auto_now=True, verbose_name='크롤링 날자')
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'NaverNews'
+        verbose_name = '환율 기사'
+        verbose_name_plural = '환율 기사'

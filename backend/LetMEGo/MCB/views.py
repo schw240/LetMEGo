@@ -6,8 +6,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics, viewsets
 # Create your views here.
 
-from .models import MostCheapBank, ForeignBank, BankgroupInfo
-from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer
+from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews
+from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer
 #generics.ListCreateAPIView
 class ListBank(ModelViewSet):
     queryset = MostCheapBank.objects.all()
@@ -32,6 +32,14 @@ class ListForeignBank(ModelViewSet):
 class DetailForeignBank(generics.RetrieveUpdateDestroyAPIView):
     queryset = ForeignBank.objects.all()
     serializer_class = ForeignBankSerializer
+
+class ListNaverNews(ModelViewSet):
+    queryset = NaverNews.objects.all()
+    serializer_class = NaverNewsSerializer
+
+class DetailNaverNews(generics.RetrieveUpdateDestroyAPIView):
+    queryset = NaverNews.objects.all()
+    serializer_class = NaverNewsSerializer
 
 
 

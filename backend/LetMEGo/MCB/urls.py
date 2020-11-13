@@ -6,6 +6,7 @@ router = DefaultRouter()
 router.register('banklist', views.ListBank)
 router.register('bankinfo', views.ListBankInfo)
 router.register('foreignbank', views.ListForeignBank)
+router.register('navernews', views.ListNaverNews)
 
 urlpatterns = [
     path('', include(router.urls)),

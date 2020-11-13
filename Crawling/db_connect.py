@@ -30,7 +30,7 @@ def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRat
 
 
 # 은행연합회 크롤링해서 DB에 넣기
-def bankgroup_info(conn, Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPrefRate, TreatAndEvent, UpdateDate):
+def bankgroup_info(conn, Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPrefRate, TreatAndEvent, BaseDate, UpdateDate):
     cursor = conn.cursor()
 
     sql = f"""
@@ -45,13 +45,13 @@ def bankgroup_info(conn, Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPr
         sql = f"""
                 UPDATE bankgroup 
                 SET BuyFeeRate = '{BuyFeeRate}', StdPrefRate = '{StdPrefRate}', MaxPrefRate = '{MaxPrefRate}',
-                    TreatAndEvent = '{TreatAndEvent}', UpdateDate = '{UpdateDate}'
+                    TreatAndEvent = '{TreatAndEvent}', UpdateDate = '{UpdateDate}', BaseDate = '{BaseDate}',
                 WHERE Country_name = '{Country_name}' and Bank_name = '{Bank_name}'
             """
     else:
         sql = f"""
-                INSERT INTO bankgroup(Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPrefRate, TreatAndEvent, UpdateDate) 
-                VALUES ('{Bank_name}', '{Country_name}', '{BuyFeeRate}', '{StdPrefRate}', '{MaxPrefRate}', '{TreatAndEvent}', '{UpdateDate}')
+                INSERT INTO bankgroup(Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPrefRate, TreatAndEvent, BaseDate, UpdateDate) 
+                VALUES ('{Bank_name}', '{Country_name}', '{BuyFeeRate}', '{StdPrefRate}', '{MaxPrefRate}', '{TreatAndEvent}','{BaseDate}', '{UpdateDate}')
             """
 
     cursor.execute(sql)

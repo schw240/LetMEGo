@@ -31,12 +31,13 @@ def bankgroup_crawling(conn):
         for i in range(1,len(trs)):
             strong = (trs[i].find('strong'))
             bank_name = strong.text
-            print(bank_name)
             
             tds = trs[i].find_all('td')
             buy_fee_rate = tds[0].text
             std_pref_rate = tds[1].text
             max_pref_rate = tds[2].text
             treat_and_event = tds[3].text
+            base_date = tds[4].text
 
-            bankgroup_info(conn, bank_name, data, buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event, now)
+            bankgroup_info(conn, bank_name, data, buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event, base_date, now)
+            

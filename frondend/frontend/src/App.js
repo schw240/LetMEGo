@@ -1,5 +1,9 @@
 import Axios from 'axios';
 import React, { Component, useEffect } from 'react';
+import "tabler-react/dist/Tabler.css";
+import 'antd/dist/antd.css';
+
+import Header from './Layout/Header';
 
 function App() {
 
@@ -16,9 +20,10 @@ function App() {
   return (
     <div className="App">
       {
-        banks.map((data)=>{
-          return <div>{data.bank_name}</div>
-        })
+        // banks.map((data)=>{
+        //   return <div>{data.bank_name}</div>
+        // })
+        <Header></Header>
       }
     </div>
   );
