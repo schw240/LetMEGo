@@ -45,18 +45,17 @@ def bankgroup_info(conn, Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPr
         sql = f"""
                 UPDATE bankgroup 
                 SET BuyFeeRate = '{BuyFeeRate}', StdPrefRate = '{StdPrefRate}', MaxPrefRate = '{MaxPrefRate}',
-                    TreatAndEvent = '{TreatAndEvent}', UpdateDate = '{UpdateDate}', BaseDate = '{BaseDate}',
+                    TreatAndEvent = '{TreatAndEvent}', BaseDate = '{BaseDate}', UpdateDate = '{UpdateDate}'
                 WHERE Country_name = '{Country_name}' and Bank_name = '{Bank_name}'
             """
     else:
         sql = f"""
                 INSERT INTO bankgroup(Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPrefRate, TreatAndEvent, BaseDate, UpdateDate) 
-                VALUES ('{Bank_name}', '{Country_name}', '{BuyFeeRate}', '{StdPrefRate}', '{MaxPrefRate}', '{TreatAndEvent}','{BaseDate}', '{UpdateDate}')
+                VALUES ('{Bank_name}', '{Country_name}', '{BuyFeeRate}', '{StdPrefRate}', '{MaxPrefRate}', '{TreatAndEvent}', {BaseDate}, '{UpdateDate}')
             """
 
     cursor.execute(sql)
     conn.commit()
-
 
 # 해외은행 크롤링해서 DB에 넣기
 def foreignbank_info(conn, Country_name, USD, JPY, now):

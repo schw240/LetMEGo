@@ -22,7 +22,6 @@ def bankgroup_crawling(conn):
         "X-Requested-With": "XMLHttpRequest"
     }
     for data in usd_data:
-        print(data)
         bank_gourp = requests.post("http://exchange.kfb.or.kr/page/on_commission_list.php", headers=headers, data={'cur':data})
         html = bank_gourp.text
         soup = BeautifulSoup(html, 'html.parser')
@@ -31,7 +30,7 @@ def bankgroup_crawling(conn):
         for i in range(1,len(trs)):
             strong = (trs[i].find('strong'))
             bank_name = strong.text
-            
+        
             tds = trs[i].find_all('td')
             buy_fee_rate = tds[0].text
             std_pref_rate = tds[1].text
