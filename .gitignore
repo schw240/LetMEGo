@@ -7,8 +7,6 @@ backend/LetMEGo/LetMEGo/settings.py
 backend/LetMEGo/app/build/index.html
 frondend/frontend/README.md
 frondend/frontend/yarn.lock
-frondend/frontend/public/favicon.ico
-frondend/frontend/public/index.html
 frondend/frontend/public/logo192.png
 frondend/frontend/public/logo512.png
 frondend/frontend/public/manifest.json
