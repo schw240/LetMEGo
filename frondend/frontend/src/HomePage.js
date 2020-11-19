@@ -2,10 +2,12 @@
 
 import Axios from 'axios';
 import React, { useEffect, useState, useInterval, useRef } from 'react';
-import ReactDOM from 'react-dom';
 import { Page, Grid, Card, Form, Button, colors } from 'tabler-react';
+import ReactDOM from 'react-dom';
 import C3Chart from 'react-c3js';
 import SiteWrapper from './SiteWrapper';
+import React, { useEffect } from 'react';
+import Api from './Api';
 
 function Home() {
   const [account, setAccount] = React.useState(0);
@@ -46,6 +48,12 @@ function Home() {
       },
     },
   ];
+
+  useEffect(() => {
+    Api.get('navernews/').then((res) => {
+      console.log(res);
+    });
+  }, []);
 
   const showResult = () => {
     if (account > 0) {

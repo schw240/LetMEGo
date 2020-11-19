@@ -53,12 +53,15 @@ class ForeignBank(models.Model):
 
 
 class NaverNews(models.Model):
-    title = models.CharField(max_length=100, verbose_name='뉴스 제목' ,primary_key=True)
+    #
+    seq = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100, verbose_name='뉴스 제목')
     link = models.TextField(max_length=200,null=True,verbose_name='링크')
-    news_company = models.CharField(max_length=30,null=True,verbose_name='신문사')
-    contents = models.TextField(max_length=max, verbose_name='내용')
-    craw_date = models.CharField(max_length=30, null=True, verbose_name='뉴스 날자')
-    updatedate = models.DateTimeField(auto_now=True, verbose_name='크롤링 날자')
+    company = models.CharField(max_length=30,null=True,verbose_name='신문사')
+    content = models.TextField(max_length=max, verbose_name='내용')
+    upload_date = models.CharField(max_length=30, null=True, verbose_name='뉴스 날자')
+    craw_date = models.DateTimeField(auto_now=True, verbose_name='크롤링 날자')
+    words = models.TextField(max_length=max, verbose_name='단어조각')
 
     def __str__(self):
         return self.title
