@@ -82,3 +82,33 @@ def foreignbank_info(conn, Country_name, USD, JPY, now):
         
     cursor.execute(sql)
     conn.commit()
+
+
+# 네이버 뉴스기사 크롤링해서 DB 넣기
+def naver_news_info(conn, title, link, company, upload_date, content, words):
+    cursor = conn.cursor()    
+
+    sql = "INSERT INTO NaverNews(title, link, company, upload_date, content, words) values(%s,%s,%s,%s,%s,%s);"
+    cursor.execute(sql, (title, link, company, upload_date, content, words))
+    conn.commit()
+
+# 네이버 뉴스기사 100개 이외의 기사 삭제
+def naver_news_remove(conn):
+    cursor = conn.cursor()    
+
+    sql = """SELECT seq
+             FROM NaverNews  
+         ORDER BY seq DESC 
+            limit 100"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0]);
+
+    sql = f"""DELETE FROM NaverNews
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()
+    print('기사삭제완료')
