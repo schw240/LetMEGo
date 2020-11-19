@@ -59,6 +59,9 @@ def one_day():
 
     # 은행연합회 크롤링 (하루에 한 번)
     bankgroup_crawling(conn)
+    
+    # 네이버 뉴스 크롤링 (하루에 한 번)
+    pageCrawl(conn)
 
     conn.close()
 
