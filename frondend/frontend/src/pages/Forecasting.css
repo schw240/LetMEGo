@@ -1,0 +1,24 @@
+.containerBox {
+    width: 80%;
+    display: block;
+    float: left;
+    overflow: auto;
+}
+
+.containerBox1 {
+    width: 80%;
+    display: block;
+    float: left;
+    overflow: auto;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.containerBox2 {
+    width: 80%;
+
+}
+
+.form-group label, .form-group select {
+    width: 100px;
+}

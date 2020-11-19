@@ -6,8 +6,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics, viewsets
 # Create your views here.
 
-from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews
-from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer
+from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo
+from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer
 #generics.ListCreateAPIView
 class ListBank(ModelViewSet):
     queryset = MostCheapBank.objects.all()
@@ -17,11 +17,11 @@ class DetailBank(generics.RetrieveUpdateDestroyAPIView):
     queryset = MostCheapBank.objects.all()
     serializer_class = MostCheapBankSerializer
 
-class ListBankInfo(ModelViewSet):
+class ListBankGroupInfo(ModelViewSet):
     queryset = BankgroupInfo.objects.all()
     serializer_class = BankgroupInfoSerializer
 
-class DetailBankInfo(generics.RetrieveUpdateDestroyAPIView):
+class DetailBankGroupInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = BankgroupInfo.objects.all()
     serializer_class = BankgroupInfoSerializer
 
@@ -41,5 +41,20 @@ class DetailNaverNews(generics.RetrieveUpdateDestroyAPIView):
     queryset = NaverNews.objects.all()
     serializer_class = NaverNewsSerializer
 
+class ListBankInfo(ModelViewSet):
+    queryset = BankInfo.objects.all()
+    serializer_class = BankInfoSerializer
+
+class DetailBankInfo(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BankInfo.objects.all()
+    serializer_class = BankInfoSerializer
+
+class ListCountryInfo(ModelViewSet):
+    queryset = CountryInfo.objects.all()
+    serializer_class = CountryInfoSerializer
+
+class DetailCountryInfo(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CountryInfo.objects.all()
+    serializer_class = CountryInfoSerializer
 
 

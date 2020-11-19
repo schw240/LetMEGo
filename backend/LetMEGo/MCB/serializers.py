@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import MostCheapBank, BankgroupInfo, ForeignBank, NaverNews
+from .models import MostCheapBank, BankgroupInfo, ForeignBank, NaverNews, BankInfo, CountryInfo
 
 class MostCheapBankSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,4 +21,14 @@ class NaverNewsSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = NaverNews
+
+class BankInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = BankInfo
+
+class CountryInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = CountryInfo
         

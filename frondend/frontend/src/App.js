@@ -1,35 +1,40 @@
 import Axios from 'axios';
-import * as React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import * as React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import HomePage from "./HomePage";
-import RealtimeExchangeRatePage from "./pages/RealtimeExchangeRatePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import HomePage from './HomePage';
+import RealtimeExchangeRatePage from './pages/RealtimeExchangeRatePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import CompareMoney from './pages/CompareMoney';
+import Forecasting from './pages/Forecasting';
 // import { LoginPage, RegisterPage, } from "./pages";
 
-import "tabler-react/dist/Tabler.css";
+import 'tabler-react/dist/Tabler.css';
 
-export const LoginContext = React.createContext({user:'', setUser:''});
-
+export const LoginContext = React.createContext({ user: '', setUser: '' });
 
 function App() {
-
   const [user, setUser] = React.useState({
-    id : null,
-    pw : null,
-  })
-
+    id: null,
+    pw: null,
+  });
 
   return (
     <React.StrictMode>
-      <LoginContext.Provider value={{user:user, setUser:setUser}}>
+      <LoginContext.Provider value={{ user: user, setUser: setUser }}>
         <Router>
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/real-time" component={RealtimeExchangeRatePage} />
+            <Route
+              exact
+              path="/real-time"
+              component={RealtimeExchangeRatePage}
+            />
             <Route exact path="/register" component={RegisterPage} />
+            <Route exact path="/forecast" component={Forecasting} />
+            <Route exact path="/compare" component={CompareMoney} />
           </Switch>
         </Router>
       </LoginContext.Provider>
