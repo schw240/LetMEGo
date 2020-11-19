@@ -1,10 +1,11 @@
 // @flow
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Page, Grid, Card, Form, Button } from "tabler-react";
 
 import SiteWrapper from "./SiteWrapper";
+import Api from "./Api";
 
 function Home() {
   const [account, setAccount] = React.useState(0)
@@ -15,6 +16,12 @@ function Home() {
     To : '',
     Acc : '',
   })
+
+  useEffect(()=>{
+    Api.get("navernews/").then((res)=>{
+      console.log(res);
+    })
+  },[]);
 
   const showResult = () => {
     if (account > 0){
