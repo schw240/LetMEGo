@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CompareMoney from './pages/CompareMoney';
 import Forecasting from './pages/Forecasting';
+import UserSetting from './pages/UserSetting'
 // import { LoginPage, RegisterPage, } from "./pages";
 
 import 'tabler-react/dist/Tabler.css';
@@ -27,11 +28,11 @@ function App() {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/login" component={LoginPage} />
-            <Route
-              exact
-              path="/real-time"
-              component={RealtimeExchangeRatePage}
-            />
+            <Route exact path="/real-time" component={RealtimeExchangeRatePage} />
+
+            {/* setting page는 로그인 정보 있을 때만 들어올 수 있도록 해야함 */}
+            <Route exact path="/setting" component={UserSetting} />
+            
             <Route exact path="/register" component={RegisterPage} />
             <Route exact path="/forecast" component={Forecasting} />
             <Route exact path="/compare" component={CompareMoney} />

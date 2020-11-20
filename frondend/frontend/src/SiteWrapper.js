@@ -48,38 +48,20 @@ const navBarItems: Array<navItem> = [
   },
 ];
 
-const loginAccountDropdownProps = {
-  // 유저정보 나와있는 곳
-  avatarURL: './demo/faces/userLogin.png', //로그인 했을 때
+const loginAccountDropdownProps = { // 유저정보 나와있는 곳
+  avatarURL: "./demo/faces/userLogin.png", //로그인 했을 때
   options: [
-    { icon: 'user', value: '사용자 정보' },
-    { icon: 'settings', value: '사용자 수정' },
+    { icon: "settings", value: "설정", to: "/setting", LinkComponent: withRouter(NavLink), },
     { isDivider: true },
-    {
-      icon: 'log-out',
-      value: '로그아웃',
-      to: '/',
-      LinkComponent: withRouter(NavLink),
-    },
+    { icon: "log-out", value: "로그아웃", to: "/", LinkComponent: withRouter(NavLink), },
   ],
 };
 
-const logoutAccountDropdownProps = {
-  // 유저정보 나와있는 곳
-  avatarURL: './demo/faces/userLogout.png', //로그인 안했을 때
+const logoutAccountDropdownProps = { // 유저정보 나와있는 곳
+  avatarURL: "./demo/faces/userLogout.png", //로그인 안했을 때
   options: [
-    {
-      icon: 'log-in',
-      value: '로그인',
-      to: '/login',
-      LinkComponent: withRouter(NavLink),
-    },
-    {
-      icon: 'user-plus',
-      value: '회원가입',
-      to: '/register',
-      LinkComponent: withRouter(NavLink),
-    },
+    { icon: "log-in", value: "로그인", to: "/login", LinkComponent: withRouter(NavLink), },
+    { icon: "user-plus", value: "회원가입", to: "/register", LinkComponent: withRouter(NavLink), },
   ],
 };
 
