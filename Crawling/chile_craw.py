@@ -21,7 +21,7 @@ def chile_craw(conn):
     response2 = session.get("https://si3.bcentral.cl/Indicadoressiete/secure/Indicadoresdiarios.aspx")
     bs2 = BeautifulSoup(response2.text, "html.parser")
 
-    tb = bs2.select("#wrapper > div > div.row > div > div > div:nth-child(1) > div:nth-child(10)")
+    tb = bs2.select("#wrapper > div > div.row > div > div > div:nth-child(1) > div:nth-child(10) > div")
 
     for i in tb:
         for j in i.select("li"):
