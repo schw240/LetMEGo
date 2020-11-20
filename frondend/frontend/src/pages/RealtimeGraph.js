@@ -101,6 +101,8 @@ export default function RealtimeGraph() {
     setInterval(() => {
       Api.get("realtimeinfo/").then((res) => {
         
+
+        console.log(res.data.seq)
         // 여기까지 baseprice 가져오기
         var bp = []
         for(let i of res.data){
@@ -120,8 +122,8 @@ export default function RealtimeGraph() {
 
         //x축에 실시간 데이터 생성
         var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-        options.xAxis[0].data.shift();
-        options.xAxis[0].data.push(axisData);
+        // options.xAxis[0].data.shift();
+        // options.xAxis[0].data.push(axisData);
 
         setOptions((prev) => ({
           ...prev,
