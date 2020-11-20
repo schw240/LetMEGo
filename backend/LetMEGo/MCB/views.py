@@ -15,6 +15,14 @@ class ListBank(ModelViewSet):
     queryset = MostCheapBank.objects.all()
     serializer_class = MostCheapBankSerializer
 
+    # http://127.0.0.1:8000/api/banklist/?bank_name=bank_code
+    def get_queryset(self):
+        qs = super().get_queryset()
+        bank_name = self.request.query_params.get('bank_name')
+        if bank_name:
+            qs = qs.filter(bank_name=bank_name)
+        return qs
+
 
 class DetailBank(generics.RetrieveUpdateDestroyAPIView):
     queryset = MostCheapBank.objects.all()

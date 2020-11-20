@@ -28,15 +28,15 @@ def mybank_craw(conn):
             SellFeeRate = i.select("td")[5].text.replace('%', '')
             TradingRate = i.select("td")[8].text
             if BUY == '-':
-                BUY = -1
+                BUY = 'null'
             if BuyFeeRate == '-':
-                BuyFeeRate = -1
+                BuyFeeRate = 'null'
             if SELL == '-':
-                SELL = -1
+                SELL = 'null'
             if SellFeeRate == '-':
-                SellFeeRate = -1
+                SellFeeRate = 'null'
             if TradingRate == '-':
-                TradingRate = -1
+                TradingRate = 'null'
             
             mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now)
                 

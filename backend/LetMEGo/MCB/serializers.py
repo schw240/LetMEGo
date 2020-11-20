@@ -3,6 +3,8 @@ from .models import MostCheapBank, BankgroupInfo, ForeignBank, NaverNews, BankIn
 
 
 class MostCheapBankSerializer(serializers.ModelSerializer):
+    country_flag = serializers.ReadOnlyField(source='country_name.country_flag')
+    name_kor = serializers.ReadOnlyField(source='country_name.name_kor')
     class Meta:
         fields = '__all__'
         model = MostCheapBank
