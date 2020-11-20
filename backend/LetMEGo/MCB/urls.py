@@ -9,6 +9,7 @@ router.register('foreignbank', views.ListForeignBank)
 router.register('navernews', views.ListNaverNews)
 router.register('bankinfo', views.ListBankInfo)
 router.register('countryinfo', views.ListCountryInfo)
+router.register('realtimeinfo', views.ListRealTimeInfo)
 
 
 urlpatterns = [

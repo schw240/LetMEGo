@@ -1,21 +1,21 @@
-import * as React from 'react';
-import './Forecasting.css';
-import { Form, Page, Grid, Card, colors } from 'tabler-react';
-import C3Chart from 'react-c3js';
-import SiteWrapper from '../SiteWrapper';
+import * as React from "react";
+// import './Forecasting.css';
+import { Form, Page, Grid, Card, colors } from "tabler-react";
+import C3Chart from "react-c3js";
+import SiteWrapper from "../SiteWrapper";
 
 export default function Forecasting(): React.Node {
   const card1 = [
     {
-      title: 'LSTM',
+      title: "LSTM",
       data: {
         columns: [
           // each columns data
-          ['data1', 2, 8, 6, 7, 14, 11],
-          ['data2', 5, 15, 11, 15, 21, 25],
-          ['data3', 17, 18, 21, 20, 30, 29],
+          ["data1", 2, 8, 6, 7, 14, 11],
+          ["data2", 5, 15, 11, 15, 21, 25],
+          ["data3", 17, 18, 21, 20, 30, 29],
         ],
-        type: 'line', // default type of chart
+        type: "line", // default type of chart
         colors: {
           data1: colors.orange,
           data2: colors.blue,
@@ -23,28 +23,28 @@ export default function Forecasting(): React.Node {
         },
         names: {
           // name of each serie
-          data1: 'Development',
-          data2: 'Marketing',
-          data3: 'Sales',
+          data1: "Development",
+          data2: "Marketing",
+          data3: "Sales",
         },
       },
       axis: {
         x: {
-          type: 'category',
+          type: "category",
           // name of each category
-          categories: ['2013', '2014', '2015', '2016', '2017', '2018'],
+          categories: ["2013", "2014", "2015", "2016", "2017", "2018"],
         },
       },
     },
   ];
   const card2 = [
     {
-      title: 'XGBoost',
+      title: "XGBoost",
       data: {
         columns: [
           // each columns data
           [
-            'data1',
+            "data1",
             7.0,
             6.9,
             9.5,
@@ -59,7 +59,7 @@ export default function Forecasting(): React.Node {
             9.6,
           ],
           [
-            'data2',
+            "data2",
             3.9,
             4.2,
             5.7,
@@ -75,22 +75,22 @@ export default function Forecasting(): React.Node {
           ],
         ],
         labels: true,
-        type: 'line', // default type of chart
+        type: "line", // default type of chart
         colors: {
           data1: colors.blue,
           data2: colors.green,
         },
         names: {
           // name of each serie
-          data1: 'Tokyo',
-          data2: 'London',
+          data1: "Tokyo",
+          data2: "London",
         },
       },
       axis: {
         x: {
-          type: 'category',
+          type: "category",
           // name of each category
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         },
       },
     },
@@ -100,7 +100,7 @@ export default function Forecasting(): React.Node {
     <>
       <SiteWrapper>
         <Page.Content>
-          <div style={{ marginLeft: '12px' }}>
+          <div style={{ marginLeft: "12px" }}>
             <Grid.Row>
               <Form.Group label="날자">
                 <Form.Select>

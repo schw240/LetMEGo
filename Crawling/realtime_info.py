@@ -1,9 +1,10 @@
 import requests
 import json
-from db_connect import
+from db_connect import realtime
+from helper_connect import DBConnect
 
 
-def hana_api(conn):
+def realtime_info_craw(conn):
     # http://fx.kebhana.com/FER1101M.web
     # https://earthquake.kr:23490/USDKRW
 
@@ -11,6 +12,7 @@ def hana_api(conn):
     response = requests.get(url)
     page_source = response.text
     json_val = json.loads(page_source)
+
     date = json_val[0].get("date")
     time = json_val[0].get("time")
     basePrice = json_val[0].get("basePrice")
@@ -19,4 +21,13 @@ def hana_api(conn):
     changePrice = json_val[0].get("changePrice")
     cashBuyPrice = json_val[0].get("cashBuyPrice")
     changeRate = json_val[0].get("changeRate")
+    signedChangePrice = json_val[0].get("signedChangePrice")
+    signedChangeRate = json_val[0].get("signedChangeRate")
     provider = json_val[0].get("provider")
+
+    realtime(conn, time, basePrice, signedChangePrice, signedChangeRate)
+
+
+if __name__ == "__main__":
+    conn = DBConnect()
+    realtime_info_craw(conn)
