@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Page, Grid, Form, Card, Nav, Button, StandaloneFormPage } from "tabler-react";
 
-import BankSeleted from "./BankSelected"
+import BankSetting from "./BankSetting"
 import ModifyInfo from "./ModifyInfo"
 import RemoveUser from "./RemoveUser"
 
@@ -95,7 +95,7 @@ function StoreCardsPage() {
                     else if(screenTF && screen.modify)
                       return <ModifyInfo />
                     else if(screenTF && screen.mybank)
-                      return <BankSeleted />
+                      return <BankSetting />
                     else if(screenTF && screen.remove)
                       return <RemoveUser />
                   })()

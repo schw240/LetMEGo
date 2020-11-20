@@ -45,7 +45,7 @@ function PricingCardsPage() {
     <SiteWrapper>
       <Page.Content>
         {/* 여기는 실시간 환율 표 참고할곳 */}
-        <Form.Group >
+        <Form.Group className="real-time">
           <Form.Radio
             checked={radioGroup.Country}
             isInline
@@ -62,32 +62,35 @@ function PricingCardsPage() {
             value="Bank"
             onChange={radioSelect}
           />
-          <Form.Select xl={4} onChange={selectOption}>
+          <Form.Select xl={4} onChange={selectOption} >
             {/* 이 부분은 if, map 함수 돌리면 됨 */}
             
             {
-                  (() => {
-                    //함수
-                    if(radioGroup.Country)
-                      return <>
-                      <option value="us">
-                        미국
-                      </option>
-                      <option value="jp">
-                        일본
-                      </option>
-                      </>
-                    else if(radioGroup.Bank)
-                      return <>
-                        <option value="kookmin">
-                          국민은행
-                        </option>
-                        <option value="woori">
-                          우리은행
-                        </option>
-                      </>
-                  })()
-                }
+              (() => {
+                //함수
+                if(radioGroup.Country)
+                  return <>
+                  <option value="us">
+                    미국
+                  </option>
+                  <option value="jp">
+                    일본
+                  </option>
+                  </>
+                else if(radioGroup.Bank)
+                  return <>
+                    <option value="kookmin">
+                      국민은행
+                    </option>
+                    <option value="woori">
+                      우리은행
+                    </option>
+                    <option value="standard">
+                      스탠다드차타드은행
+                    </option>
+                  </>
+              })()
+            }
           </Form.Select>
         </Form.Group>
         <Grid.Row cards deck>
@@ -95,14 +98,14 @@ function PricingCardsPage() {
             <Card>
               {/* 나라, 은행별 테이블 보여주는 곳 if문 쓰기 */}
               {
-                  (() => {
-                    //함수
-                    if(radioGroup.Country)
-                      return <RealtimeCountry />
-                    else if(radioGroup.Bank)
-                    return <RealtimeBank />
-                  })()
-                }
+                (() => {
+                  //함수
+                  if(radioGroup.Country)
+                    return <RealtimeCountry />
+                  else if(radioGroup.Bank)
+                  return <RealtimeBank />
+                })()
+              }
             </Card>
           </Grid.Col>
         </Grid.Row>

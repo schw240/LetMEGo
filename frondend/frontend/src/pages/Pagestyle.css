@@ -1,0 +1,11 @@
+.bankstyle input.custom-control, .bankstyle label.custom-control {
+    padding-left: 1rem;
+}
+
+.real-time label {
+    width: 80px;
+}
+
+.real-time select {
+    width: 190px;
+}
