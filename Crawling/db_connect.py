@@ -1,15 +1,13 @@
 import pymysql
 
 # 마이뱅크 크롤링해서 DB에 넣기
-
-
 def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now):
     cursor = conn.cursor()
 
     sql = f"""
-                SELECT Bank_name, Country_name
+                SELECT Bank_name_id, Country_name_id
                 FROM mybank
-                WHERE Bank_name = '{Bank_name}' and Country_name = '{Country_name}'
+                WHERE Bank_name_id = '{Bank_name}' and Country_name_id = '{Country_name}'
             """
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -19,11 +17,11 @@ def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRat
                 UPDATE mybank
                 SET BUY = {BUY}, BuyFeeRate = {BuyFeeRate}, SELL = {SELL}, SellFeeRate = {SellFeeRate}, 
                     TradingRate = {TradingRate}, UpdateDate = '{now}'
-                WHERE Bank_name = '{Bank_name}' and Country_name = '{Country_name}'
+                WHERE Bank_name_id = '{Bank_name}' and Country_name_id = '{Country_name}'
             """
     else:
         sql = f"""
-                INSERT INTO mybank(Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, UpdateDate)
+                INSERT INTO mybank(Bank_name_id, Country_name_id, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, UpdateDate)
                 VALUES ('{Bank_name}', '{Country_name}', {BUY}, {BuyFeeRate}, {SELL}, {SellFeeRate}, {TradingRate}, '{now}')
             """
 
