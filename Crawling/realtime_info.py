@@ -1,6 +1,6 @@
 import requests
 import json
-from db_connect import realtime
+from db_connect import realtime, realtime_remove
 from helper_connect import DBConnect
 
 
@@ -25,6 +25,7 @@ def realtime_info_craw(conn):
     signedChangeRate = json_val[0].get("signedChangeRate")
     provider = json_val[0].get("provider")
 
+    realtime_remove(conn)
     realtime(conn, time, basePrice, signedChangePrice, signedChangeRate)
 
 

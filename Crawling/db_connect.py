@@ -128,3 +128,23 @@ def realtime(conn, time, basePrice, signedChangePrice, signedChangeRate):
     sql = "INSERT INTO RealTime_Info(time, basePrice, signedChangePrice, signedChangeRate) values(%s,%s,%s,%s);"
     cursor.execute(sql, (time, basePrice, signedChangePrice, signedChangeRate))
     conn.commit()
+
+
+def realtime_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT seq
+             FROM RealTime_Info  
+         ORDER BY seq DESC 
+            limit 500"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM RealTime_Info
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()

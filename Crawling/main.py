@@ -69,14 +69,14 @@ def one_day():
     conn.close()
 
 
-def one_min():
+def five_min():
     conn = DBConnect()
 
     realtime_info_craw(conn)
     conn.close()
 
 
-sched.add_job(one_min, 'interval', seconds=60)  # 1분에 한번씩 저장
+sched.add_job(five_min, 'interval', seconds=300)  # 1분에 한번씩 저장
 sched.add_job(thirty_minute, 'interval', seconds=1800)  # 1800초마다 돌아감(30분)
 sched.add_job(one_hour, 'interval', seconds=3600)  # 3600초마다 돌아감 (1시간)
 # 매일 정해진 hour에 돌아가게 함 # 테스트로 오전 11시에 돌아가게
