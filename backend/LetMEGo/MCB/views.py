@@ -22,6 +22,13 @@ class ListBank(ModelViewSet):
         if bank_name:
             qs = qs.filter(bank_name=bank_name)
         return qs
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        country_name = self.request.query_params.get('country_name')
+        if country_name:
+            qs = qs.filter(country_name=country_name)
+        return qs
 
 
 class DetailBank(generics.RetrieveUpdateDestroyAPIView):
