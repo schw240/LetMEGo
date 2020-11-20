@@ -1,25 +1,10 @@
-import ReactDOM from 'react-dom';
 import Api from "../Api";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import React, { useEffect, useState, useInterval, useRef } from 'react';
-import {
-  Page,
-  Grid,
-  Text,
-  Table,
-  Card,
-  Icon,
-  Form,
-  Button,
-} from 'tabler-react';
+import React, { useEffect, useRef } from 'react';
 
 export default function RealtimeGraph() {
   const [currency, setCurrency] = React.useState(0);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(null);
-  const [delay, setDelay] = React.useState(500000);
-  const [time, setTime] = React.useState(null);
 
   const [options, setOptions] = React.useState({
     chart: {
@@ -31,17 +16,7 @@ export default function RealtimeGraph() {
     xAxis: 
       {
           type: 'category',
-          boundaryGap: true,
-          data: (function (){
-              var now = new Date();
-              var res = [];
-              var len = 400;
-              while (len--) {
-                  res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-                  now = new Date(now - 2000);
-              }
-              return res;
-          })()
+          categories: []
       },
     yAxis: {
       title: {
@@ -68,24 +43,51 @@ export default function RealtimeGraph() {
     },
     series: [
       {
-        name: "매매 기준율",
-        colorByPoint: true,
-        data: [{
-
-        }],
+        name: '매매 기준율',
+        type: 'line',
+        lineStyle:{
+          color:'#2A265C' //line차트 색상 변경
+        },
+        smooth: true, //부드러운 line 표현
+        yAxisIndex: 0, //yAxis 1번째 사용
+        data: 
+        {
+        } 
       },
     ],
   });
 
-  const [data, setData] = React.useState();
-  const [axis, setAxis] = React.useState();
-
   const apiCall = async () => {
     try {
-      console.log("실행실행");
       const response = await Api.get(
         "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"
       );
+
+      Api.get("realtimeinfo/").then((res) => {
+            var bp = []
+            for(let i of res.data){
+              bp.push(Number(i.basePrice));
+            }
+            var api_time = []
+            for(let i of res.data){
+              api_time.push(i.time);
+            }
+    
+            setOptions((prev) => ({
+              ...prev,
+              xAxis: 
+                {
+                  categories: api_time
+                },
+              series: [
+                {
+                  data: (bp),
+                },
+              ],
+            }));
+    
+          });
+
       setCurrency(response.data);
     } catch (e) {
     }
@@ -95,71 +97,11 @@ export default function RealtimeGraph() {
     apiCall();
   }, []);
 
+
   useEffect(() => {
-    setInterval(apiCall, 5000);
-
-    setInterval(() => {
-      Api.get("realtimeinfo/").then((res) => {
-        
-
-        console.log(res.data.seq)
-        // 여기까지 baseprice 가져오기
-        var bp = []
-        for(let i of res.data){
-          bp.push(Number(i.basePrice));
-        }
-
-        // time 가져오기
-        var api_time = []
-        for(let i of res.data){
-          api_time.push(i.time);
-        }
-
-        //bp와 api_time 가장 왼쪽값을 제거하고 가장 오른쪽 값 추가하기
-        bp.shift();
-        api_time.shift();
-
-
-        //x축에 실시간 데이터 생성
-        var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-        // options.xAxis[0].data.shift();
-        // options.xAxis[0].data.push(axisData);
-
-        setOptions((prev) => ({
-          ...prev,
-          series: [
-            {
-              data: bp,
-            },
-          ],
-        }));
-
-        console.log(options)
-      });
-    }, 5000);
+    setInterval(apiCall, 50000);
   }, []);
 
-    function handleDelayChange(e) {
-      setDelay(Number(e.target.value));
-    }
-  
-    function useInterval(callback, delay) {
-      const savedCallback = useRef();
-  
-      useEffect(() => {
-        savedCallback.current = callback;
-      }, [callback]);
-  
-      useEffect(() => {
-        function calling() {
-          savedCallback.current();
-        }
-        if (delay !== null) {
-          let id = setInterval(calling, delay);
-          return () => clearInterval(id);
-        }
-      }, [delay]);
-    }
 
   if (!currency) return null;
 
@@ -177,8 +119,6 @@ export default function RealtimeGraph() {
           options={options}
         />
       </ul>
-      {/* <input value={delay} onChange={handleDelayChange} /> */}
-      {/* <button onClick={apiCall}>다시 불러오기</button> */}
     </>
   );
 } 
