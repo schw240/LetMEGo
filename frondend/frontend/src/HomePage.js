@@ -8,19 +8,55 @@ import SiteWrapper from './SiteWrapper';
 import HomePageExchangeMoney from './pages/HomePageExchangeMoney'
 import Api from './Api';
 import RealtimeGraph from './pages/RealtimeGraph';
+import api from './Api';
+import SizeContext from 'antd/lib/config-provider/SizeContext';
+
+function Upload_news() {
+
+  const [news, setNews] = React.useState([]);
+
+
+  const style = {
+
+    fontSize: '11px',
+
+  }
+
+  
+
+
+  useEffect(()=>{
+    Api.get("navernews/").then((res)=>{
+
+      const data = []
+    
+      for(let i = 0; i < 20; i++) {
+        data.push((res.data[i]))
+      }
+
+      setNews(data)
+      console.log(data)
+
+     })
+  },[]);
+
+  return <>
+    {
+      news.map((value)=> {
+        return <div style={style}><a target = "_blank" href = {value.link}> [{value.company}] {value.title} </a></div>;
+        
+        
+      })
+    }
+  </>
+}
+
 
 function Home() {
   
   const [currency, setCurrency] = React.useState(0);
   const [delay, setDelay] = React.useState(500000);
-  
-  useEffect(() => {
-    Api.get('navernews/').then((res) => {
-      console.log(res);
-    });
-  }, []);
 
-  
 
   const apiCall = async () => {
     try {
@@ -82,8 +118,8 @@ function Home() {
           <Grid.Col lg={5}>
             <Card title="exchange rate news" statusColor="blue" statusSide>
               <Card.Body>
-                <br />
-                기사
+                <br /> 
+                <Upload_news />
               </Card.Body>
             </Card>
           </Grid.Col>
