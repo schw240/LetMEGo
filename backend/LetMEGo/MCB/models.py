@@ -133,3 +133,19 @@ class RealTimeInfo(models.Model):
         db_table = 'RealTime_Info'
         verbose_name = '실시간 환율 정보'
         verbose_name_plural = '실시간 환율 정보'
+
+
+class XGBoostInfo(models.Model):
+    seq = models.AutoField(primary_key=True)
+    date = models.CharField(max_length=30, verbose_name='날짜')
+    dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
+
+    
+    def __str__(self):
+        return self.date
+
+    class Meta:
+        db_table = 'XGBoost_Info'
+        verbose_name = 'XGboost예측테이블'
+        verbose_name_plural = 'XGboost예측테이블'
+

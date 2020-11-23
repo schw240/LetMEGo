@@ -8,8 +8,8 @@ from rest_framework import permissions
 from collections import Counter
 import json
 
-from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo
-from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer, RealTimeInfoSerializer
+from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo
+from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer, RealTimeInfoSerializer, XGBoostInfoSerializer
 
 
 class ListBank(ModelViewSet):
@@ -82,3 +82,7 @@ class ListCountryInfo(ModelViewSet):
 class ListRealTimeInfo(ModelViewSet):
     queryset = RealTimeInfo.objects.all()
     serializer_class = RealTimeInfoSerializer
+
+class ListXGBoostInfo(ModelViewSet):
+    queryset = XGBoostInfo.objects.all()
+    serializer_class = XGBoostInfoSerializer
