@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 # Create your views here.
+from collections import Counter
+import json
 
 from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo
 from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer, RealTimeInfoSerializer
@@ -32,6 +34,19 @@ def MostCheapBuy(request, country_name):
     serializer = MostCheapBankSerializer(mostcheap, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def Wordcloud(request):
+    news = NaverNews.objects.all().values()
+    words = []
+    for i in news:
+        tmp = words.extend(i['words'].split(","))
+    
+    count = Counter(words)
+    words = [dict(zip(['text','value'], i)) for i in count.most_common()]
+    print(words)
+
+    return Response(json.dumps(words, ensure_ascii=False))
 
 class ListBankGroupInfo(ModelViewSet):
     queryset = BankgroupInfo.objects.all()
