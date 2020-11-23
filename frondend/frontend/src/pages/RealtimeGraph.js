@@ -98,9 +98,9 @@ export default function RealtimeGraph() {
   }, []);
 
 
-  useEffect(() => {
-    setInterval(apiCall, 50000);
-  }, []);
+  // useEffect(() => {
+  //   setInterval(apiCall, 50000);
+  // }, []);
 
 
   if (!currency) return null;

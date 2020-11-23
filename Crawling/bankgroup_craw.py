@@ -42,7 +42,7 @@ def bankgroup_crawling(conn):
             treat_and_event = tds[3].text
             base_date = tds[4].text
             base_date = base_date.replace('.', '-')
-
+            print(base_date)
             bankgroup_info(conn, bank_name, data, buy_fee_rate, std_pref_rate,
                            max_pref_rate, treat_and_event, base_date, now)
 
