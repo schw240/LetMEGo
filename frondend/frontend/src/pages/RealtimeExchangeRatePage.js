@@ -1,15 +1,24 @@
 import * as React from 'react';
-import { Page, Grid, Card, Form, Table, Button, Icon, Text, } from 'tabler-react';
+import { Page, Grid, Card, Form, Table, Button, Icon, Text, Tooltip } from 'tabler-react';
+import { Modal, } from 'antd';
 
 import SiteWrapper from '../SiteWrapper';
 import API from '../Api'
 
 function PricingCardsPage() {
-  const [selectCountry, setSelectCountry] = React.useState('USD')
+  const [selectCountry, setSelectCountry] = React.useState('AED')
   const [selectBank, setSelectBank] = React.useState('003')
+  const [selectBankNM, setSelectBankNM] = React.useState('IBK기업은행')
+  const [modalState, setModalState] = React.useState(false)
   const [radioGroup, setRadioGroup] = React.useState({
     Country: true,
     Bank: false,
+  })
+  const [modalContents, setModalContents] = React.useState({
+    bank_name: '',
+    stdprefrate: '',
+    maxprefrate: '',
+    treatandevent: '',
   })
   const [bankGroup, setBankGroup] = React.useState([])
   const [countryGroup, setCountryGroup] = React.useState([])
@@ -34,9 +43,60 @@ function PricingCardsPage() {
     if(radioGroup.Country){
       setSelectCountry(e.target.value)
     }else if(radioGroup.Bank){
+      setSelectBankNM(e.target.selectedOptions[0].getAttribute('name'))
       setSelectBank(e.target.value)
     }
   }
+
+  const btnShowModal = (v) => {
+    API.get("bankgroup_list/?bank_name="+v+"&country_name="+selectCountry)
+      .then(response=>{
+        const {data} = response
+        if(data.length !== 0){
+          setModalState(true)
+          setModalContents({
+            bank_name: data[0].bank_name,
+            stdprefrate: data[0].stdprefrate,
+            maxprefrate: data[0].maxprefrate,
+            treatandevent: data[0].treatandevent,
+          })
+        }else{
+          alert('선택한 정보에 해당하는 우대사항이 존재하지 않습니다.')
+        }
+      })
+      .catch(error=>{
+          console.error(error)
+    })
+  }
+
+  const btnShowModal2 = (v) => {   
+    API.get("bankgroup_list/?bank_name="+selectBankNM+"&country_name="+v)
+      .then(response=>{
+        const {data} = response
+        if(data.length !== 0){
+          setModalState(true)
+          setModalContents({
+            bank_name: data[0].bank_name,
+            stdprefrate: data[0].stdprefrate,
+            maxprefrate: data[0].maxprefrate,
+            treatandevent: data[0].treatandevent,
+          })
+        }else{
+          alert('선택한 정보에 해당하는 우대사항이 존재하지 않습니다.')
+        }
+      })
+      .catch(error=>{
+          console.error(error)
+    })
+  }
+
+  const handleOk = (e) => {
+    setModalState(false)
+  };
+
+  const handleCancel = (e) => {
+    setModalState(false)
+  };
 
   React.useEffect(()=> {
       API.get("bankinfo/")
@@ -48,6 +108,7 @@ function PricingCardsPage() {
           console.error(error)
       })
   },[])
+
   React.useEffect(()=> {
       API.get("countryinfo/")
       .then(response=>{
@@ -85,6 +146,13 @@ function PricingCardsPage() {
   return (
     <SiteWrapper>
       <Page.Content>
+        {/* 우대사항 */}
+        <Modal title={modalContents.bank_name} visible={modalState} onOk={handleOk} onCancel={handleCancel}>
+          <p> <b>기본 우대율 :</b> {modalContents.stdprefrate}</p>
+          <p> <b>최대 우대율 :</b> {modalContents.maxprefrate}</p>
+          <p> <b>우대사항 및 이벤트 :</b> {modalContents.treatandevent}</p>
+        </Modal>
+
         {/* 여기는 실시간 환율 표 참고할곳 */}
         <Form.Group className="real-time">
           <Form.Radio
@@ -105,7 +173,6 @@ function PricingCardsPage() {
           />
           <Form.Select xl={4} onChange={selectOption} >
             {/* 이 부분은 if, map 함수 돌리면 됨 */}
-            
             {
               (() => {
                 //함수
@@ -118,7 +185,7 @@ function PricingCardsPage() {
                 else if(radioGroup.Bank)
                   return <>
                     {bankGroup.map((v) =>
-                        <option value={v.bank_code}>{v.bank_name}</option>
+                        <option value={v.bank_code} name={v.bank_name}>{v.bank_name}</option>
                     )}
                   </>
               })()
@@ -168,9 +235,11 @@ function PricingCardsPage() {
                                       <Table.Col alignContent="center"> {v.sellfeerate}% </Table.Col>
                                       <Table.Col alignContent="center"> {v.tradingrate} </Table.Col>
                                       <Table.Col alignContent="center">
-                                      <Button id="showmodal">
-                                          <Icon prefix="fe" name="plus-circle" />
-                                      </Button>
+                                      <Tooltip content="Tooltip" placement="top">
+                                        <Button id="showmodal" color="indigo" onClick={()=>{btnShowModal(v.bank_name_nm)}}>
+                                            <Icon prefix="fe" name="plus-circle" />
+                                        </Button>
+                                      </Tooltip>
                                       </Table.Col>
                                   </Table.Row>
                                 )}
@@ -216,7 +285,7 @@ function PricingCardsPage() {
                                 <Table.Col alignContent="center"> {v.sellfeerate}% </Table.Col>
                                 <Table.Col alignContent="center"> {v.tradingrate} </Table.Col>
                                 <Table.Col alignContent="center">
-                                    <Button id="showmodal">
+                                    <Button id="showmodal" color="indigo" onClick={()=>{btnShowModal2(v.country_name)}}>
                                     <Icon prefix="fe" name="plus-circle" />
                                     </Button>
                                 </Table.Col>
