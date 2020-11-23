@@ -1,15 +1,13 @@
 import pymysql
 
 # 마이뱅크 크롤링해서 DB에 넣기
-
-
 def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now):
     cursor = conn.cursor()
 
     sql = f"""
-                SELECT Bank_name, Country_name
+                SELECT Bank_name_id, Country_name_id
                 FROM mybank
-                WHERE Bank_name = '{Bank_name}' and Country_name = '{Country_name}'
+                WHERE Bank_name_id = '{Bank_name}' and Country_name_id = '{Country_name}'
             """
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -19,11 +17,11 @@ def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRat
                 UPDATE mybank
                 SET BUY = {BUY}, BuyFeeRate = {BuyFeeRate}, SELL = {SELL}, SellFeeRate = {SellFeeRate}, 
                     TradingRate = {TradingRate}, UpdateDate = '{now}'
-                WHERE Bank_name = '{Bank_name}' and Country_name = '{Country_name}'
+                WHERE Bank_name_id = '{Bank_name}' and Country_name_id = '{Country_name}'
             """
     else:
         sql = f"""
-                INSERT INTO mybank(Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, UpdateDate)
+                INSERT INTO mybank(Bank_name_id, Country_name_id, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, UpdateDate)
                 VALUES ('{Bank_name}', '{Country_name}', {BUY}, {BuyFeeRate}, {SELL}, {SellFeeRate}, {TradingRate}, '{now}')
             """
 
@@ -72,20 +70,27 @@ def foreignbank_info(conn, Country_name, USD, JPY, now):
     cursor.execute(sql)
     results = cursor.fetchall()
 
-    if results:
-        sql = f"""
-                UPDATE foreign_bank
-                SET USD = {USD}, JPY = {JPY}, UpdateDate = '{now}'
-                WHERE Country_name = '{Country_name}'
-            """
-    else:
-        sql = f"""
-                INSERT INTO foreign_bank(Country_name, USD, JPY, UpdateDate)
-                VALUES ('{Country_name}',{USD},{JPY},'{now}')
-            """
+    
+    if USD != 0 and JPY != 0:
+        print(USD, JPY)
+        if results:
+            sql = f"""
+                    UPDATE foreign_bank
+                    SET USD = {USD}, JPY = {JPY}, UpdateDate = '{now}'
+                    WHERE Country_name = '{Country_name}'
+                """
+        else:
+            sql = f"""
+                    INSERT INTO foreign_bank(Country_name, USD, JPY, UpdateDate)
+                    VALUES ('{Country_name}',{USD},{JPY},'{now}')
+                """
 
-    cursor.execute(sql)
-    conn.commit()
+        cursor.execute(sql)
+        conn.commit()
+
+    else:
+        # 휴일 등의 이유로 환율 정보가 업데이트 되지 않았을 때는 디비에서 삽입/갱신 하지 않음
+        print(f"환율 정보 없음 : {Country_name}, USD = {USD} JPY = {JPY}")
 
 
 # 네이버 뉴스기사 크롤링해서 DB 넣기

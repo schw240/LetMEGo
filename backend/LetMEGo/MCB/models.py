@@ -2,10 +2,41 @@ from django.db import models
 
 # Create your models here.
 
+class CountryInfo(models.Model):
+    country_name = models.CharField(
+        max_length=10, verbose_name='나라이름(영어)', primary_key=True)
+    country_flag = models.CharField(
+        max_length=10, null=True, verbose_name='국기')
+    name_kor = models.CharField(
+        max_length=10, null=True, verbose_name='나라이름(한국어)')
+
+    def __str__(self):
+        return self.country_name
+
+    class Meta:
+        db_table = 'Country_Info'
+        verbose_name = '나라 정보'
+        verbose_name_plural = '나라 정보'
+
+
+class BankInfo(models.Model):
+    bank_code = models.CharField(
+        max_length=4, verbose_name='은행코드', primary_key=True)
+    bank_name = models.CharField(max_length=20, null=True, verbose_name='은행명')
+    bank_logo = models.CharField(max_length=20, null=True, verbose_name='은행로고')
+
+    def __str__(self):
+        return self.bank_name
+
+    class Meta:
+        db_table = 'Bank_Info'
+        verbose_name = '은행 정보'
+        verbose_name_plural = '은행 정보'
+
 
 class MostCheapBank(models.Model):
-    bank_name = models.CharField(max_length=20, verbose_name='은행이름')
-    country_name = models.CharField(max_length=20, verbose_name='외화')
+    bank_name = models.ForeignKey(BankInfo, on_delete=models.CASCADE)
+    country_name = models.ForeignKey(CountryInfo, on_delete=models.CASCADE)
     buy = models.FloatField(null=True, verbose_name='현찰 살 때')
     buyfeerate = models.CharField(
         max_length=30, null=True, verbose_name='수수료율')
@@ -83,38 +114,6 @@ class NaverNews(models.Model):
         db_table = 'NaverNews'
         verbose_name = '환율 기사'
         verbose_name_plural = '환율 기사'
-
-
-class BankInfo(models.Model):
-    bank_code = models.CharField(
-        max_length=4, verbose_name='은행코드', primary_key=True)
-    bank_name = models.CharField(max_length=20, null=True, verbose_name='은행명')
-    bank_logo = models.CharField(max_length=20, null=True, verbose_name='은행로고')
-
-    def __str__(self):
-        return self.bank_name
-
-    class Meta:
-        db_table = 'Bank_Info'
-        verbose_name = '은행 정보'
-        verbose_name_plural = '은행 정보'
-
-
-class CountryInfo(models.Model):
-    country_name = models.CharField(
-        max_length=10, verbose_name='나라이름(영어)', primary_key=True)
-    country_flag = models.CharField(
-        max_length=10, null=True, verbose_name='국기')
-    name_kor = models.CharField(
-        max_length=10, null=True, verbose_name='나라이름(한국어)')
-
-    def __str__(self):
-        return self.country_name
-
-    class Meta:
-        db_table = 'Country_Info'
-        verbose_name = '나라 정보'
-        verbose_name_plural = '나라 정보'
 
 
 class RealTimeInfo(models.Model):

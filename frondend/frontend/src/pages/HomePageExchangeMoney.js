@@ -1,13 +1,21 @@
 import * as React from "react";
-
 import { Grid, Card, Form, Button, } from 'tabler-react';
 
-function RealtimeBank() {
+import API from '../Api'
+
+function HomePageExchangeMoney() {
 
     const [account, setAccount] = React.useState(0);
     const [state, setState] = React.useState(false);
-    const [toCountry, setToCountry] = React.useState('USD');
+    const [toCountry, setToCountry] = React.useState('AED');
     const [result, setResult] = React.useState();
+    const [bankname, setBankname] = React.useState();
+
+    const [countryGroup, setCountryGroup] = React.useState([]);
+    const [mostCheap, setMostCheap] = React.useState({
+        bank_name_nm: '',
+        buy: '',
+    })
 
     const [selected, setSelected] = React.useState({
         To: '',
@@ -21,18 +29,51 @@ function RealtimeBank() {
             To: toCountry,
             Acc: account,
           });
-          setResult((account / 1077.88).toFixed(6)); //여기에 돈 계산식 넣으면 됨 1077.88자리에 각 환율
+          setResult((account / mostCheap.buy).toFixed(6));
+          setBankname(mostCheap.bank_name_nm)
         } else {
           alert('Account 값은 1 이상이여야 합니다');
         }
       };
     
-      const selectTo = (e) => {
+    const selectTo = (e) => {
         setToCountry(e.target.value);
-      };
-      const inputAccount = (e) => {
+    };
+    const inputAccount = (e) => {
         setAccount(e.target.value);
-      };
+    };
+
+    React.useEffect(()=> {
+        API.get("countryinfo/")
+        .then(response=>{
+          const {data} = response
+          setCountryGroup(data)
+        })
+        .catch(error=>{
+            console.error(error)
+        })
+    },[])
+
+    React.useEffect(()=> {
+        API.get("mostcheapbuy/"+toCountry)
+        .then(response=>{
+          const {data} = response
+          for(var i=0; i<data.length; i++){
+            if(data[i].buy != null){
+                setMostCheap({
+                    bank_name_nm: data[i].bank_name_nm,
+                    buy: data[i].buy,
+                })
+                break;
+            }
+          }
+        })
+        .catch(error=>{
+            console.error(error)
+        })
+    },[toCountry])
+
+
     return (
         <Grid.Row>
             <Grid.Col>
@@ -63,9 +104,9 @@ function RealtimeBank() {
                     {/* 여기가 나라명 출력할 곳 */}
                     <Form.Group label="To">
                         <Form.Select onChange={selectTo}>
-                        <option>USD</option>
-                        <option>JPY</option>
-                        <option>CNY</option>
+                            {countryGroup.map((v) =>
+                            <option value={v.country_name}>{v.name_kor}({v.country_name})</option>
+                            )}
                         </Form.Select>
                     </Form.Group>
                     </Grid.Col>
@@ -80,6 +121,7 @@ function RealtimeBank() {
                         <Grid.Row>
                         <Grid.Col> </Grid.Col>
                         <Grid.Col>
+                            <p>{bankname} 기준</p>
                             <h1>
                                 {selected.Acc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',', )}{' '} KRW = {result} {selected.To}
                             </h1>
@@ -95,4 +137,4 @@ function RealtimeBank() {
     );
 }
 
-export default RealtimeBank;
+export default HomePageExchangeMoney;

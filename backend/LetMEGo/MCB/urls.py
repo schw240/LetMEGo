@@ -14,10 +14,7 @@ router.register('realtimeinfo', views.ListRealTimeInfo)
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('', views.ListBank.as_view()),
-    # path('<int:pk>/', views.DetailBank.as_view()),
-    # path('', views.ListBankInfo.as_view()),
-    # path('<int:pk>/', views.DetailBankInfo.as_view()),
-    # path('', views.ListForeignBank.as_view()),
-    # path('<int:pk>/', views.DetailForeignBank.as_view()),
+
+    # 메인페이지 환율 계산 가장 싼 값(buy)
+    path('mostcheapbuy/<country_name>', views.MostCheapBuy),
 ]

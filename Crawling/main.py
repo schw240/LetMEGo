@@ -47,7 +47,7 @@ def one_hour():
     eu_craw(conn)  # 유럽연합
     hongkong_craw(conn)  # 홍콩
     mxp_craw(conn)  # 멕시코
-    nzd_craw(conn)  # 뉴질랜드
+    # nzd_craw(conn)  # 뉴질랜드 (뉴질랜드 은행 사이트 오류로 크롤링 중단)
     php_crawling(conn)  # 필리핀
     singapore_craw(conn)  # 싱가포르
     taiwan_craw(conn)  # 대만

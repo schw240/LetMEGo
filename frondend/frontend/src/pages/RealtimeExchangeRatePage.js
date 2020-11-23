@@ -1,20 +1,20 @@
-// @flow
-
 import * as React from 'react';
-
-import { Page, Grid, Card, Form, } from 'tabler-react';
+import { Page, Grid, Card, Form, Table, Button, Icon, Text, } from 'tabler-react';
 
 import SiteWrapper from '../SiteWrapper';
-import RealtimeCountry from './RealtimeCountry';
-import RealtimeBank from './RealtimeBank';
+import API from '../Api'
 
 function PricingCardsPage() {
-  const [selectCountry, setSelectCountry] = React.useState('us')
-  const [selectBank, setSelectBank] = React.useState('')
+  const [selectCountry, setSelectCountry] = React.useState('USD')
+  const [selectBank, setSelectBank] = React.useState('003')
   const [radioGroup, setRadioGroup] = React.useState({
     Country: true,
     Bank: false,
   })
+  const [bankGroup, setBankGroup] = React.useState([])
+  const [countryGroup, setCountryGroup] = React.useState([])
+  const [bankList, setBankList] = React.useState([])
+  const [countryList, setCountryList] = React.useState([])
 
   const radioSelect = (e) => {
     if(e.target.value === 'Country'){
@@ -31,15 +31,56 @@ function PricingCardsPage() {
   }
 
   const selectOption = (e) => {
-    console.dir(e.target)
     if(radioGroup.Country){
-      console.dir(e.target.value)
       setSelectCountry(e.target.value)
     }else if(radioGroup.Bank){
-      console.dir(e.target.value)
       setSelectBank(e.target.value)
     }
   }
+
+  React.useEffect(()=> {
+      API.get("bankinfo/")
+      .then(response=>{
+        const {data} = response
+        setBankGroup(data)
+      })
+      .catch(error=>{
+          console.error(error)
+      })
+  },[])
+  React.useEffect(()=> {
+      API.get("countryinfo/")
+      .then(response=>{
+        const {data} = response
+        setCountryGroup(data)
+      })
+      .catch(error=>{
+          console.error(error)
+      })
+  },[])
+
+  React.useEffect(()=> {
+    API.get("banklist/?bank_name="+selectBank)
+    .then(response=>{
+      const {data} = response
+      setCountryList(data)
+    })
+    .catch(error=>{
+        console.error(error)
+    })
+  },[selectBank])
+
+  React.useEffect(()=> {
+    API.get("banklist/?country_name="+selectCountry)
+    .then(response=>{
+      const {data} = response
+      setBankList(data)
+    })
+    .catch(error=>{
+        console.error(error)
+    })
+  },[selectCountry])
+
 
   return (
     <SiteWrapper>
@@ -70,24 +111,15 @@ function PricingCardsPage() {
                 //함수
                 if(radioGroup.Country)
                   return <>
-                  <option value="us">
-                    미국
-                  </option>
-                  <option value="jp">
-                    일본
-                  </option>
+                    {countryGroup.map((v) =>
+                          <option value={v.country_name}>{v.name_kor}</option>
+                    )}
                   </>
                 else if(radioGroup.Bank)
                   return <>
-                    <option value="kookmin">
-                      국민은행
-                    </option>
-                    <option value="woori">
-                      우리은행
-                    </option>
-                    <option value="standard">
-                      스탠다드차타드은행
-                    </option>
+                    {bankGroup.map((v) =>
+                        <option value={v.bank_code}>{v.bank_name}</option>
+                    )}
                   </>
               })()
             }
@@ -101,9 +133,98 @@ function PricingCardsPage() {
                 (() => {
                   //함수
                   if(radioGroup.Country)
-                    return <RealtimeCountry />
+                    return <Table
+                              responsive
+                              highlightRowOnHover
+                              hasOutline
+                              verticalAlign="center"
+                              cards
+                              className="text-nowrap"
+                            > 
+                              <Table.Header>
+                              <Table.Row>
+                                  <Table.ColHeader alignContent="center"></Table.ColHeader>
+                                  <Table.ColHeader alignContent="center">은행</Table.ColHeader>
+                                  <Table.ColHeader alignContent="center">현찰 살 때</Table.ColHeader>
+                                  <Table.ColHeader alignContent="center"> 수수료 </Table.ColHeader>
+                                  <Table.ColHeader alignContent="center">현찰 팔 때</Table.ColHeader>
+                                  <Table.ColHeader alignContent="center"> 수수료 </Table.ColHeader>
+                                  <Table.ColHeader alignContent="center"> 매매 기준율 </Table.ColHeader>
+                                  <Table.ColHeader alignContent="center"> 우대사항 </Table.ColHeader>
+                              </Table.Row>
+                              </Table.Header>
+                              
+                              {/* 여기서 map 함수 */}
+                              <Table.Body>
+                                {bankList.map((v) =>
+                                  <Table.Row>
+                                      <Table.Col alignContent="center">
+                                      <img src={"./demo/bank_logo/"+v.bank_logo+".png"} alt={"bank_"+v.bank_logo}/>
+                                      </Table.Col>
+                                      <Table.Col alignContent="center">{v.bank_name_nm}</Table.Col>
+                                      <Table.Col alignContent="center"> {v.buy} </Table.Col>
+                                      <Table.Col alignContent="center"> {v.buyfeerate}% </Table.Col>
+                                      <Table.Col alignContent="center"> {v.sell} </Table.Col>
+                                      <Table.Col alignContent="center"> {v.sellfeerate}% </Table.Col>
+                                      <Table.Col alignContent="center"> {v.tradingrate} </Table.Col>
+                                      <Table.Col alignContent="center">
+                                      <Button id="showmodal">
+                                          <Icon prefix="fe" name="plus-circle" />
+                                      </Button>
+                                      </Table.Col>
+                                  </Table.Row>
+                                )}
+                              </Table.Body>
+                              
+                          </Table>
                   else if(radioGroup.Bank)
-                  return <RealtimeBank />
+                    return <Table
+                            responsive
+                            highlightRowOnHover
+                            hasOutline
+                            verticalAlign="center"
+                            cards
+                            className="text-nowrap"
+                            >
+                          <Table.Header>
+                              <Table.Row>
+                              <Table.ColHeader alignContent="center" className="w-1"> <i className="country-flag" /> </Table.ColHeader>
+                              <Table.ColHeader alignContent="center">외화</Table.ColHeader>
+                              <Table.ColHeader alignContent="center">현찰 살 때</Table.ColHeader>
+                              <Table.ColHeader alignContent="center"> 수수료 </Table.ColHeader>
+                              <Table.ColHeader alignContent="center">현찰 팔 때</Table.ColHeader>
+                              <Table.ColHeader alignContent="center"> 수수료 </Table.ColHeader>
+                              <Table.ColHeader alignContent="center"> 매매 기준율 </Table.ColHeader>
+                              <Table.ColHeader alignContent="center"> 우대사항 </Table.ColHeader>
+                              </Table.Row>
+                          </Table.Header>
+                          
+                          {/* 여기서 map 함수 */}
+                          <Table.Body>
+                            {countryList.map((v) =>
+                              <Table.Row>
+                                <Table.Col alignContent="center"> <Icon prefix="flag" name={v.country_flag} /> </Table.Col>
+                                <Table.Col alignContent="center">
+                                    <div>{v.name_kor}</div>
+                                    <Text size="sm" muted>
+                                    ({v.country_name})
+                                    </Text>
+                                </Table.Col>
+                                <Table.Col alignContent="center"> {v.buy} </Table.Col>
+                                <Table.Col alignContent="center"> {v.buyfeerate}% </Table.Col>
+                                <Table.Col alignContent="center"> {v.sell} </Table.Col>
+                                <Table.Col alignContent="center"> {v.sellfeerate}% </Table.Col>
+                                <Table.Col alignContent="center"> {v.tradingrate} </Table.Col>
+                                <Table.Col alignContent="center">
+                                    <Button id="showmodal">
+                                    <Icon prefix="fe" name="plus-circle" />
+                                    </Button>
+                                </Table.Col>
+                              </Table.Row>
+                            )}
+                          </Table.Body>
+                            
+                      </Table>
                 })()
               }
             </Card>
