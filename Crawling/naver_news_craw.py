@@ -95,7 +95,7 @@ def pageCrawl(conn):
                         for word, tag in sentence:
                             if tag in ["Noun"] and ("것" not in word) and ("내" not in word) and ("나" not in word) and ("수" not in word) and ("게" not in word) and ("말" not in word):
                                 noun_adj_adv_list.append(word)
-                        words = str(noun_adj_adv_list)
+                        words = ",".join(noun_adj_adv_list)
                         
                         cnt += 1
 
