@@ -10,6 +10,24 @@ import Api from './Api';
 import RealtimeGraph from './pages/RealtimeGraph';
 import api from './Api';
 import SizeContext from 'antd/lib/config-provider/SizeContext';
+import ReactWordcloud from 'react-wordcloud';
+
+
+function TestRcloud() {
+
+  const [words, setWords] = React.useState([]);
+
+  useEffect(() => {
+    Api.get("wordcloud").then((res) => {
+      setWords(JSON.parse(res.data));
+     })
+  },[]);
+
+  return <ReactWordcloud words={words} />
+
+}
+
+ 
 
 function Upload_news() {
 
@@ -22,11 +40,8 @@ function Upload_news() {
 
   }
 
-  
-
-
-  useEffect(()=>{
-    Api.get("navernews/").then((res)=>{
+  useEffect(() => {
+    Api.get("navernews/").then((res) => {
 
       const data = []
     
@@ -42,7 +57,7 @@ function Upload_news() {
 
   return <>
     {
-      news.map((value)=> {
+      news.map((value) => {
         return <div style={style}><a target = "_blank" href = {value.link}> [{value.company}] {value.title} </a></div>;
         
         
@@ -130,8 +145,8 @@ function Home() {
               statusSide
             >
               <Card.Body>
-                <br />
-                워드크라우드
+                <br />                
+                <TestRcloud />
               </Card.Body>
             </Card>
           </Grid.Col>
