@@ -37,6 +37,15 @@ class ListBankGroupInfo(ModelViewSet):
     queryset = BankgroupInfo.objects.all()
     serializer_class = BankgroupInfoSerializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        bank_name = self.request.query_params.get('bank_name')
+        country_name = self.request.query_params.get('country_name')
+        if bank_name and country_name:
+            qs = qs.filter(bank_name=bank_name, country_name=country_name)
+        return qs
+
+
 class ListForeignBank(ModelViewSet):
     queryset = ForeignBank.objects.all()
     serializer_class = ForeignBankSerializer
