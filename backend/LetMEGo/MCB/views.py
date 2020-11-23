@@ -3,12 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics, viewsets
+from rest_framework import permissions
 # Create your views here.
 
 from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo
 from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer, RealTimeInfoSerializer
-# generics.ListCreateAPIView
 
 
 class ListBank(ModelViewSet):
@@ -26,6 +25,12 @@ class ListBank(ModelViewSet):
             qs = qs.filter(country_name=country_name)
         return qs
 
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def MostCheapBuy(request, country_name):
+    mostcheap = MostCheapBank.objects.filter(country_name=country_name).order_by('buy')
+    serializer = MostCheapBankSerializer(mostcheap, many=True)
+    return Response(serializer.data)
 
 
 class ListBankGroupInfo(ModelViewSet):

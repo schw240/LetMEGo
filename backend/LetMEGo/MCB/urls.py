@@ -14,4 +14,7 @@ router.register('realtimeinfo', views.ListRealTimeInfo)
 
 urlpatterns = [
     path('', include(router.urls)),
+
+    # 메인페이지 환율 계산 가장 싼 값(buy)
+    path('mostcheapbuy/<country_name>', views.MostCheapBuy),
 ]
