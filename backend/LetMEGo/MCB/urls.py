@@ -14,10 +14,4 @@ router.register('realtimeinfo', views.ListRealTimeInfo)
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('', views.ListBank.as_view()),
-    # path('<int:pk>/', views.DetailBank.as_view()),
-    # path('', views.ListBankInfo.as_view()),
-    # path('<int:pk>/', views.DetailBankInfo.as_view()),
-    # path('', views.ListForeignBank.as_view()),
-    # path('<int:pk>/', views.DetailForeignBank.as_view()),
 ]

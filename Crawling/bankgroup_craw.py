@@ -2,11 +2,14 @@ import requests
 import datetime
 from bs4 import BeautifulSoup
 from db_connect import bankgroup_info
+from helper_connect import DBConnect  # 디비 연결
+
 
 def bankgroup_crawling(conn):
 
     now = datetime.datetime.now()
-    usd_data = ['USD','JPY','EUR','GBP','CAD','HKD','AUD','CNY','SGD','NZD','THB','VND','TWD','PHP']
+    usd_data = ['USD', 'JPY', 'EUR', 'GBP', 'CAD', 'HKD',
+                'AUD', 'CNY', 'SGD', 'NZD', 'THB', 'VND', 'TWD', 'PHP']
     headers = {
         "Accept": """text/html, */*; q=0.01""",
         "Accept-Encoding": "gzip, deflate",
@@ -22,21 +25,28 @@ def bankgroup_crawling(conn):
         "X-Requested-With": "XMLHttpRequest"
     }
     for data in usd_data:
-        bank_gourp = requests.post("http://exchange.kfb.or.kr/page/on_commission_list.php", headers=headers, data={'cur':data})
+        bank_gourp = requests.post(
+            "http://exchange.kfb.or.kr/page/on_commission_list.php", headers=headers, data={'cur': data})
         html = bank_gourp.text
         soup = BeautifulSoup(html, 'html.parser')
 
         trs = soup.find_all('tr')
-        for i in range(1,len(trs)):
+        for i in range(1, len(trs)):
             strong = (trs[i].find('strong'))
             bank_name = strong.text
-        
+
             tds = trs[i].find_all('td')
             buy_fee_rate = tds[0].text
             std_pref_rate = tds[1].text
             max_pref_rate = tds[2].text
             treat_and_event = tds[3].text
             base_date = tds[4].text
+            base_date = base_date.replace('.', '-')
 
-            bankgroup_info(conn, bank_name, data, buy_fee_rate, std_pref_rate, max_pref_rate, treat_and_event, base_date, now)
-            
+            bankgroup_info(conn, bank_name, data, buy_fee_rate, std_pref_rate,
+                           max_pref_rate, treat_and_event, base_date, now)
+
+
+if __name__ == "__main__":
+    conn = DBConnect()
+    bankgroup_crawling(conn)
