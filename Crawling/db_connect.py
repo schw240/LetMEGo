@@ -72,7 +72,6 @@ def foreignbank_info(conn, Country_name, USD, JPY, now):
 
     
     if USD != 0 and JPY != 0:
-        print(USD, JPY)
         if results:
             sql = f"""
                     UPDATE foreign_bank

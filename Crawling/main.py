@@ -5,18 +5,25 @@ from bankgroup_craw import bankgroup_crawling
 from mybank_craw import mybank_craw
 
 from austrailia_craw import aus_crawling
+from bangladesh_craw import bangladesh_craw
 from brazil_craw import brazil_craw
 from canada_craw import cad_crawling
 from chile_craw import chile_craw
 from england_craw import eng_crawling
 from eu_craw import eu_craw
 from hongkong_craw import hongkong_craw
+from indonesia_craw import indonesia_craw
+from malaysia_craw import malaysia_craw
 from mexico_craw import mxp_craw
 from newzealand_craw import nzd_craw
 from philipine_craw import php_crawling
+from russia_craw import russia_craw
 from singapore_craw import singapore_craw
+from sweden_craw import sweden_craw
+from swiss_craw import swiss_craw
 from taiwan_craw import taiwan_craw
 from thailand_craw import thailand_craw
+from turkey_craw import turkey_craw
 from vietnam_craw import viet_crawling
 from naver_news_craw import pageCrawl
 from realtime_info import realtime_info_craw
@@ -40,18 +47,25 @@ def one_hour():
 
     # 해외은행 크롤링 (1시간에 한 번)
     aus_crawling(conn)  # 호주
+    bangladesh_craw(conn) # 방글라데시
     brazil_craw(conn)  # 브라질
     cad_crawling(conn)  # 캐나다
     chile_craw(conn)  # 칠레
     eng_crawling(conn)  # 영국
     eu_craw(conn)  # 유럽연합
     hongkong_craw(conn)  # 홍콩
+    indonesia_craw(conn) # 인도네시아
+    malaysia_craw(conn) # 말레이시아
     mxp_craw(conn)  # 멕시코
     # nzd_craw(conn)  # 뉴질랜드 (뉴질랜드 은행 사이트 오류로 크롤링 중단)
     php_crawling(conn)  # 필리핀
+    russia_craw(conn) # 러시아
     singapore_craw(conn)  # 싱가포르
+    sweden_craw(conn) # 스웨덴
+    swiss_craw(conn) # 스위스
     taiwan_craw(conn)  # 대만
     thailand_craw(conn)  # 태국
+    turkey_craw(conn) # 터키
     viet_crawling(conn)  # 베트남
 
     conn.close()
