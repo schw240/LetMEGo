@@ -26,6 +26,7 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn import feature_extraction, linear_model, model_selection, preprocessing
 from yahoo_api import currency_craw
 from db_connect import xgboost_res, xgboost_res_remove
+from helper_connect import DBConnect  # 디비 연결
 
 # VIZ AND DATA MANIPULATION LIBRARY
 import pandas as pd
@@ -118,19 +119,25 @@ def xgboost_forecast(conn, num, df):
         else:
             df = df.append({"Date": pd.Timestamp(today),
                             "dollar_close": predictions[0]}, ignore_index=True)
-        dollar_close = predictions[0]
-        basedate = today
+        dollar_close = float(predictions[0])
+        print(today)
+        print(type(today))
+        print(dollar_close)
+        print(type(dollar_close))
+        xgboost_res(conn, today, dollar_close)
+        print("저장돼?")
         xgboost_res_remove(conn)
-        xgboost_res(conn, basedate, dollar_close)
     return df
 
 
-# df_xg = pd.DataFrame()
-# df_xg, df_notuse = currency_craw()
-# df_xg = df_xg.reset_index()
-
-# # 일주일
-# df_new = xgboost_forecast(30, df_xg)
+if __name__ == "__main__":
+    df_xg = pd.DataFrame()
+    df_xg, df_notuse = currency_craw()
+    df_xg = df_xg.reset_index()
+    conn = DBConnect()
+    
+    df_new = xgboost_forecast(conn, 30, df_xg)
+    print(df_new)
 
 # print("======================최종 결과========================")
 # print(df_new)

@@ -153,18 +153,18 @@ def realtime_remove(conn):
     cursor.execute(sql)
     conn.commit()
 
-def xgboost_res(conn, basedate, dollar_close):
+def xgboost_res(conn, date, dollar_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO XGBoost_Info(basedate, dollar_close) values(%s,%s,%s);"
-    cursor.execute(sql, (basedate, dollar_close))
+    sql = "INSERT INTO XGBoost_Info(date, dollar_close) values(%s,%s);"
+    cursor.execute(sql, (date, dollar_close))
     conn.commit()
-
+    
 
 def xgboost_res_remove(conn):
     cursor = conn.cursor()
 
-    sql = """SELECT basedate
+    sql = """SELECT seq
              FROM XGBoost_Info  
          ORDER BY seq DESC 
             limit 31"""

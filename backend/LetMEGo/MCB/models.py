@@ -139,7 +139,7 @@ class RealTimeInfo(models.Model):
 
 class XGBoostInfo(models.Model):
     seq = models.AutoField(primary_key=True)
-    date = models.CharField(max_length=30, verbose_name='날짜')
+    date = models.DateField(max_length=30, verbose_name='날짜')
     dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
 
     
