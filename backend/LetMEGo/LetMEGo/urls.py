@@ -21,7 +21,6 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('MCB.urls')),
-    path('api/account/', include("account.urls")),
-    path('api-auth/', include("rest_framework.urls")),
-    path('api/rest-auth/', include("rest_auth.urls")),
+    path('account/', include("account.urls")),
+    # path("api/auth", include("knox.urls")),
 ]

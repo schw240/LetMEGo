@@ -25,6 +25,7 @@ from scipy.stats import uniform
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn import feature_extraction, linear_model, model_selection, preprocessing
 from yahoo_api import currency_craw
+from db_connect import xgboost_res, xgboost_res_remove
 
 # VIZ AND DATA MANIPULATION LIBRARY
 import pandas as pd
@@ -39,7 +40,7 @@ def getDay(year, month, date_v):
     return day[bday]
 
 
-def xgboost_forecast(num, df):
+def xgboost_forecast(conn, num, df):
     # 이거를 num만큼 반복
     for j in range(1, num+1):
         print("{}번째".format(j))
@@ -117,31 +118,31 @@ def xgboost_forecast(num, df):
         else:
             df = df.append({"Date": pd.Timestamp(today),
                             "dollar_close": predictions[0]}, ignore_index=True)
-
-    # # 평가
-    # y_val = df_xg.dollar_close[-5:]
-    # xgb_mae = mean_absolute_error(y_val, predictions)
-    # xgb_mse = mean_squared_error(y_val, predictions)
-    # xgb_rmse = np.sqrt(mean_squared_error(y_val, predictions))
-
-    # print('Mean Absolute Error:   ', xgb_mae)
-    # print('Mean Squared Error:   ', xgb_mse)
-    # print('Root Mean Squared Error:   ', xgb_rmse)
-    # xgb_error_rate = abs(((y_val - predictions) / y_val).mean()) * 100
-    # print('MAPE:', round(xgb_error_rate, 2), '%')
-    # print('R2-SCORE: ', r2_score(y_val, predictions))
-
+        dollar_close = predictions[0]
+        basedate = today
+        xgboost_res_remove(conn)
+        xgboost_res(conn, basedate, dollar_close)
     return df
 
 
-df_xg = pd.DataFrame()
-df_xg, df_notuse = currency_craw()
-df_xg = df_xg.reset_index()
+# df_xg = pd.DataFrame()
+# df_xg, df_notuse = currency_craw()
+# df_xg = df_xg.reset_index()
 
-# 일주일
-df_new = xgboost_forecast(7, df_xg)
+# # 일주일
+# df_new = xgboost_forecast(30, df_xg)
 
-print("======================최종 결과========================")
-print(df_new)
-# 2주일
-# 한달
+# print("======================최종 결과========================")
+# print(df_new)
+# # 평가
+# y_val = df_xg.dollar_close[-5:-1]
+# xgb_mae = mean_absolute_error(y_val, predictions)
+# xgb_mse = mean_squared_error(y_val, predictions)
+# xgb_rmse = np.sqrt(mean_squared_error(y_val, predictions))
+
+# print('Mean Absolute Error:   ', xgb_mae)
+# print('Mean Squared Error:   ', xgb_mse)
+# print('Root Mean Squared Error:   ', xgb_rmse)
+# xgb_error_rate = abs(((y_val - predictions) / y_val).mean()) * 100
+# print('MAPE:', round(xgb_error_rate, 2), '%')
+# print('R2-SCORE: ', r2_score(y_val, predictions))

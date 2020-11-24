@@ -3,14 +3,23 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import permissions
+from rest_framework import permissions, viewsets, generics
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 from collections import Counter
 import json
 
 from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo
-from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer, RealTimeInfoSerializer, XGBoostInfoSerializer
-
+from .serializers import (
+    MostCheapBankSerializer, 
+    BankgroupInfoSerializer, 
+    ForeignBankSerializer, 
+    NaverNewsSerializer, 
+    BankInfoSerializer, 
+    CountryInfoSerializer, 
+    RealTimeInfoSerializer, 
+    XGBoostInfoSerializer, 
+)
 
 class ListBank(ModelViewSet):
     queryset = MostCheapBank.objects.all()

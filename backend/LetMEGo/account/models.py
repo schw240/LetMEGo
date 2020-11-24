@@ -1,23 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib import auth
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
-class LMGUser(models.Model):
-    user_id = models.CharField(max_length=30, verbose_name='아이디', primary_key=True)
-    user_pw = models.CharField(max_length=30, verbose_name='비밀번호', null=False)
-    user_pwconfirm = models.CharField(max_length=30, verbose_name='비밀번호 확인', null=False)
-    user_email = models.CharField(max_length=30, verbose_name='이메일')
+
+# User = get_user_model()
+class User(AbstractUser):
+    user_pwcheck = models.CharField(max_length=30, verbose_name='패스워드 체크')
+    user_email = models.EmailField(verbose_name='이메일', max_length=254)
     user_emailcheck = models.BooleanField(verbose_name='이메일 체크', default=False)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    #objects = UserManager()
+
+    #USERNAME_FIELD = 'user_name'
 
     def __str__(self):
-        return self.user_id
+        return self.user_name
 
     class Meta:
-        db_table = 'LMG_User'
+        #db_table = 'LMGUser'
         verbose_name = 'LMG 유저'
         verbose_name_plural = 'LMG 유저'
 
+
 class User_bank(models.Model):
-    user_id = models.ForeignKey(LMGUser, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     gieob = models.BooleanField(default=False)
     kookmin = models.BooleanField(default=False)
     hana = models.BooleanField(default=False)

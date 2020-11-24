@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import MostCheapBank, BankgroupInfo, ForeignBank, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo
 
-
 class MostCheapBankSerializer(serializers.ModelSerializer):
     country_flag = serializers.ReadOnlyField(source='country_name.country_flag')
     name_kor = serializers.ReadOnlyField(source='country_name.name_kor')

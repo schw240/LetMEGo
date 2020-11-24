@@ -11,3 +11,4 @@ admin.site.register(BankInfo)
 admin.site.register(CountryInfo)
 admin.site.register(RealTimeInfo)
 admin.site.register(XGBoostInfo)
+

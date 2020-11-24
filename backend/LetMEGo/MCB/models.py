@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 
@@ -148,4 +150,3 @@ class XGBoostInfo(models.Model):
         db_table = 'XGBoost_Info'
         verbose_name = 'XGboost예측테이블'
         verbose_name_plural = 'XGboost예측테이블'
-
