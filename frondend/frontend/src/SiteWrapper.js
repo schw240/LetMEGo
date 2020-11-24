@@ -42,7 +42,7 @@ const navBarItems: Array<navItem> = [
   },
   {
     value: '알리미',
-    to: '/',
+    to: '/alarmie',
     icon: 'check-square',
     LinkComponent: withRouter(NavLink),
   },
