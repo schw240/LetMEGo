@@ -72,7 +72,6 @@ def foreignbank_info(conn, Country_name, USD, JPY, now):
 
     
     if USD != 0 and JPY != 0:
-        print(USD, JPY)
         if results:
             sql = f"""
                     UPDATE foreign_bank
@@ -153,3 +152,34 @@ def realtime_remove(conn):
 
     cursor.execute(sql)
     conn.commit()
+
+def xgboost_res(conn, basedate, dollar_close):
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO XGBoost_Info(basedate, dollar_close) values(%s,%s,%s);"
+    cursor.execute(sql, (basedate, dollar_close))
+    conn.commit()
+
+
+def xgboost_res_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT basedate
+             FROM XGBoost_Info  
+         ORDER BY seq DESC 
+            limit 31"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM XGBoost_Info
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()
+
+
+
+

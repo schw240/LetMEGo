@@ -98,6 +98,7 @@ function HomePageExchangeMoney() {
                         id="exchange"
                         onClick={showResult}
                         icon="arrow-right"
+                        color="primary"
                     />
                     </Grid.Col>
                     <Grid.Col lg={4}>

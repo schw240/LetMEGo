@@ -3,14 +3,23 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import permissions
+from rest_framework import permissions, viewsets, generics
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 from collections import Counter
 import json
 
-from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo
-from .serializers import MostCheapBankSerializer, BankgroupInfoSerializer, ForeignBankSerializer, NaverNewsSerializer, BankInfoSerializer, CountryInfoSerializer, RealTimeInfoSerializer
-
+from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo
+from .serializers import (
+    MostCheapBankSerializer, 
+    BankgroupInfoSerializer, 
+    ForeignBankSerializer, 
+    NaverNewsSerializer, 
+    BankInfoSerializer, 
+    CountryInfoSerializer, 
+    RealTimeInfoSerializer, 
+    XGBoostInfoSerializer, 
+)
 
 class ListBank(ModelViewSet):
     queryset = MostCheapBank.objects.all()
@@ -52,6 +61,15 @@ class ListBankGroupInfo(ModelViewSet):
     queryset = BankgroupInfo.objects.all()
     serializer_class = BankgroupInfoSerializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        bank_name = self.request.query_params.get('bank_name')
+        country_name = self.request.query_params.get('country_name')
+        if bank_name and country_name:
+            qs = qs.filter(bank_name=bank_name, country_name=country_name)
+        return qs
+
+
 class ListForeignBank(ModelViewSet):
     queryset = ForeignBank.objects.all()
     serializer_class = ForeignBankSerializer
@@ -73,3 +91,7 @@ class ListCountryInfo(ModelViewSet):
 class ListRealTimeInfo(ModelViewSet):
     queryset = RealTimeInfo.objects.all()
     serializer_class = RealTimeInfoSerializer
+
+class ListXGBoostInfo(ModelViewSet):
+    queryset = XGBoostInfo.objects.all()
+    serializer_class = XGBoostInfoSerializer
