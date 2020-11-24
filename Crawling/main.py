@@ -27,6 +27,8 @@ from turkey_craw import turkey_craw
 from vietnam_craw import viet_crawling
 from naver_news_craw import pageCrawl
 from realtime_info import realtime_info_craw
+from xgboost_t import xgboost_forecast
+from yahoo_api import currency_craw
 
 
 # Schedulering
@@ -79,6 +81,12 @@ def one_day():
 
     # 네이버 뉴스 크롤링 (하루에 한 번)
     pageCrawl(conn)
+
+    #xgboost로 예측한 데이터 하루 한번 업데이트
+    df_xg = pd.DataFrame()
+    df_xg, df_notuse = currency_craw()
+    df_xg = df_xg.reset_index()
+    xgboost_forecast(conn, 30, df)
 
     conn.close()
 
