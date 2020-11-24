@@ -11,6 +11,8 @@ import RealtimeGraph from './pages/RealtimeGraph';
 import api from './Api';
 import SizeContext from 'antd/lib/config-provider/SizeContext';
 import ReactWordcloud from 'react-wordcloud';
+import './HomePage.css'
+
 
 
 function TestRcloud() {
@@ -23,13 +25,15 @@ function TestRcloud() {
      })
   },[]);
 
-  return <ReactWordcloud words={words} />
+  return <ReactWordcloud words={words} /> 
 
 }
 
  
 
 function Upload_news() {
+
+
 
   const [news, setNews] = React.useState([]);
 
@@ -45,7 +49,7 @@ function Upload_news() {
 
       const data = []
     
-      for(let i = 0; i < 20; i++) {
+      for(let i = 0; i < 14; i++) {
         data.push((res.data[i]))
       }
 
@@ -53,7 +57,7 @@ function Upload_news() {
       console.log(data)
 
      })
-  },[]);
+  },[])
 
   return <>
     {
@@ -131,8 +135,8 @@ function Home() {
         {/* 환율 기사, 워드크라우드 넣는 곳 */}
         <Grid.Row>
           <Grid.Col lg={5}>
-            <Card title="exchange rate news" statusColor="blue" statusSide>
-              <Card.Body>
+            <Card title="Let ME - Latest News" statusColor="blue" statusSide>
+              <Card.Body className="scroll">
                 <br /> 
                 <Upload_news />
               </Card.Body>
@@ -140,7 +144,7 @@ function Home() {
           </Grid.Col>
           <Grid.Col lg={7}>
             <Card
-              title="exchange rate word cloud"
+              title="Let ME - Wordcloud"
               statusColor="blue"
               statusSide
             >
