@@ -12,15 +12,18 @@ User = get_user_model()
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "password")
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ["id", "username", "password", "email", "user_pwcheck", "user_emailcheck"]
+        extra_kwargs = {"password": {"write_only": True}, "user_pwcheck": {"write_only": True}, "user_emailcheck": {"write_only": True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            validated_data["username"], None, validated_data["password"]
+            username = validated_data["username"], 
+            password = validated_data["password"], 
+            email = validated_data["email"],
+            user_pwcheck = validated_data["user_pwcheck"],
+            user_emailcheck = validated_data["user_emailcheck"]
         )
         return user
-
 
 # 접속 유지중인지 확인할 시리얼라이저
 

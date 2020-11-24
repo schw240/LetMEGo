@@ -11,15 +11,8 @@ from django.contrib.auth import get_user_model
 # User = get_user_model()
 class User(AbstractUser):
     user_pwcheck = models.CharField(max_length=30, verbose_name='패스워드 체크')
-    user_email = models.EmailField(verbose_name='이메일', max_length=254)
     user_emailcheck = models.BooleanField(verbose_name='이메일 체크', default=False)
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
-    #objects = UserManager()
 
-    #USERNAME_FIELD = 'user_name'
-
-    def __str__(self):
-        return self.user_name
 
     class Meta:
         #db_table = 'LMGUser'

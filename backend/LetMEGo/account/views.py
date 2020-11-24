@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import permissions, viewsets, generics
+from rest_framework import permissions, viewsets, generics, status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
@@ -26,6 +26,12 @@ class RegistrationAPI(generics.GenericAPIView):
         if len(request.data["username"]) < 6 or len(request.data["password"]) < 4:
             body = {"message": "short field"}
             return Response(body, status=status.HTTP_400_BAD_REQUEST)
+        if request.data["password"] != request.data["user_pwcheck"]:
+            body = {"message": "Password is not same"}
+            return Response(body, status=status.HTTP_400_BAD_REQUEST)
+        if User.objects.filter(email=request.data["email"]).exists():
+            body = {"message": "Email is already exist"}
+            return Response(body, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -34,7 +40,7 @@ class RegistrationAPI(generics.GenericAPIView):
                 "user": UserSerializer(
                     user, context=self.get_serializer_context()
                 ).data,
-                "token": AuthToken.objects.create(user),
+                "token": AuthToken.objects.create(user)[1],
             }
         )
 
