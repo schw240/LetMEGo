@@ -34,6 +34,7 @@ from naver_news_craw import pageCrawl
 from realtime_info import realtime_info_craw
 from xgboost_t import xgboost_forecast
 from yahoo_api import currency_craw
+import pandas as pd
 
 
 # Schedulering
