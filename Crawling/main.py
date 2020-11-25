@@ -9,12 +9,16 @@ from bangladesh_craw import bangladesh_craw
 from brazil_craw import brazil_craw
 from canada_craw import cad_crawling
 from chile_craw import chile_craw
+from czech_craw import czech_craw
+from denmark_craw import denmark_craw
 from england_craw import eng_crawling
 from eu_craw import eu_craw
 from hongkong_craw import hongkong_craw
+from hungary_craw import hungary_craw
 from indonesia_craw import indonesia_craw
 from malaysia_craw import malaysia_craw
 from mexico_craw import mxp_craw
+from norway_craw import norway_craw
 from newzealand_craw import nzd_craw
 from philipine_craw import php_crawling
 from russia_craw import russia_craw
@@ -25,6 +29,7 @@ from taiwan_craw import taiwan_craw
 from thailand_craw import thailand_craw
 from turkey_craw import turkey_craw
 from vietnam_craw import viet_crawling
+
 from naver_news_craw import pageCrawl
 from realtime_info import realtime_info_craw
 from xgboost_t import xgboost_forecast
@@ -53,13 +58,17 @@ def one_hour():
     brazil_craw(conn)  # 브라질
     cad_crawling(conn)  # 캐나다
     chile_craw(conn)  # 칠레
+    czech_craw(conn) # 체코
+    denmark_craw(conn) # 덴마크
     eng_crawling(conn)  # 영국
     eu_craw(conn)  # 유럽연합
     hongkong_craw(conn)  # 홍콩
+    hungary_craw(conn) #헝가리
     indonesia_craw(conn) # 인도네시아
     malaysia_craw(conn) # 말레이시아
     mxp_craw(conn)  # 멕시코
     # nzd_craw(conn)  # 뉴질랜드 (뉴질랜드 은행 사이트 오류로 크롤링 중단)
+    norway_craw(conn) # 노르웨이
     php_crawling(conn)  # 필리핀
     russia_craw(conn) # 러시아
     singapore_craw(conn)  # 싱가포르
