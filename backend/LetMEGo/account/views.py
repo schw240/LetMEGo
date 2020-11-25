@@ -85,12 +85,18 @@ class LoginAPI(generics.GenericAPIView):
                 "user": UserSerializer(
                     user, context=self.get_serializer_context()
                 ).data,
-                "token": AuthToken.objects.create(user),
+                "token": AuthToken.objects.create(user)[1],
             }
         )
 
-class UserAPI(APIView):
-    def get(self, request):
-        qs = User.objects.all()
-        serializer=UserSerializer(qs, many=True)
-        return  Response(serializer.data)
+class UserAPI(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    # http://127.0.0.1:8000//account/user/?username=username
+    def get_queryset(self):
+        qs = super().get_queryset()
+        username = self.request.query_params.get('username')
+        if username:
+            qs = qs.filter(username=username)
+        return qs
