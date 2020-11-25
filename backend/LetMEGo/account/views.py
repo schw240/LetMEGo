@@ -11,6 +11,8 @@ from collections import Counter
 import json
 from django.contrib.auth import get_user_model
 from .serializers import (
+    UpdateSerializer,
+    WithdrawalSerializer,
     CreateUserBankSerializer,
     CreateUserSerializer,
     UserSerializer,
@@ -100,3 +102,27 @@ class UserAPI(ModelViewSet):
         if username:
             qs = qs.filter(username=username)
         return qs
+
+
+@api_view(['POST'])
+def WithdrawAPI(request):
+    serializer = WithdrawalSerializer(data=request.data[0])
+    serializer.is_valid(raise_exception=True)
+    user = serializer.save()
+
+@api_view(['GET','PUT'])
+def UpdateAPI(request):
+
+    if request.data[0]["id"] == request.data[1]["user_id"]:
+
+        serializer = CreateUserSerializer(data=request.data[0])
+        serializer.is_valid(raise_exception=True)
+        
+        request.data[1]['user_id'] = user.id
+        user_bank = CreateUserBankSerializer(data=request.data[1])
+        user_bank.is_valid(raise_exception=True)
+        
+        user = serializer.save()
+        user_bank.save()
+
+    return Response({'result':True})

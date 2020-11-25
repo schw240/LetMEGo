@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
-from .models import User_bank
+from .models import User_bank, Withdrawal
 # from .models import LMGUser
 
 User = get_user_model()
@@ -76,3 +76,12 @@ class LoginUserSerializer(serializers.Serializer):
         raise serializers.ValidationError("Unable to log in with provided credentials.")
 
 
+class WithdrawalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Withdrawal
+        fields = "__all__"
+
+class UpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User_bank
+        fields = "__all__"

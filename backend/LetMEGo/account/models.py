@@ -10,7 +10,6 @@ from django.contrib.auth import get_user_model
 
 # User = get_user_model()
 class User(AbstractUser):
-    user_pwcheck = models.CharField(max_length=30, verbose_name='패스워드 체크')
     user_emailcheck = models.BooleanField(verbose_name='이메일 체크', default=False)
 
 
