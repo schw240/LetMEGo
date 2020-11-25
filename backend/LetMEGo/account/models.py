@@ -49,7 +49,7 @@ class Withdrawal(models.Model):
     service = models.BooleanField(default=False)
     benefits = models.BooleanField(default=False)
     privacy = models.BooleanField(default=False)
-    other = models.CharField(max_length=500, verbose_name='탈퇴이유')
+    other = models.CharField(max_length=500, verbose_name='탈퇴이유', null=True)
 
     class Meta:
         db_table = 'Withdrawal'
