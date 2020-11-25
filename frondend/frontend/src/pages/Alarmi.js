@@ -1,29 +1,65 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import Api from '../Api';
 import SiteWrapper from '../SiteWrapper';
-import { Form, Page, Grid, Card, colors, Tab, Tabs } from "tabler-react";
+import { Form, Page, Grid, Card, colors, Tab, Tabs } from "tabler-react";  
+
+function MoreNews() {
+
+  const style = {
+
+    fontSize: '11px',
+
+  }
+
+  const [news, setNews] = React.useState([]);
+
+  useEffect(() => {
+    Api.get("navernews/").then((res) => {
+      
+      const data = []
+
+      for(let i = 0; i < 14; i++) {
+        data.push((res.data[i]))
+      }
+
+      setNews(data)
+      console.log(data)
+     })
+  },[])
+
+  return <> {
+    news.map((value) => {
+      return <div style={style}><a target = "_blank" href = {value.link}> [{value.company}] {value.title} {value.content} </a></div>
+    })
+  }  
+  </>
 
 
+
+}
 
 function AlarMie() {
+  
   return (
+    <SiteWrapper>
+       <Page.Content>
 
-    <Tabs initialTab="Hello">
-  <Tab title="야호1">뭐 넣어용?</Tab>
-  <Tab title="야호2">여기는용?</Tab>
-    <Grid.Row cards deck>
-      <Grid.Col md={4}>
-        <Card body="집에가고싶당" />
-      </Grid.Col>
-      <Grid.Col md={4}>
-        <Card
-          body="Extra long content of card. Lorem ipsum dolor sit amet, consetetur sadipscing elitr"
-        />
-      </Grid.Col>
-      <Grid.Col md={4}>
-        <Card body="왜 여기있지!?" />
-      </Grid.Col>
-    </Grid.Row>
-</Tabs>
+        <Tabs initialTab="Hello">
+      <Tab title="News Detail">
+        <Card className="container"><MoreNews/></Card>
+      
+
+      </Tab>
+
+      <Tab title="ME Promotion">
+        <Card className="container">환율우대사항!?</Card>
+      
+      
+      </Tab>
+      
+    </Tabs>
+    </Page.Content>
+    </SiteWrapper>   
     
     )
 }
