@@ -1,30 +1,13 @@
 import time
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, r2_score, mean_absolute_error, mean_squared_error
 import warnings
-from keras.models import Model, Sequential
 from random import randrange
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.statespace import sarimax
-from fbprophet import Prophet
-import statsmodels.api as sm
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-from scipy.stats import boxcox
-import statsmodels
-import scipy
-import lightgbm as lgb
 import itertools
-from tensorflow.keras.utils import plot_model
-from keras.layers import LSTM, Activation, Dense, Dropout, Input, Embedding
-from keras.utils import np_utils, to_categorical
 from bayes_opt import BayesianOptimization
 import xgboost as xgb
-from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-from scipy.stats import uniform
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
-from sklearn import feature_extraction, linear_model, model_selection, preprocessing
 from yahoo_api import currency_craw
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, r2_score, mean_absolute_error, mean_squared_error
 from db_connect import xgboost_res, xgboost_res_remove
 from helper_connect import DBConnect  # 디비 연결
 
@@ -125,9 +108,8 @@ def xgboost_forecast(conn, num, df):
         print(dollar_close)
         print(type(dollar_close))
         xgboost_res(conn, today, dollar_close)
-        print("저장돼?")
         xgboost_res_remove(conn)
-    return df
+    return 
 
 
 if __name__ == "__main__":
@@ -136,20 +118,4 @@ if __name__ == "__main__":
     df_xg = df_xg.reset_index()
     conn = DBConnect()
     
-    df_new = xgboost_forecast(conn, 30, df_xg)
-    print(df_new)
-
-# print("======================최종 결과========================")
-# print(df_new)
-# # 평가
-# y_val = df_xg.dollar_close[-5:-1]
-# xgb_mae = mean_absolute_error(y_val, predictions)
-# xgb_mse = mean_squared_error(y_val, predictions)
-# xgb_rmse = np.sqrt(mean_squared_error(y_val, predictions))
-
-# print('Mean Absolute Error:   ', xgb_mae)
-# print('Mean Squared Error:   ', xgb_mse)
-# print('Root Mean Squared Error:   ', xgb_rmse)
-# xgb_error_rate = abs(((y_val - predictions) / y_val).mean()) * 100
-# print('MAPE:', round(xgb_error_rate, 2), '%')
-# print('R2-SCORE: ', r2_score(y_val, predictions))
+    xgboost_forecast(conn, 30, df_xg)
