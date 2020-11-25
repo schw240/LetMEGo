@@ -2,20 +2,33 @@ import * as React from "react";
 import SiteWrapper from "../SiteWrapper";
 import { LoginContext } from "../App";
 import { Card, Button, StandaloneFormPage, Form, Page, } from "tabler-react";
+import Account from '../Account'
 
 function LoginPage({history}){
-  const [userId, setUserId] = React.useState()
-  const [userPw, setUserPw] = React.useState()
-
   const {user, setUser} = React.useContext(LoginContext)
+  const token = window.localStorage.getItem("token");
+
+  React.useEffect(() => {
+    //로그아웃
+    if (token != null) {
+      window.localStorage.removeItem("token")
+    }
+  }, []);
   
   const onSubmit = () => { //로그인 토큰작업은 여기서!?
-    setUser({
-      id: userId,
-      pw: userPw,
+    Account.post("login", {
+      "username" : user.id,
+      "password" : user.pw,
     })
-    history.push('/') //로그인 정보가 맞을 때
-    
+    .then(response=>{
+      const {data} = response
+      window.localStorage.setItem("token", data.token)
+      history.push('/')
+    })
+    .catch(error=>{
+      alert('아이디, 패스워드를 확인해주세요');
+      console.error(error)
+    })   
   }
 
   return (
@@ -30,10 +43,10 @@ function LoginPage({history}){
               <Card.Title RootComponent="div">Let me Login!</Card.Title>
 
               <Form.Group>
-                <Form.Input icon="user" placeholder="id" name="id" onChange={(e)=>setUserId(e.target.value)}/>
+                <Form.Input icon="user" placeholder="id" name="id" onChange={(e)=>setUser({...user, id:e.target.value})}/>
               </Form.Group>
               <Form.Group>
-                <Form.Input icon="lock" placeholder="password" name="password" type="password" onChange={(e)=>setUserPw(e.target.value)}/>
+                <Form.Input icon="lock" placeholder="password" name="password" type="password" onChange={(e)=>setUser({...user, pw:e.target.value})}/>
               </Form.Group>
 
               <Form.Footer>

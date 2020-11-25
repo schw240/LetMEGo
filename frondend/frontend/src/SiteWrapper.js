@@ -53,7 +53,7 @@ const loginAccountDropdownProps = { // 유저정보 나와있는 곳
   options: [
     { icon: "settings", value: "설정", to: "/setting", LinkComponent: withRouter(NavLink), },
     { isDivider: true },
-    { icon: "log-out", value: "로그아웃", to: "/", LinkComponent: withRouter(NavLink), },
+    { icon: "log-out", value: "로그아웃", to: "/login", LinkComponent: withRouter(NavLink), },
   ],
 };
 
@@ -68,16 +68,17 @@ const logoutAccountDropdownProps = { // 유저정보 나와있는 곳
 function SiteWrapper(props) {
   const [isLogin, setIsLogin] = React.useState(logoutAccountDropdownProps);
   const { user, setUser } = React.useContext(LoginContext);
+  const token = window.localStorage.getItem("token");
 
   React.useEffect(() => {
     //여기는 토큰 정보에 따라 바뀔 수 있도록 수정해야 함
-    if (user.id == null || user.pw == null) {
+    if (token == null) {
       //지금은 새로고침하면 정보가 날라가기 때문에 어떻게 바뀌는지만 보기~
       setIsLogin(logoutAccountDropdownProps);
     } else {
       setIsLogin(loginAccountDropdownProps);
     }
-  }, []); //아마 []에는 token이 들어가겠지...
+  }, [token]); //아마 []에는 token이 들어가겠지...
 
   return (
     <Site.Wrapper

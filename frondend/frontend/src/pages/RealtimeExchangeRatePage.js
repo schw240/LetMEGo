@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Page, Grid, Card, Form, Table, Button, Icon, Text, Tooltip } from 'tabler-react';
+import { Page, Grid, Card, Form, Table, Button, Icon, Text, } from 'tabler-react';
 import { Modal, } from 'antd';
 
 import SiteWrapper from '../SiteWrapper';
@@ -235,11 +235,9 @@ function PricingCardsPage() {
                                       <Table.Col alignContent="center"> {v.sellfeerate}% </Table.Col>
                                       <Table.Col alignContent="center"> {v.tradingrate} </Table.Col>
                                       <Table.Col alignContent="center">
-                                      <Tooltip content="Tooltip" placement="top">
-                                        <Button id="showmodal" color="indigo" onClick={()=>{btnShowModal(v.bank_name_nm)}}>
-                                            <Icon prefix="fe" name="plus-circle" />
-                                        </Button>
-                                      </Tooltip>
+                                      <Button id="showmodal" color="indigo" onClick={()=>{btnShowModal(v.bank_name_nm)}}>
+                                          <Icon prefix="fe" name="plus-circle" />
+                                      </Button>
                                       </Table.Col>
                                   </Table.Row>
                                 )}
