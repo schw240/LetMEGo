@@ -86,6 +86,15 @@ class ListBankInfo(ModelViewSet):
 class ListCountryInfo(ModelViewSet):
     queryset = CountryInfo.objects.all()
     serializer_class = CountryInfoSerializer
+    # http://127.0.0.1:8000/api/countryinfo/?compare=compare
+    def get_queryset(self):
+        qs = super().get_queryset()
+        compare = self.request.query_params.get('compare')
+        if compare:
+            qs = qs.exclude(country_name='CNY')
+            qs = qs.exclude(country_name='USD')
+            qs = qs.exclude(country_name='JPY')
+        return qs
 
 
 class ListRealTimeInfo(ModelViewSet):

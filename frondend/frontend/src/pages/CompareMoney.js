@@ -41,7 +41,7 @@ function CardsDesignPage() {
   }
 
   React.useEffect(()=> {
-    API.get("countryinfo/")
+    API.get("countryinfo/?compare=compare")
     .then(response=>{
       const {data} = response;
       // console.log(data)
