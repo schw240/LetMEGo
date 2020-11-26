@@ -27,6 +27,15 @@ def mybank_craw(conn):
             SELL = i.select("td")[4].text
             SellFeeRate = i.select("td")[5].text.replace('%', '')
             TradingRate = i.select("td")[8].text
+
+            if Country_name =='JPY' or Country_name == 'IDR' or Country_name == 'VND': # 100 기준으로 나와서 나눠줌
+                if BUY != '-':
+                    BUY = float(BUY) / 100
+                if SELL != '-':
+                    SELL = float(SELL) / 100
+                if TradingRate != '-':
+                    TradingRate = float(TradingRate) / 100
+
             if BUY == '-':
                 BUY = 'null'
             if BuyFeeRate == '-':
@@ -37,7 +46,8 @@ def mybank_craw(conn):
                 SellFeeRate = 'null'
             if TradingRate == '-':
                 TradingRate = 'null'
-            
+
+
             mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now)
                 
         
