@@ -112,6 +112,7 @@ def WithdrawAPI(request):
     serializer = WithdrawalSerializer(data=request.data[0])
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
+    return Response(request.data[0]) # 탈퇴이유 리턴해줌
 
 @api_view(['POST'])
 def UpdateAPI(request):
