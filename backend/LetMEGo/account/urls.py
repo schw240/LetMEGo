@@ -2,7 +2,7 @@ from rest_framework_jwt.views import obtain_jwt_token,  refresh_jwt_token, verif
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import LoginAPI, UserAPI, Regist, RegistrationAPI,WithdrawAPI, UpdateAPI
+from .views import LoginAPI, UserAPI, Regist, RegistrationAPI,WithdrawAPI, UpdateAPI, UserInfoAPI
 
 
 router = DefaultRouter()
@@ -19,4 +19,5 @@ urlpatterns = [
     path('register', views.Regist),
     path('withdraw', views.WithdrawAPI),
     path('update', views.UpdateAPI),
+    path('userinfo', views.UserInfoAPI),
 ]

@@ -3,9 +3,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import permissions, viewsets, generics, status
+from rest_framework import permissions, viewsets, generics, status, mixins
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from .models import User_bank, Withdrawal, User
 # Create your views here.
 from collections import Counter
 import json
@@ -17,6 +18,7 @@ from .serializers import (
     CreateUserSerializer,
     UserSerializer,
     LoginUserSerializer,
+    UserInfoSerializer,
 )
 from knox.models import AuthToken
 from django.shortcuts import get_object_or_404
@@ -106,23 +108,31 @@ class UserAPI(ModelViewSet):
 
 @api_view(['POST'])
 def WithdrawAPI(request):
+    
     serializer = WithdrawalSerializer(data=request.data[0])
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
 
-@api_view(['GET','PUT'])
+@api_view(['POST'])
 def UpdateAPI(request):
+    
+    bank_list = ["gieob", "kookmin", "hana", "suhyup", "nonghyup", "woori", "standard", "citi", "daegu", "busan", "jeju", "jeonbug", "gyeongnam", "shinhan"]
 
-    if request.data[0]["id"] == request.data[1]["user_id"]:
 
-        serializer = CreateUserSerializer(data=request.data[0])
-        serializer.is_valid(raise_exception=True)
-        
-        request.data[1]['user_id'] = user.id
-        user_bank = CreateUserBankSerializer(data=request.data[1])
-        user_bank.is_valid(raise_exception=True)
-        
-        user = serializer.save()
-        user_bank.save()
+    if request.method == 'POST':
+        # print(request.data)
+        user = User.objects.get(pk=request.data['id']) #request.user.get['id']
+        user.email = request.data['email']
+        # new_user_pw = request.data['password']
+        # user.set_password(new_user_pw)         
+        user.save()
 
-    return Response({'result':True})
+        return Response({'result':True})
+
+@api_view(['GET'])
+def UserInfoAPI(request):
+    if request.method == 'GET':
+        users = UserInfoSerializer(User.objects.all(), many=True)
+        user_bank = CreateUserBankSerializer(User_bank.objects.all(), many=True)
+        whole_data = {"users": users.data, "user_bank": user_bank.data}
+        return Response(whole_data)
