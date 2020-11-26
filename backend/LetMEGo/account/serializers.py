@@ -85,3 +85,9 @@ class UpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_bank
         fields = "__all__"
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
