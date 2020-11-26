@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions, viewsets, generics, status, mixins
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .models import User_bank, Withdrawal, User
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.hashers import check_password
 # Create your views here.
 from collections import Counter
 import json
@@ -20,35 +21,8 @@ from .serializers import (
     LoginUserSerializer,
     UserInfoSerializer,
 )
-from knox.models import AuthToken
 from django.shortcuts import get_object_or_404
 User = get_user_model()
-
-
-class RegistrationAPI(generics.GenericAPIView):
-    serializer_class = CreateUserSerializer
-
-    def post(self, request, *args, **kwargs):
-        if len(request.data["username"]) < 6 or len(request.data["password"]) < 4:
-            body = {"message": "short field"}
-            return Response(body, status=status.HTTP_400_BAD_REQUEST)
-        if request.data["password"] != request.data["user_pwcheck"]:
-            body = {"message": "Password is not same"}
-            return Response(body, status=status.HTTP_400_BAD_REQUEST)
-        if User.objects.filter(email=request.data["email"]).exists():
-            body = {"message": "Email is already exist"}
-            return Response(body, status=status.HTTP_400_BAD_REQUEST)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response(
-            {
-                "user": UserSerializer(
-                    user, context=self.get_serializer_context()
-                ).data,
-                "token": AuthToken.objects.create(user)[1],
-            }
-        )
 
 
 @api_view(['POST'])
@@ -56,10 +30,6 @@ def Regist(request):
 
     if len(request.data[0]["username"]) < 6 or len(request.data[0]["password"]) < 4:
         body = {"message": "short field"}
-        return Response(body, status=status.HTTP_400_BAD_REQUEST)
-
-    if request.data[0]["password"] != request.data[0]["user_pwcheck"]:
-        body = {"message": "Password is not same"}
         return Response(body, status=status.HTTP_400_BAD_REQUEST)
 
     if User.objects.filter(email=request.data[0]["email"]).exists():
@@ -77,21 +47,26 @@ def Regist(request):
 
     return Response({'result':True})
 
-class LoginAPI(generics.GenericAPIView):
-    serializer_class = LoginUserSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        return Response(
-            {
-                "user": UserSerializer(
-                    user, context=self.get_serializer_context()
-                ).data,
-                "token": AuthToken.objects.create(user)[1],
-            }
-        )
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def LoginAPI(request):
+
+    if request.method == 'POST':
+        serializer = LoginUserSerializer(data=request.data)
+
+        if not serializer.is_valid(raise_exception=True):
+            return Response({"message": "Request Body Error."}, status=status.HTTP_409_CONFLICT)
+        if serializer.validated_data['username'] == "None":
+            return Response({'message': 'fail'}, status=status.HTTP_200_OK)
+
+        response = {
+            'success': 'True',
+            'token': serializer.data['token']
+        }
+        return Response(response, status=status.HTTP_200_OK)
+
+
 
 class UserAPI(ModelViewSet):
     queryset = User.objects.all()
@@ -119,21 +94,43 @@ def UpdateAPI(request):
     
     bank_list = ["gieob", "kookmin", "hana", "suhyup", "nonghyup", "woori", "standard", "citi", "daegu", "busan", "jeju", "jeonbug", "gyeongnam", "shinhan"]
 
-
-    if request.method == 'POST':
-        # print(request.data)
-        user = User.objects.get(pk=request.data['id']) #request.user.get['id']
+    user = User.objects.get(username=request.user)
+    if user.email:
         user.email = request.data['email']
-        # new_user_pw = request.data['password']
-        # user.set_password(new_user_pw)         
-        user.save()
+    if user.password:
+        user.password = request.data['password']
+        new_pw = user.password
+        user.set_password(user.password)
+    for xx in request.data.items():
+        if xx[0] in bank_list:
+            user_bank = User_bank.objects.get(user_id=user.id)
+            print(user_bank.__dict__[xx[0]])
+            # user_bank.update(xx[0]=True)
+            setattr(user_bank, xx[0], True)
+            # print(user_bank['"'"+xx[0]+"'"'])
+            # user_bank['xx']
+            # if user_bank["'"+xx[0]+"'"][0] == False:
+            #     user_bank["'"+xx[0]+"'"] = True
+            user_bank.save()
+            
+    user.save()
 
-        return Response({'result':True})
+    return Response({'result':True})
 
 @api_view(['GET'])
 def UserInfoAPI(request):
-    if request.method == 'GET':
-        users = UserInfoSerializer(User.objects.all(), many=True)
-        user_bank = CreateUserBankSerializer(User_bank.objects.all(), many=True)
-        whole_data = {"users": users.data, "user_bank": user_bank.data}
-        return Response(whole_data)
+    user = User.objects.get(username=request.user)
+    # user = get_object_or_404(User, username=user)
+    serializer = UserInfoSerializer(user)
+    user_id = User_bank.objects.get(user_id=user.id)
+    user_bank = CreateUserBankSerializer(user_id)
+    whole_data = {"users": serializer.data, "user_bank": user_bank.data}
+    return Response(whole_data)
+
+
+@api_view(['POST'])
+def DeleteUserAPI(request):
+    user = User.objects.get(username=request.user)
+    request.user.delete()
+
+    return Response({'result': True})

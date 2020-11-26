@@ -25,9 +25,13 @@ def realtime_info_craw(conn):
     signedChangeRate = json_val[0].get("signedChangeRate")
     provider = json_val[0].get("provider")
 
-    
-    realtime(conn, time, basePrice, signedChangePrice, signedChangeRate)
-    realtime_remove(conn)
+    if int(time[0:2]) > 18:
+        return
+    elif int(time[0:2]) < 9:
+        return
+    else:
+        realtime(conn, time, basePrice, signedChangePrice, signedChangeRate)
+        realtime_remove(conn)
 
 if __name__ == "__main__":
     conn = DBConnect()
