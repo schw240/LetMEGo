@@ -30,11 +30,11 @@ def mybank_craw(conn):
 
             if Country_name =='JPY' or Country_name == 'IDR' or Country_name == 'VND': # 100 기준으로 나와서 나눠줌
                 if BUY != '-':
-                    BUY = float(BUY) / 100
+                    BUY = round(float(BUY) / 100, 2)
                 if SELL != '-':
-                    SELL = float(SELL) / 100
+                    SELL = round(float(SELL) / 100, 2)
                 if TradingRate != '-':
-                    TradingRate = float(TradingRate) / 100
+                    TradingRate = round(float(TradingRate) / 100, 2)
 
             if BUY == '-':
                 BUY = 'null'
