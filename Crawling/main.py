@@ -20,10 +20,12 @@ from england_craw import eng_crawling
 from eu_craw import eu_craw
 from hongkong_craw import hongkong_craw
 from hungary_craw import hungary_craw
+from india_craw import india_craw
 from indonesia_craw import indonesia_craw
 from israel_craw import israel_craw
 from jordan_craw import jordan_craw
 from kazakhstan_craw import kazakhstan_craw
+from kuwait_craw import kuwait_craw
 from malaysia_craw import malaysia_craw
 from mexico_craw import mxp_craw
 from mongolia_craw import mongolia_craw
@@ -34,7 +36,9 @@ from pakistan_craw import pakistan_craw
 from philipine_craw import php_crawling
 from poland_craw import poland_craw
 from russia_craw import russia_craw
+from saudiarabia_craw import saudiarabia_craw
 from singapore_craw import singapore_craw
+from southafrica_craw import southafrica_craw
 from sweden_craw import sweden_craw
 from swiss_craw import swiss_craw
 from taiwan_craw import taiwan_craw
@@ -81,22 +85,26 @@ def one_hour():
     eng_crawling(conn)  # 영국
     eu_craw(conn)  # 유럽연합
     hongkong_craw(conn)  # 홍콩
-    hungary_craw(conn) #헝가리
+    hungary_craw(conn) # 헝가리
+    india_craw(conn) # 인도
     indonesia_craw(conn) # 인도네시아
     israel_craw(conn) # 이스라엘
-    # jordan_craw(conn) # 요르단 (사이트 보안(로봇이 아닙니다) 체크 때문에 다른 사이트 찾아봐야 함)
+    jordan_craw(conn) # 요르단
     kazakhstan_craw(conn) # 카자흐스탄
+    kuwait_craw(conn) # 쿠웨이트
     malaysia_craw(conn) # 말레이시아
     mxp_craw(conn)  # 멕시코
     mongolia_craw(conn) # 몽골
-    # nzd_craw(conn)  # 뉴질랜드 (뉴질랜드 은행 사이트 오류로 크롤링 중단)
+    nzd_craw(conn)  # 뉴질랜드
     norway_craw(conn) # 노르웨이
     oman_craw(conn) # 오만
     pakistan_craw(conn) # 파키스탄
     php_crawling(conn)  # 필리핀
     poland_craw(conn) # 폴란드
     russia_craw(conn) # 러시아
+    saudiarabia_craw(conn) # 사우디
     singapore_craw(conn)  # 싱가포르
+    southafrica_craw(conn) # 남아공
     sweden_craw(conn) # 스웨덴
     swiss_craw(conn) # 스위스
     taiwan_craw(conn)  # 대만

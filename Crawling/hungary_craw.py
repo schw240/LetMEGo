@@ -1,7 +1,6 @@
 import requests
 import datetime
 import json
-from bs4 import BeautifulSoup
 from db_connect import foreignbank_info
 
 def hungary_craw(conn):
