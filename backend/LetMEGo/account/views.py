@@ -71,7 +71,7 @@ class UserAPI(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    # http://127.0.0.1:8000//account/user/?username=username
+    # http://127.0.0.1:8000/account/user/?username=username
     def get_queryset(self):
         qs = super().get_queryset()
         username = self.request.query_params.get('username')
@@ -86,7 +86,7 @@ def WithdrawAPI(request):
     serializer = WithdrawalSerializer(data=request.data[0])
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
-    return Response(request.data[0])  # 탈퇴이유 리턴해줌
+    return Response({'result': True})
 
 
 @api_view(['POST'])
