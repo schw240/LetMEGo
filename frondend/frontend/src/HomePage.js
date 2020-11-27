@@ -49,7 +49,7 @@ function Upload_news() {
 
       const data = []
     
-      for(let i = 0; i < 14; i++) {
+      for(let i = 0; i < 70; i++) {
         data.push((res.data[i]))
       }
 
@@ -135,7 +135,7 @@ function Home() {
         {/* 환율 기사, 워드크라우드 넣는 곳 */}
         <Grid.Row>
           <Grid.Col lg={5}>
-            <Card title="Let ME - Latest News" statusColor="blue" statusSide>
+            <Card className="block" title="Let ME - Latest News" statusColor="blue" statusSide>
               <Card.Body className="scroll">
                 <br /> 
                 <Upload_news />
