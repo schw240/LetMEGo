@@ -1,6 +1,8 @@
 import pymysql
 
 # 마이뱅크 크롤링해서 DB에 넣기
+
+
 def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now):
     cursor = conn.cursor()
 
@@ -70,7 +72,6 @@ def foreignbank_info(conn, Country_name, USD, JPY, now):
     cursor.execute(sql)
     results = cursor.fetchall()
 
-    
     if USD != 0 and JPY != 0:
         if results:
             sql = f"""
@@ -153,13 +154,14 @@ def realtime_remove(conn):
     cursor.execute(sql)
     conn.commit()
 
+
 def xgboost_res(conn, date, dollar_close):
     cursor = conn.cursor()
 
     sql = "INSERT INTO XGBoost_Info(date, dollar_close) values(%s,%s);"
     cursor.execute(sql, (date, dollar_close))
     conn.commit()
-    
+
 
 def xgboost_res_remove(conn):
     cursor = conn.cursor()
@@ -181,5 +183,29 @@ def xgboost_res_remove(conn):
     conn.commit()
 
 
+def lstm_res(conn, date, dollar_close):
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO LSTM_Info(date, dollar_close) values(%s,%s);"
+    cursor.execute(sql, (date, dollar_close))
+    conn.commit()
 
 
+def lstm_res_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT seq
+             FROM LSTM_Info  
+         ORDER BY seq DESC 
+            limit 31"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM LSTM_Info
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()

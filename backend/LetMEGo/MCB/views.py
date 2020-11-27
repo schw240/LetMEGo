@@ -9,17 +9,19 @@ from rest_framework.permissions import IsAuthenticated
 from collections import Counter
 import json
 
-from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo
+from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo, LSTMInfo
 from .serializers import (
-    MostCheapBankSerializer, 
-    BankgroupInfoSerializer, 
-    ForeignBankSerializer, 
-    NaverNewsSerializer, 
-    BankInfoSerializer, 
-    CountryInfoSerializer, 
-    RealTimeInfoSerializer, 
-    XGBoostInfoSerializer, 
+    MostCheapBankSerializer,
+    BankgroupInfoSerializer,
+    ForeignBankSerializer,
+    NaverNewsSerializer,
+    BankInfoSerializer,
+    CountryInfoSerializer,
+    RealTimeInfoSerializer,
+    XGBoostInfoSerializer,
+    LSTMInfoSerializer,
 )
+
 
 class ListBank(ModelViewSet):
     queryset = MostCheapBank.objects.all()
@@ -36,12 +38,15 @@ class ListBank(ModelViewSet):
             qs = qs.filter(country_name=country_name)
         return qs
 
+
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def MostCheapBuy(request, country_name):
-    mostcheap = MostCheapBank.objects.filter(country_name=country_name).order_by('buy')
+    mostcheap = MostCheapBank.objects.filter(
+        country_name=country_name).order_by('buy')
     serializer = MostCheapBankSerializer(mostcheap, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
@@ -50,12 +55,13 @@ def Wordcloud(request):
     words = []
     for i in news:
         tmp = words.extend(i['words'].split(","))
-    
+
     count = Counter(words)
-    words = [dict(zip(['text','value'], i)) for i in count.most_common()]
+    words = [dict(zip(['text', 'value'], i)) for i in count.most_common()]
     print(words)
 
     return Response(json.dumps(words, ensure_ascii=False))
+
 
 class ListBankGroupInfo(ModelViewSet):
     queryset = BankgroupInfo.objects.all()
@@ -74,9 +80,11 @@ class ListForeignBank(ModelViewSet):
     queryset = ForeignBank.objects.all()
     serializer_class = ForeignBankSerializer
 
+
 class ListNaverNews(ModelViewSet):
     queryset = NaverNews.objects.all()
     serializer_class = NaverNewsSerializer
+
 
 class ListBankInfo(ModelViewSet):
     queryset = BankInfo.objects.all()
@@ -87,6 +95,7 @@ class ListCountryInfo(ModelViewSet):
     queryset = CountryInfo.objects.all()
     serializer_class = CountryInfoSerializer
     # http://127.0.0.1:8000/api/countryinfo/?compare=compare
+
     def get_queryset(self):
         qs = super().get_queryset()
         compare = self.request.query_params.get('compare')
@@ -101,6 +110,12 @@ class ListRealTimeInfo(ModelViewSet):
     queryset = RealTimeInfo.objects.all()
     serializer_class = RealTimeInfoSerializer
 
+
 class ListXGBoostInfo(ModelViewSet):
     queryset = XGBoostInfo.objects.all()
     serializer_class = XGBoostInfoSerializer
+
+
+class ListLSTMInfo(ModelViewSet):
+    queryset = LSTMInfo.objects.all()
+    serializer_class = LSTMInfoSerializer

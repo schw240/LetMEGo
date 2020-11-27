@@ -96,7 +96,8 @@ def xgboost_forecast(conn, num, df):
 
         lenv_ = len(df_xg)
         df_xg.dollar_close[lenv_-1] = predictions
-        df_xg = df_xg.drop(['day', 'dayofweek', 'dayofyear', 'week','month', 'year', 'day', 'lag1', 'lag2', 'lag3', 'lag4', 'lag5'], axis=1)
+        df_xg = df_xg.drop(['day', 'dayofweek', 'dayofyear', 'week', 'month',
+                            'year', 'day', 'lag1', 'lag2', 'lag3', 'lag4', 'lag5'], axis=1)
         if getDay(today.year, today.month, today.day) == 'Sat' or getDay(today.year, today.month, today.day) == 'Sun':
             continue
         else:
@@ -109,7 +110,7 @@ def xgboost_forecast(conn, num, df):
         print(type(dollar_close))
         xgboost_res(conn, today, dollar_close)
         xgboost_res_remove(conn)
-    return 
+    return
 
 
 if __name__ == "__main__":
@@ -117,5 +118,5 @@ if __name__ == "__main__":
     df_xg, df_notuse = currency_craw()
     df_xg = df_xg.reset_index()
     conn = DBConnect()
-    
+
     xgboost_forecast(conn, 30, df_xg)

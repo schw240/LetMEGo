@@ -1,100 +1,179 @@
-import * as React from "react";
-// import './Forecasting.css';
-import { Form, Page, Grid, Card, colors } from "tabler-react";
-import C3Chart from "react-c3js";
+import { Form, Page, Grid, Card } from "tabler-react";
 import SiteWrapper from "../SiteWrapper";
+import Api from "../Api";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import React, { useEffect } from 'react';
 
-export default function Forecasting(): React.Node {
-  const card1 = [
-    {
-      title: "LSTM",
-      data: {
-        columns: [
-          // each columns data
-          ["data1", 2, 8, 6, 7, 14, 11],
-          ["data2", 5, 15, 11, 15, 21, 25],
-          ["data3", 17, 18, 21, 20, 30, 29],
-        ],
-        type: "line", // default type of chart
-        colors: {
-          data1: colors.orange,
-          data2: colors.blue,
-          data3: colors.green,
-        },
-        names: {
-          // name of each serie
-          data1: "Development",
-          data2: "Marketing",
-          data3: "Sales",
-        },
+export default function Forecasting() {
+  const [options, setOptions] = React.useState({
+    chart: {
+      type: "line",
+    },
+    title: {
+      text: "XGBoost",
+    },
+    xAxis: 
+      {
+          type: 'category',
+          categories: []
       },
-      axis: {
-        x: {
-          type: "category",
-          // name of each category
-          categories: ["2013", "2014", "2015", "2016", "2017", "2018"],
+    yAxis: {
+      title: {
+        text: "원/달러",
+      },
+    },
+    legend: {
+      enabled: false,
+    },
+    plotOptions: {
+      series: {
+        pointPadding: 0.4,
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: "{point.y:.1f}",
         },
       },
     },
-  ];
-  const card2 = [
-    {
-      title: "XGBoost",
-      data: {
-        columns: [
-          // each columns data
-          [
-            "data1",
-            7.0,
-            6.9,
-            9.5,
-            14.5,
-            18.4,
-            21.5,
-            25.2,
-            26.5,
-            23.3,
-            18.3,
-            13.9,
-            9.6,
-          ],
-          [
-            "data2",
-            3.9,
-            4.2,
-            5.7,
-            8.5,
-            11.9,
-            15.2,
-            17.0,
-            16.6,
-            14.2,
-            10.3,
-            6.6,
-            4.8,
-          ],
-        ],
-        labels: true,
-        type: "line", // default type of chart
-        colors: {
-          data1: colors.blue,
-          data2: colors.green,
+    tooltip: {
+      headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+      pointFormat:
+        '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>',
+    },
+    series: [
+      {
+        name: 'USDKRW',
+        type: 'line',
+        lineStyle:{
+          color:'#2A265C' //line차트 색상 변경
         },
-        names: {
-          // name of each serie
-          data1: "Tokyo",
-          data2: "London",
-        },
+        smooth: true, //부드러운 line 표현
+        yAxisIndex: 0, //yAxis 1번째 사용
+        data: 
+        {
+        } 
       },
-      axis: {
-        x: {
-          type: "category",
-          // name of each category
-          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    ],
+  });
+
+  const [options2, setOptions2] = React.useState({
+    chart: {
+      type: "line",
+    },
+    title: {
+      text: "LSTM",
+    },
+    xAxis: 
+      {
+          type: 'category',
+          categories: []
+      },
+    yAxis: {
+      title: {
+        text: "원/달러",
+      },
+    },
+    legend: {
+      enabled: false,
+    },
+    plotOptions: {
+      series: {
+        pointPadding: 0.4,
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: "{point.y:.1f}",
         },
       },
     },
-  ];
+    tooltip: {
+      headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+      pointFormat:
+        '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>',
+    },
+    series: [
+      {
+        name: 'USDKRW',
+        type: 'line',
+        lineStyle:{
+          color:'#2A265C' //line차트 색상 변경
+        },
+        smooth: true, //부드러운 line 표현
+        yAxisIndex: 0, //yAxis 1번째 사용
+        data: 
+        {
+        } 
+      },
+    ],
+  });
+
+  const apiCall = async () => {
+    try {
+      
+      Api.get("xgboostinfo/").then((res) => {
+            
+            var api_time = []
+            for(let i of res.data){
+              api_time.push(i.date);
+            }
+            api_time.sort()
+            var bp = []
+            for(let i of res.data){
+              
+              bp.push(Number(i.dollar_close));
+            }
+    
+            setOptions((prev) => ({
+              ...prev,
+              xAxis: 
+                {
+                  categories: api_time
+                },
+              series: [
+                {
+                  data: (bp),
+                },
+              ],
+            }));
+    
+          });
+
+      Api.get("lstminfo/").then((res) => {
+        
+        var api_time = []
+        for(let i of res.data){
+          api_time.push(i.date);
+        }
+        api_time.sort()
+        var bp = []
+        for(let i of res.data){
+          
+          bp.push(Number(i.dollar_close));
+        }
+
+        setOptions2((prev) => ({
+          ...prev,
+          xAxis: 
+            {
+              categories: api_time
+            },
+          series: [
+            {
+              data: (bp),
+            },
+          ],
+        }));
+
+      });
+
+    } catch (e) {
+    }
+  };
+
+  useEffect(() => {
+    apiCall();
+  }, []);
 
   return (
     <>
@@ -102,65 +181,41 @@ export default function Forecasting(): React.Node {
         <Page.Content>
           <div style={{ marginLeft: "12px" }}>
             <Grid.Row>
-              <Form.Group label="날자">
-                <Form.Select>
-                  <option>7일</option>
-                  <option>15일</option>
-                  <option>30일</option>
-                </Form.Select>
-              </Form.Group>
               <Form.Group label="나라">
                 <Form.Select>
                   <option>미국</option>
                   <option>중국</option>
                   <option>일본</option>
+                  <option>유럽</option>
                 </Form.Select>
               </Form.Group>
             </Grid.Row>
           </div>
 
           <Grid.Row>
-            {card1.map((chart, i) => (
-              <Grid.Col key={i} md={12} xl={12}>
-                <Card title={chart.title}>
-                  <Card.Body>
-                    <C3Chart
-                      data={chart.data}
-                      axis={chart.axis}
-                      legend={{
-                        show: false, //hide legend
-                      }}
-                      padding={{
-                        bottom: 0,
-                        top: 0,
-                      }}
-                    />
-                  </Card.Body>
-                </Card>
-              </Grid.Col>
-            ))}
+            <Grid.Col>
+              <Card title="미래 환율 예측 그래프(XGBoost)" statusColor="blue">
+                <Card.Body>
+                  <HighchartsReact
+                    Highcharts={Highcharts}
+                    options={options}
+                  />
+                </Card.Body>
+              </Card>
+            </Grid.Col>
           </Grid.Row>
 
           <Grid.Row>
-            {card2.map((chart, i) => (
-              <Grid.Col key={i} md={12} xl={12}>
-                <Card title={chart.title}>
-                  <Card.Body>
-                    <C3Chart
-                      data={chart.data}
-                      axis={chart.axis}
-                      legend={{
-                        show: false, //hide legend
-                      }}
-                      padding={{
-                        bottom: 0,
-                        top: 0,
-                      }}
-                    />
-                  </Card.Body>
-                </Card>
-              </Grid.Col>
-            ))}
+            <Grid.Col>
+              <Card title="미래 환율 예측 그래프(LSTM)" statusColor="blue">
+                <Card.Body>
+                  <HighchartsReact
+                    Highcharts={Highcharts}
+                    options={options2}
+                  />
+                </Card.Body>
+              </Card>
+            </Grid.Col>
           </Grid.Row>
         </Page.Content>
       </SiteWrapper>

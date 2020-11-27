@@ -65,14 +65,16 @@ export default function RealtimeGraph() {
 
       Api.get("realtimeinfo/").then((res) => {
             var bp = []
-            for(let i of res.data){
-              bp.push(Number(i.basePrice));
-            }
             var api_time = []
-            for(let i of res.data){
-              api_time.push(i.time);
+
+            const len_res = res.data.length;
+            for(let i = 0; i < len_res; i++) {
+              if (bp[bp.length-1] != Number(res.data[i].basePrice)){
+                bp.push(Number(res.data[i].basePrice));
+                api_time.push(res.data[i].time);
+              }
             }
-    
+
             setOptions((prev) => ({
               ...prev,
               xAxis: 

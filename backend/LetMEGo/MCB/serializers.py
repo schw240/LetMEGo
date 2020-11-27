@@ -1,11 +1,14 @@
 from rest_framework import serializers
-from .models import MostCheapBank, BankgroupInfo, ForeignBank, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo
+from .models import MostCheapBank, BankgroupInfo, ForeignBank, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo, LSTMInfo
+
 
 class MostCheapBankSerializer(serializers.ModelSerializer):
-    country_flag = serializers.ReadOnlyField(source='country_name.country_flag')
+    country_flag = serializers.ReadOnlyField(
+        source='country_name.country_flag')
     name_kor = serializers.ReadOnlyField(source='country_name.name_kor')
     bank_name_nm = serializers.ReadOnlyField(source='bank_name.bank_name')
     bank_logo = serializers.ReadOnlyField(source='bank_name.bank_logo')
+
     class Meta:
         fields = '__all__'
         model = MostCheapBank
@@ -51,3 +54,9 @@ class XGBoostInfoSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = XGBoostInfo
+
+
+class LSTMInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = LSTMInfo

@@ -12,7 +12,7 @@ router.register('bankinfo', views.ListBankInfo)
 router.register('countryinfo', views.ListCountryInfo)
 router.register('realtimeinfo', views.ListRealTimeInfo)
 router.register('xgboostinfo', views.ListXGBoostInfo)
-
+router.register('lstminfo', views.ListLSTMInfo)
 
 urlpatterns = [
     path('', include(router.urls)),

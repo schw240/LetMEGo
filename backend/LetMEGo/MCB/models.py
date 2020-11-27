@@ -142,7 +142,6 @@ class XGBoostInfo(models.Model):
     date = models.DateField(max_length=30, verbose_name='날짜')
     dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
 
-    
     def __str__(self):
         return self.date
 
@@ -150,3 +149,17 @@ class XGBoostInfo(models.Model):
         db_table = 'XGBoost_Info'
         verbose_name = 'XGboost예측테이블'
         verbose_name_plural = 'XGboost예측테이블'
+
+
+class LSTMInfo(models.Model):
+    seq = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=30, verbose_name='날짜')
+    dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
+
+    def __str__(self):
+        return self.date
+
+    class Meta:
+        db_table = 'LSTM_Info'
+        verbose_name = 'LSTM예측테이블'
+        verbose_name_plural = 'LSTM예측테이블'
