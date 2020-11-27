@@ -45,7 +45,7 @@ def Regist(request):
     user_bank.is_valid(raise_exception=True)
     user_bank.save()
 
-    return Response({'result':True})
+    return Response({'result': True})
 
 
 @api_view(['POST'])
@@ -67,7 +67,6 @@ def LoginAPI(request):
         return Response(response, status=status.HTTP_200_OK)
 
 
-
 class UserAPI(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -83,41 +82,50 @@ class UserAPI(ModelViewSet):
 
 @api_view(['POST'])
 def WithdrawAPI(request):
-    
+
     serializer = WithdrawalSerializer(data=request.data[0])
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
-    return Response(request.data[0]) # 탈퇴이유 리턴해줌
+    return Response(request.data[0])  # 탈퇴이유 리턴해줌
+
 
 @api_view(['POST'])
 def UpdateAPI(request):
-    
-    bank_list = ["gieob", "kookmin", "hana", "suhyup", "nonghyup", "woori", "standard", "citi", "daegu", "busan", "jeju", "jeonbug", "gyeongnam", "shinhan"]
+
+    bank_list = ["gieob", "kookmin", "hana", "suhyup", "nonghyup", "woori",
+                 "standard", "citi", "daegu", "busan", "jeju", "jeonbug", "gyeongnam", "shinhan"]
 
     user = User.objects.get(username=request.user)
-    if user.email:
-        user.email = request.data['email']
-    if user.password:
-        user.password = request.data['password']
-        new_pw = user.password
-        user.set_password(user.password)
-    if user.user_emailcheck:
-        user.user_emailcheck = request.data['user_emailcheck']
     for xx in request.data.items():
+        print(xx)
+        if xx[0] == 'email':
+            user.email = request.data['email']
+        if xx[0] == 'password':
+            user.password = request.data['password']
+            user.set_password(user.password)
+        if xx[0] == 'user_emailcheck':
+            user.user_emailcheck = request.data['user_emailcheck']
         if xx[0] in bank_list:
+            print("???")
             user_bank = User_bank.objects.get(user_id=user.id)
-            print(user_bank.__dict__[xx[0]])
+            # print(user_bank.__dict__[xx[0]])
+            res = user_bank.__dict__[xx[0]]
+            print(res)
             # user_bank.update(xx[0]=True)
-            setattr(user_bank, xx[0], True)
+            if res == False:
+                setattr(user_bank, xx[0], True)
+            else:
+                setattr(user_bank, xx[0], False)
             # print(user_bank['"'"+xx[0]+"'"'])
             # user_bank['xx']
             # if user_bank["'"+xx[0]+"'"][0] == False:
             #     user_bank["'"+xx[0]+"'"] = True
             user_bank.save()
-            
+
     user.save()
 
-    return Response({'result':True})
+    return Response({'result': True})
+
 
 @api_view(['GET'])
 def UserInfoAPI(request):
@@ -137,12 +145,14 @@ def DeleteUserAPI(request):
 
     return Response({'result': True})
 
+
 @api_view(['GET'])
 def OnlyUserInfoAPI(request):
     user = User.objects.get(username=request.user)
     # user = get_object_or_404(User, username=user)
     serializer = UserInfoSerializer(user)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def OnlyUserBankInfoAPI(request):
