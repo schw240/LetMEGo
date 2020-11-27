@@ -101,6 +101,8 @@ def UpdateAPI(request):
         user.password = request.data['password']
         new_pw = user.password
         user.set_password(user.password)
+    if user.user_emailcheck:
+        user.user_emailcheck = request.data['user_emailcheck']
     for xx in request.data.items():
         if xx[0] in bank_list:
             user_bank = User_bank.objects.get(user_id=user.id)
