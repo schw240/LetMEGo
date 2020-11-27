@@ -106,16 +106,16 @@ def UpdateAPI(request):
         if xx[0] == 'user_emailcheck':
             user.user_emailcheck = request.data['user_emailcheck']
         if xx[0] in bank_list:
-            print("???")
+            print(xx[0], "xx[0]이 무엇이냐")
             user_bank = User_bank.objects.get(user_id=user.id)
             # print(user_bank.__dict__[xx[0]])
             res = user_bank.__dict__[xx[0]]
-            print(res)
+
             # user_bank.update(xx[0]=True)
-            if res == False:
-                setattr(user_bank, xx[0], True)
-            else:
-                setattr(user_bank, xx[0], False)
+            # if res == False:
+            setattr(user_bank, xx[0], xx[1])
+            # else:
+            #     setattr(user_bank, xx[0], False)
             # print(user_bank['"'"+xx[0]+"'"'])
             # user_bank['xx']
             # if user_bank["'"+xx[0]+"'"][0] == False:
