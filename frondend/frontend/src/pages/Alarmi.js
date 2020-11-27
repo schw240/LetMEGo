@@ -65,40 +65,36 @@ function ProMo() {
 
   return <> 
   <table>
-    <td>aaaa</td>
-    <td>aaaa</td>
-    <td>aaaa</td>
-    <td>aaaa</td>
-    <td>aaaa</td>
+    <tr>
+      <td>국기 미국(달러) USD</td>
+      <td>국기 일본(엔) JPY</td>
+      <td>국기 유럽(유로) EUR</td>
+      <td>국기 영국(파운드) GBP</td>
+    </tr>
+
+    <tr>
+      <td>국기 캐나다(캐나다 달러) CAD</td>
+      <td>국기 홍콩(홍콩 달러) HKD</td>
+      <td>국기 호주(호주 달러) AUD</td>
+      <td>국기 중국(위안) CNY</td>
+    </tr>
+
+    <tr>
+      <td>국기 싱가폴(싱가폴 달러) SGD</td>
+      <td>국기 뉴질랜드(뉴질랜드 달러) NZD</td>
+      <td>국기 태국(태국 바트) THB</td>
+      <td>국기 베트남(베트남 동) VND</td>
+    </tr>
+
+    <tr>
+      <td>국기 대만(대만 달러) TWD</td>
+      <td>국기 필리핀(필리핀 페소) PHP</td>
+    </tr>
+
   </table>
-  <table>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-  </table>
-  <table>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-  </table>
-  <table>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-  </table>
-  <table>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-    <td>bbbbb</td>
-  </table>
+
+  
+  
     <Table>
       <Table.Header>
         <Table.ColHeader>은행</Table.ColHeader>
