@@ -7,8 +7,6 @@ import Account from '../Account'
 function BankSelected() {
     const token = window.localStorage.getItem("token");
     const [bankGroup, setBankGroup] = React.useState([])
-    const [bank, setBank] = React.useState(true)
-    const [userid, setUserid] = React.useState()
 
     //선택한 은행 값
     const [bankSelect, setBankSelect] = React.useState({
@@ -33,7 +31,6 @@ function BankSelected() {
     }
     
     const bankSubmit = () => {
-        console.log(bankSelect)
         Account.post("update", bankSelect, {
             headers: {
                 Authorization: "JWT " + token
@@ -41,7 +38,9 @@ function BankSelected() {
         })
         .then(response=>{
             const {data} = response
-            console.log(data)
+            if(data.result){
+                alert('수정이 완료되었습니다.')
+            }
         })
         .catch(error=>{
             console.error(error)
@@ -56,7 +55,6 @@ function BankSelected() {
         })
         .then(response=>{
           const {data} = response
-            console.log(data)
           setBankSelect({
             hana: data.hana,
             woori: data.woori,
@@ -95,28 +93,20 @@ function BankSelected() {
     <Card.Body className="p-6 bankstyle">
         <Card.Title RootComponent="div">내 은행 설정</Card.Title>
         {/* map함수 써서 반복문 돌게~~ */}
-        {
-                  (() => {
-                    //함수
-                    if(bank)
-                      return <Form.Group>
-                                {bankGroup.map((v) =>
-                                    <>
-                                    <Form.Checkbox 
-                                        isInline 
-                                        label={<img src={"./demo/bank_logo/"+v.bank_logo+".png"} 
-                                        alt={"bank_"+v.bank_logo} />}
-                                        checked={bankSelect[v.bank_logo]}
-                                        name={v.bank_logo}
-                                        onChange={bankClick}
-                                    />
-                                    </>
-                                    )}
-                            </Form.Group>
-                  })()
-                }
-        
-
+        <Form.Group>
+            {bankGroup.map((v) =>
+                <>
+                <Form.Checkbox 
+                    isInline 
+                    label={<img src={"./demo/bank_logo/"+v.bank_logo+".png"} 
+                    alt={"bank_"+v.bank_logo} />}
+                    checked={bankSelect[v.bank_logo]}
+                    name={v.bank_logo}
+                    onChange={bankClick}
+                />
+                </>
+                )}
+        </Form.Group>
         <Form.Footer>
             <Button type="button" color="primary" onClick={bankSubmit} block={true}>저장</Button>
         </Form.Footer>

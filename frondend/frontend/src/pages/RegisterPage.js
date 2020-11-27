@@ -56,7 +56,6 @@ function RegisterPage({history}) {
   },[])
 
   const idCheck = () => {
-    console.log(user.username.length)
     if(user.username.length < 6){
       alert('아이디는 6글자 이상이여야 합니다.')
     }else{
@@ -114,7 +113,6 @@ function RegisterPage({history}) {
   }
 
   const movePage = () => {
-    console.log(user.password.length)
     if(!idState){
       alert('아이디 중복체크를 확인해야 합니다.')
     }else if(user.password.length < 4){
