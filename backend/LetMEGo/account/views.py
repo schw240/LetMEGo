@@ -136,3 +136,17 @@ def DeleteUserAPI(request):
     request.user.delete()
 
     return Response({'result': True})
+
+@api_view(['GET'])
+def OnlyUserInfoAPI(request):
+    user = User.objects.get(username=request.user)
+    # user = get_object_or_404(User, username=user)
+    serializer = UserInfoSerializer(user)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def OnlyUserBankInfoAPI(request):
+    user = User.objects.get(username=request.user)
+    user_id = User_bank.objects.get(user_id=user.id)
+    user_bank = CreateUserBankSerializer(user_id)
+    return Response(user_bank.data)
