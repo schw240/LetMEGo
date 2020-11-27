@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from .models import User_bank, Withdrawal, User
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.hashers import check_password
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 # Create your views here.
 from collections import Counter
 import json
@@ -52,19 +54,13 @@ def Regist(request):
 @permission_classes([AllowAny])
 def LoginAPI(request):
 
-    if request.method == 'POST':
-        serializer = LoginUserSerializer(data=request.data)
-
-        if not serializer.is_valid(raise_exception=True):
-            return Response({"message": "Request Body Error."}, status=status.HTTP_409_CONFLICT)
-        if serializer.validated_data['username'] == "None":
-            return Response({'message': 'fail'}, status=status.HTTP_200_OK)
-
-        response = {
-            'success': 'True',
-            'token': serializer.data['token']
-        }
-        return Response(response, status=status.HTTP_200_OK)
+    serializer = LoginUserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    response = {
+        'success': 'True',
+        'token': serializer.data['token']
+    }
+    return Response(response, status=status.HTTP_200_OK)
 
 
 class UserAPI(ModelViewSet):
@@ -139,6 +135,7 @@ def UserInfoAPI(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def DeleteUserAPI(request):
     user = User.objects.get(username=request.user)
     request.user.delete()
