@@ -15,7 +15,7 @@ function LoginPage({history}){
     }
   }, []);
   
-  const onSubmit = () => { //로그인 토큰작업은 여기서!?
+  const onSubmit = () => {
     Account.post("login", {
       "username" : user.id,
       "password" : user.pw,
