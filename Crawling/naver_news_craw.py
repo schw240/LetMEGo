@@ -87,6 +87,8 @@ def pageCrawl(conn):
                         upload_date = news_date.text
                         content = pretty_news_article
 
+                        
+
                         twitter = Twitter()
                         sentence = twitter.pos(pretty_news_article)
 

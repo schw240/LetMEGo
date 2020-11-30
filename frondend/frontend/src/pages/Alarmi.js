@@ -58,50 +58,55 @@ function MoreNews() {
 
 function ProMo() {
 
+  const [alam, setAlam] = React.useState("USD")
+
+  
+
   const [prom, setProm] = React.useState([]);
 
   useEffect(() => {
-    Api.get("bankgroup_list/?country_name="+"USD").then((res) => {
+    console.log(alam)
+    Api.get("bankgroup_list/?country_name="+alam).then((res) => {
       const {data} = res
       setProm(data)
       console.log(data)
     })
-  },[])
+  },[alam])
 
   return <> 
   <table className="button">
     <tr>
      
       <td >
-        <Button outline color="secondary" pill color="primary">
+        <Button onClick={() => {setAlam("USD")}} outline color="secondary" pill color="primary">
         <span><img src={USD_round} width="50"/></span>
         <span style={{padding:"10px"}}>미국 USD</span>
         </Button>
       </td>
       
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("JPY")}} outline color="secondary" pill color="primary"> 
         <span><img src={JPY_round} width="50"/></span>
         <span style={{padding:"10px"}}>일본 JPY</span>
         </Button>
       </td>
 
       <td>
-        <Button outline color="secondary" pill color="primary">
+        <Button onClick={() => {setAlam("EUR")}} outline color="secondary" pill color="primary">
         <span><img src={EUR_round} height="30" width="50"/></span>
         <span style={{padding:"10px"}}>유럽 EUR</span> 
         </Button>
       </td>
 
       <td>
-        <Button  outline color="secondary" pill color="primary"> 
+        <Button  onClick={() => {setAlam("GBP")}} outline color="secondary" pill color="primary"> 
         <span><img src={GBP_round} width="50"/></span>
         <span style={{padding:"10px"}}>영국 GBP</span>
         </Button>
       </td>
 
       <td>
-        <Button outline color="secondary" pill color="primary">
+        <Button onClick={() => {setAlam("VND")}} outline color="secondary" pill color="primary">
         <span><img src={VND_round} height="30" width="50"/></span>
         <span style={{padding:"10px"}}>베트남 VND</span>
         </Button>
@@ -111,35 +116,35 @@ function ProMo() {
 
     <tr>
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("CAD")}} outline color="secondary" pill color="primary"> 
         <span><img src={CAD_round} width="50"/></span>
         <span style={{padding:"10px"}}>캐나다 CAD</span>
         </Button>
       </td>
   
       <td>
-        <Button outline color="secondary" pill color="primary">
+        <Button onClick={() => {setAlam("CHF")}} outline color="secondary" pill color="primary">
         <span><img src={CHF_round} height="30" width="50"/></span> 
         <span style={{padding:"10px"}}>스위스 CHF</span>
         </Button>
       </td>
       
       <td>
-        <Button outline color="secondary" pill color="primary">
+        <Button onClick={() => {setAlam("HKD")}} outline color="secondary" pill color="primary">
         <span><img src={HKD_round} height="30" width="50"/></span> 
         <span style={{padding:"10px"}}>홍콩 HKD</span>
         </Button>
       </td>
       
       <td>
-        <Button outline color="secondary" pill color="primary">
+        <Button onClick={() => {setAlam("AUD")}} outline color="secondary" pill color="primary">
           <span><img src={AUD_round} width="50"/></span> 
           <span style={{padding:"10px"}}>호주 AUD</span>
         </Button>
       </td>
       
       <td>
-        <Button  outline color="secondary" pill color="primary"> 
+        <Button  onClick={() => {setAlam("TWD")}} outline color="secondary" pill color="primary"> 
         <span><img src={TWD_round} height="30" width="50"/></span>
         <span style={{padding:"10px"}}>대만 TWD</span>
         </Button>
@@ -149,35 +154,35 @@ function ProMo() {
 
     <tr>
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("CNY")}} outline color="secondary" pill color="primary"> 
         <span><img src={CHY_round} height="30" width="50"/></span>
-        <span style={{padding:"10px"}}>중국 CHY</span>
+        <span style={{padding:"10px"}}>중국 CNY</span>
         </Button>
       </td>
 
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("SGD")}} outline color="secondary" pill color="primary"> 
         <span><img src={SGD_round} height="30" width="50"/></span>
         <span style={{padding:"10px"}}>싱가폴 SGD</span>
         </Button>
       </td>
       
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("NZD")}} outline color="secondary" pill color="primary"> 
         <span><img src={NZD_round} width="50"/></span>
         <span style={{padding:"10px"}}>뉴질랜드 NZD</span>
         </Button>
       </td>
       
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("THB")}} outline color="secondary" pill color="primary"> 
         <span><img src={THB_round}  height="30" width="50"/></span>
         <span style={{padding:"10px"}}>태국 THB</span>
         </Button>
       </td>
       
       <td>
-        <Button outline color="secondary" pill color="primary"> 
+        <Button onClick={() => {setAlam("PHP")}} outline color="secondary" pill color="primary"> 
         <span><img src={PHP_round} width="50"/></span>
         <span style={{padding:"10px"}}>필리핀 PHP</span>
         </Button>
