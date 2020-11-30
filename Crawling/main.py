@@ -45,7 +45,7 @@ from taiwan_craw import taiwan_craw
 from thailand_craw import thailand_craw
 from turkey_craw import turkey_craw
 from vietnam_craw import viet_crawling
-
+from mailing import send_email
 from naver_news_craw import pageCrawl
 from realtime_info import realtime_info_craw
 from xgboost_USD import xgboost_dollar
@@ -61,7 +61,10 @@ import pandas as pd
 import time
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-
+import matplotlib.pyplot as plt
+import base64
+from PIL import Image
+from io import BytesIO
 
 # Schedulering
 sched = BlockingScheduler()
@@ -189,10 +192,24 @@ def five_min():
     conn.close()
 
 
+def email_hour():
+    conn = DBConnect()
+
+    # 이메일
+    send_email(conn)
+    res_usd, res_yen, res_euro = send_email(conn)
+    img_usd = Image.open(BytesIO(base64.b64decode(res_usd)))
+    img_yen = Image.open(BytesIO(base64.b64decode(res_yen)))
+    img_euro = Image.open(BytesIO(base64.b64decode(res_euro)))
+    print("이미지 생성 완료")
+    conn.close()
+
+
 sched.add_job(five_min, 'interval', seconds=300)  # 1분에 한번씩 저장
 sched.add_job(thirty_minute, 'interval', seconds=1800)  # 1800초마다 돌아감(30분)
 sched.add_job(one_hour, 'interval', seconds=3600)  # 3600초마다 돌아감 (1시간)
 # 매일 정해진 hour에 돌아가게 함 # 테스트로 오전 11시에 돌아가게
 sched.add_job(one_day, 'cron', hour=12)
+sched.add_job(email_hour, 'interval', seconds=30)
 
 sched.start()

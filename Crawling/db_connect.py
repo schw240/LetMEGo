@@ -1,5 +1,4 @@
 import pymysql
-from send_mail import sendMail
 
 # 마이뱅크 크롤링해서 DB에 넣기
 
