@@ -72,3 +72,18 @@
     height: 50%;
     width: 50%;
 }
+
+
+.button button {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;   
+}
+
+
+.aud {
+    padding-left: 20px;
+}

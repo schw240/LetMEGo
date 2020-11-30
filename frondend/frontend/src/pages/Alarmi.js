@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Api from '../Api';
 import SiteWrapper from '../SiteWrapper';
-import { Form, Page, Grid, Card, colors, Tab, Tabs, Table, Dropdown} from "tabler-react";  
+import {Page, Card, Tab, Tabs, Table, Button } from "tabler-react";  
 import './Alarmi.css'
+import AUD_round from '../assets/images/flag/AUD_round.png'
+import CAD_round from '../assets/images/flag/CAD_round.png'
+import CHF_round from '../assets/images/flag/CHF_round.png'
+import CHY_round from '../assets/images/flag/CHY_round.png'
+import EUR_round from '../assets/images/flag/EUR_round.png'
+import GBP_round from '../assets/images/flag/GBP_round.png'
+import HKD_round from '../assets/images/flag/HKD_round.png'
+import JPY_round from '../assets/images/flag/JPY_round.png'
+import NZD_round from '../assets/images/flag/NZD_round.png'
+import PHP_round from '../assets/images/flag/PHP_round.png'
+import SGD_round from '../assets/images/flag/SGD_round.png'
+import THB_round from '../assets/images/flag/THB_round.png'
+import TWD_round from '../assets/images/flag/TWD_round.png'
+import USD_round from '../assets/images/flag/USD_round.png'
+import VND_round from '../assets/images/flag/VND_round.png'
 
 function MoreNews() {
 
@@ -27,13 +42,11 @@ function MoreNews() {
   return <> {
     news.map((value) => {
       return <div className="p">
-        
-      
+            
         <div className="companyStyle"> [{value.company}] </div>
         <div className="titleStyle">{value.title} <div className="dateStyle">-{value.upload_date}</div></div>
         <div className="contentStyle">{(value.content).substring(1,205)}<a target = "_blank" href = {value.link}>....>>> 클릭</a></div>
         
-
         </div>
     })
   }  
@@ -64,33 +77,121 @@ function ProMo() {
   },[])
 
   return <> 
-  <table>
+  <table className="button">
     <tr>
-      <td>국기 미국(달러) USD</td>
-      <td>국기 일본(엔) JPY</td>
-      <td>국기 유럽(유로) EUR</td>
-      <td>국기 영국(파운드) GBP</td>
+     
+      <td >
+        <Button outline color="secondary" pill color="primary">
+        <span><img src={USD_round} width="50"/></span>
+        <span style={{padding:"10px"}}>미국 USD</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={JPY_round} width="50"/></span>
+        <span style={{padding:"10px"}}>일본 JPY</span>
+        </Button>
+      </td>
+
+      <td>
+        <Button outline color="secondary" pill color="primary">
+        <span><img src={EUR_round} height="30" width="50"/></span>
+        <span style={{padding:"10px"}}>유럽 EUR</span> 
+        </Button>
+      </td>
+
+      <td>
+        <Button  outline color="secondary" pill color="primary"> 
+        <span><img src={GBP_round} width="50"/></span>
+        <span style={{padding:"10px"}}>영국 GBP</span>
+        </Button>
+      </td>
+
+      <td>
+        <Button outline color="secondary" pill color="primary">
+        <span><img src={VND_round} height="30" width="50"/></span>
+        <span style={{padding:"10px"}}>베트남 VND</span>
+        </Button>
+      </td>
+    
     </tr>
 
     <tr>
-      <td>국기 캐나다(캐나다 달러) CAD</td>
-      <td>국기 홍콩(홍콩 달러) HKD</td>
-      <td>국기 호주(호주 달러) AUD</td>
-      <td>국기 중국(위안) CNY</td>
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={CAD_round} width="50"/></span>
+        <span style={{padding:"10px"}}>캐나다 CAD</span>
+        </Button>
+      </td>
+  
+      <td>
+        <Button outline color="secondary" pill color="primary">
+        <span><img src={CHF_round} height="30" width="50"/></span> 
+        <span style={{padding:"10px"}}>스위스 CHF</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button outline color="secondary" pill color="primary">
+        <span><img src={HKD_round} height="30" width="50"/></span> 
+        <span style={{padding:"10px"}}>홍콩 HKD</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button outline color="secondary" pill color="primary">
+          <span><img src={AUD_round} width="50"/></span> 
+          <span style={{padding:"10px"}}>호주 AUD</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button  outline color="secondary" pill color="primary"> 
+        <span><img src={TWD_round} height="30" width="50"/></span>
+        <span style={{padding:"10px"}}>대만 TWD</span>
+        </Button>
+      </td>    
+    
     </tr>
 
     <tr>
-      <td>국기 싱가폴(싱가폴 달러) SGD</td>
-      <td>국기 뉴질랜드(뉴질랜드 달러) NZD</td>
-      <td>국기 태국(태국 바트) THB</td>
-      <td>국기 베트남(베트남 동) VND</td>
-    </tr>
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={CHY_round} height="30" width="50"/></span>
+        <span style={{padding:"10px"}}>중국 CHY</span>
+        </Button>
+      </td>
 
-    <tr>
-      <td>국기 대만(대만 달러) TWD</td>
-      <td>국기 필리핀(필리핀 페소) PHP</td>
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={SGD_round} height="30" width="50"/></span>
+        <span style={{padding:"10px"}}>싱가폴 SGD</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={NZD_round} width="50"/></span>
+        <span style={{padding:"10px"}}>뉴질랜드 NZD</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={THB_round}  height="30" width="50"/></span>
+        <span style={{padding:"10px"}}>태국 THB</span>
+        </Button>
+      </td>
+      
+      <td>
+        <Button outline color="secondary" pill color="primary"> 
+        <span><img src={PHP_round} width="50"/></span>
+        <span style={{padding:"10px"}}>필리핀 PHP</span>
+        </Button>
+      </td>   
+    
     </tr>
-
   </table>
 
   
@@ -106,12 +207,14 @@ function ProMo() {
         {
               prom.map((value) => {
                 return (
+                  
                   <Table.Row>
                     <Table.Col className="tableProm">{value.bank_name}</Table.Col>
                     <Table.Col className="maxRate">{value.maxprefrate}</Table.Col>
                     <Table.Col>{value.treatandevent}</Table.Col>
                     <Table.Col className="baseDate">{value.basedate}</Table.Col>
                   </Table.Row>
+                  
                   )
             })
         }
@@ -163,16 +266,16 @@ function AlarMie() {
 
       </Tab>
 
+      
+
       <Tab title="ME Promotion">
-        <Card><NationList/></Card>
-      
-        <Card className="container"><ProMo/></Card>
-      
-      
+           
+        <Card className="scrol" className="container"><ProMo/></Card>  
+             
       </Tab>
-      
+           
     </Tabs>
-    </Page.Content>
+      </Page.Content>
     </SiteWrapper>   
     
     )
