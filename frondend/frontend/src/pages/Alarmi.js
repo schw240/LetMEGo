@@ -60,17 +60,9 @@ function ProMo() {
 
   const [prom, setProm] = React.useState([]);
 
-  
-
   useEffect(() => {
-    Api.get("bankgroup_list/").then((res) => {
-
-      const data = []
-
-      for(let i = 0; i < 20; i++) {
-        data.push((res.data[i]))
-      }
-
+    Api.get("bankgroup_list/?country_name="+"USD").then((res) => {
+      const {data} = res
       setProm(data)
       console.log(data)
     })
