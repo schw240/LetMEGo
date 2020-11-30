@@ -120,7 +120,8 @@ class NaverNews(models.Model):
 
 class RealTimeInfo(models.Model):
     seq = models.AutoField(primary_key=True)
-    time = models.CharField(max_length=30, verbose_name='시간')
+    datetime = models.CharField(
+        max_length=30, null=True, verbose_name='날짜 및 시간')
     basePrice = models.CharField(
         max_length=20, null=True, verbose_name='매매 기준율')
     signedChangePrice = models.CharField(
@@ -137,21 +138,49 @@ class RealTimeInfo(models.Model):
         verbose_name_plural = '실시간 환율 정보'
 
 
-class XGBoostInfo(models.Model):
+class XGBoostInfo_USD(models.Model):
     seq = models.AutoField(primary_key=True)
-    date = models.DateField(max_length=30, verbose_name='날짜')
+    date = models.DateField(max_length=30, verbose_name='날짜', null=True)
     dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
 
     def __str__(self):
         return self.date
 
     class Meta:
-        db_table = 'XGBoost_Info'
+        db_table = 'XGBoost_USDInfo'
         verbose_name = 'XGboost예측테이블'
         verbose_name_plural = 'XGboost예측테이블'
 
 
-class LSTMInfo(models.Model):
+class XGBoostInfo_YEN(models.Model):
+    seq = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=30, verbose_name='날짜', null=True)
+    yen_close = models.FloatField(null=True, verbose_name='엔 종가')
+
+    def __str__(self):
+        return self.date
+
+    class Meta:
+        db_table = 'XGBoost_YENInfo'
+        verbose_name = 'XGboost예측테이블'
+        verbose_name_plural = 'XGboost예측테이블'
+
+
+class XGBoostInfo_EURO(models.Model):
+    seq = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=30, verbose_name='날짜', null=True)
+    euro_close = models.FloatField(null=True, verbose_name='유로 종가')
+
+    def __str__(self):
+        return self.date
+
+    class Meta:
+        db_table = 'XGBoost_EUROInfo'
+        verbose_name = 'XGboost예측테이블'
+        verbose_name_plural = 'XGboost예측테이블'
+
+
+class LSTMInfo_USD(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜')
     dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
@@ -160,6 +189,34 @@ class LSTMInfo(models.Model):
         return self.date
 
     class Meta:
-        db_table = 'LSTM_Info'
-        verbose_name = 'LSTM예측테이블'
-        verbose_name_plural = 'LSTM예측테이블'
+        db_table = 'LSTM_Info_USD'
+        verbose_name = 'LSTM달러테이블'
+        verbose_name_plural = 'LSTM달러테이블'
+
+
+class LSTMInfo_YEN(models.Model):
+    seq = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=30, verbose_name='날짜')
+    yen_close = models.FloatField(null=True, verbose_name='엔 종가')
+
+    def __str__(self):
+        return self.date
+
+    class Meta:
+        db_table = 'LSTM_Info_YEN'
+        verbose_name = 'LSTM엔테이블'
+        verbose_name_plural = 'LSTM엔테이블'
+
+
+class LSTMInfo_EURO(models.Model):
+    seq = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=30, verbose_name='날짜')
+    euro_close = models.FloatField(null=True, verbose_name='유로 종가')
+
+    def __str__(self):
+        return self.date
+
+    class Meta:
+        db_table = 'LSTM_Info_EURO'
+        verbose_name = 'LSTM유로테이블'
+        verbose_name_plural = 'LSTM유로테이블'

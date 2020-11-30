@@ -9,7 +9,22 @@ from rest_framework.permissions import IsAuthenticated
 from collections import Counter
 import json
 
-from .models import MostCheapBank, ForeignBank, BankgroupInfo, NaverNews, BankInfo, CountryInfo, RealTimeInfo, XGBoostInfo, LSTMInfo
+from .models import (
+    MostCheapBank,
+    ForeignBank,
+    BankgroupInfo,
+    NaverNews,
+    BankInfo,
+    CountryInfo,
+    RealTimeInfo,
+    XGBoostInfo_YEN,
+    XGBoostInfo_USD,
+    XGBoostInfo_EURO,
+    LSTMInfo_YEN,
+    LSTMInfo_USD,
+    LSTMInfo_EURO,
+)
+
 from .serializers import (
     MostCheapBankSerializer,
     BankgroupInfoSerializer,
@@ -18,8 +33,12 @@ from .serializers import (
     BankInfoSerializer,
     CountryInfoSerializer,
     RealTimeInfoSerializer,
-    XGBoostInfoSerializer,
-    LSTMInfoSerializer,
+    XGBoostEUROInfoSerializer,
+    XGBoostUSDInfoSerializer,
+    XGBoostYENInfoSerializer,
+    LSTMUSDSerializer,
+    LSTMYENSerializer,
+    LSTMEUROSerializer,
 )
 
 
@@ -111,11 +130,31 @@ class ListRealTimeInfo(ModelViewSet):
     serializer_class = RealTimeInfoSerializer
 
 
-class ListXGBoostInfo(ModelViewSet):
-    queryset = XGBoostInfo.objects.all()
-    serializer_class = XGBoostInfoSerializer
+class ListXGBoostUSD(ModelViewSet):
+    queryset = XGBoostInfo_USD.objects.all()
+    serializer_class = XGBoostUSDInfoSerializer
 
 
-class ListLSTMInfo(ModelViewSet):
-    queryset = LSTMInfo.objects.all()
-    serializer_class = LSTMInfoSerializer
+class ListXGBoostYEN(ModelViewSet):
+    queryset = XGBoostInfo_YEN.objects.all()
+    serializer_class = XGBoostYENInfoSerializer
+
+
+class ListXGBoostEURO(ModelViewSet):
+    queryset = XGBoostInfo_EURO.objects.all()
+    serializer_class = XGBoostEUROInfoSerializer
+
+
+class ListLSTMUSDInfo(ModelViewSet):
+    queryset = LSTMInfo_USD.objects.all()
+    serializer_class = LSTMUSDSerializer
+
+
+class ListLSTMYENInfo(ModelViewSet):
+    queryset = LSTMInfo_YEN.objects.all()
+    serializer_class = LSTMYENSerializer
+
+
+class ListLSTMEUROInfo(ModelViewSet):
+    queryset = LSTMInfo_EURO.objects.all()
+    serializer_class = LSTMEUROSerializer

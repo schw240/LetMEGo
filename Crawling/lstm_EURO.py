@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM
-from db_connect import lstm_res, lstm_res_remove
+from db_connect import lstm_euro_res, lstm_euro_remove
 from helper_connect import DBConnect  # 디비 연결
 
 
@@ -20,7 +20,7 @@ def getDay(year, month, date_v):
     return day[bday]
 
 
-def lstm_forecast(conn, df):
+def lstm_euro(conn, df):
     data = df
     dataset = data.values
     training_data_len = math.ceil(len(dataset) * .8)
@@ -69,7 +69,7 @@ def lstm_forecast(conn, df):
     valid = data[training_data_len:]
     valid['Predictions'] = predictions
 
-    df = web.DataReader('KRW=X', data_source='yahoo', start='2003-01-01')
+    df = web.DataReader('EURKRW=X', data_source='yahoo', start='2003-01-01')
     new_df = df.filter(['Close'])
     last_60_days = new_df[-60:].values
 
@@ -88,20 +88,17 @@ def lstm_forecast(conn, df):
 
 if __name__ == "__main__":
     conn = DBConnect()
-    df = web.DataReader('KRW=X', data_source='yahoo', start='2003-01-01')
+    df = web.DataReader('EURKRW=X', data_source='yahoo', start='2003-01-01')
     data = df.filter(['Close'])
     for i in range(1, 31):
         today = date.today() + relativedelta(days=+i)
         if getDay(today.year, today.month, today.day) == 'Sat' or getDay(today.year, today.month, today.day) == 'Sun':
             continue
         else:
-            result = lstm_forecast(conn, data)
-            print(result, "실행문 result")
+            result = lstm_euro(conn, data)
             data = data.reset_index()
-            print(data, "위")
             data = data.append({"Date": pd.Timestamp(
                 today), "Close": float(result)}, ignore_index=True)
         data = data.set_index("Date")
-        print(data, "아래")
-        lstm_res(conn, today, result)
-        lstm_res_remove(conn)
+        lstm_euro_res(conn, today, result)
+        lstm_euro_remove(conn)

@@ -8,7 +8,7 @@ from bayes_opt import BayesianOptimization
 import xgboost as xgb
 from yahoo_api import currency_craw
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, r2_score, mean_absolute_error, mean_squared_error
-from db_connect import xgboost_res, xgboost_res_remove
+from db_connect import xgboost_YEN, xgboost_YEN_remove
 from helper_connect import DBConnect  # 디비 연결
 
 # VIZ AND DATA MANIPULATION LIBRARY
@@ -24,19 +24,18 @@ def getDay(year, month, date_v):
     return day[bday]
 
 
-def xgboost_forecast(conn, num, df):
+def xgboost_yen(conn, num, df):
     # 이거를 num만큼 반복
     for j in range(1, num+1):
         print("{}번째".format(j))
         df_xg = df
         # 1일 추가하고 주말제거하기
         today = date.today() + relativedelta(days=+j)
-        # df_xg.dollar_close[-10:-5].mean(),
         if getDay(today.year, today.month, today.day) == 'Sat' or getDay(today.year, today.month, today.day) == 'Sun':
             continue
         else:
             df_xg = df_xg.append({"Date": pd.Timestamp(
-                today), "dollar_close": float('nan')}, ignore_index=True)
+                today), "yen_close": float('nan')}, ignore_index=True)
 
         # 하루씩 추가하면서 예측하고 그 다음날을 추가해서 1주일, 2주일, 1달 이렇게 빼서 확인해보기
 
@@ -53,10 +52,10 @@ def xgboost_forecast(conn, num, df):
         # 이것을 lag(지연 데이터라고 표현)
         # lag 데이터를 만들어보도록 함
         for i in range(1, 6):
-            df_xg['lag'+str(i)] = df_xg.dollar_close.shift(i).fillna(0)
+            df_xg['lag'+str(i)] = df_xg.yen_close.shift(i).fillna(0)
 
-        X = df_xg.drop('dollar_close', axis=1)
-        y = df_xg.dollar_close
+        X = df_xg.drop('yen_close', axis=1)
+        y = df_xg.yen_close
 
         X_train, X_test = X[:-1], X[-1:]
         y_train, y_test = y[:-1], y[-1:]
@@ -95,28 +94,28 @@ def xgboost_forecast(conn, num, df):
         predictions = model.predict(dtest)
 
         lenv_ = len(df_xg)
-        df_xg.dollar_close[lenv_-1] = predictions
+        df_xg.yen_close[lenv_-1] = predictions
         df_xg = df_xg.drop(['day', 'dayofweek', 'dayofyear', 'week', 'month',
                             'year', 'day', 'lag1', 'lag2', 'lag3', 'lag4', 'lag5'], axis=1)
         if getDay(today.year, today.month, today.day) == 'Sat' or getDay(today.year, today.month, today.day) == 'Sun':
             continue
         else:
             df = df.append({"Date": pd.Timestamp(today),
-                            "dollar_close": predictions[0]}, ignore_index=True)
-        dollar_close = float(predictions[0])
+                            "yen_close": predictions[0]}, ignore_index=True)
+        yen_close = float(predictions[0])
         print(today)
         print(type(today))
-        print(dollar_close)
-        print(type(dollar_close))
-        xgboost_res(conn, today, dollar_close)
-        xgboost_res_remove(conn)
+        print(yen_close)
+        print(type(yen_close))
+        xgboost_YEN(conn, today, yen_close)
+        xgboost_YEN_remove(conn)
     return
 
 
 if __name__ == "__main__":
     df_xg = pd.DataFrame()
-    df_xg, df_notuse = currency_craw()
+    df_notuse, df_xg, df_notuse2 = currency_craw()
     df_xg = df_xg.reset_index()
     conn = DBConnect()
 
-    xgboost_forecast(conn, 30, df_xg)
+    xgboost_yen(conn, 30, df_xg)

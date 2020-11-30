@@ -11,8 +11,12 @@ router.register('navernews', views.ListNaverNews)
 router.register('bankinfo', views.ListBankInfo)
 router.register('countryinfo', views.ListCountryInfo)
 router.register('realtimeinfo', views.ListRealTimeInfo)
-router.register('xgboostinfo', views.ListXGBoostInfo)
-router.register('lstminfo', views.ListLSTMInfo)
+router.register('xgboost_usd', views.ListXGBoostUSD)
+router.register('xgboost_yen', views.ListXGBoostYEN)
+router.register('xgboost_euro', views.ListXGBoostEURO)
+router.register('lstm_usd', views.ListLSTMUSDInfo)
+router.register('lstm_yen', views.ListLSTMYENInfo)
+router.register('lstm_euro', views.ListLSTMEUROInfo)
 
 urlpatterns = [
     path('', include(router.urls)),

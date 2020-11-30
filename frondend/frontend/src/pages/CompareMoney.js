@@ -133,7 +133,7 @@ function CardsDesignPage() {
       <Page.Content>
         <div
           style={{
-            border: '1px solid black',
+            backgroundColor: 'white',
             marginTop: '50px',
             overflow: 'hidden',
             padding: '30px',
@@ -188,7 +188,7 @@ function CardsDesignPage() {
         <br />
         <div
           style={{
-            border: '1px solid black',
+            backgroundColor: 'white',
             marginTop: '20px',
             overflow: 'hidden',
             padding: '30px',
@@ -252,7 +252,7 @@ function CardsDesignPage() {
         <br />
         <div
           style={{
-            border: '1px solid black',
+            backgroundColor: 'white',
             marginTop: '20px',
             overflow: 'hidden',
             padding: '30px',

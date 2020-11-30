@@ -127,11 +127,12 @@ def naver_news_remove(conn):
 # 실시간 환율정보 저장
 
 
-def realtime(conn, time, basePrice, signedChangePrice, signedChangeRate):
+def realtime(conn, datetime, basePrice, signedChangePrice, signedChangeRate):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO RealTime_Info(time, basePrice, signedChangePrice, signedChangeRate) values(%s,%s,%s,%s);"
-    cursor.execute(sql, (time, basePrice, signedChangePrice, signedChangeRate))
+    sql = "INSERT INTO RealTime_Info(datetime, basePrice, signedChangePrice, signedChangeRate) values(%s,%s,%s,%s);"
+    cursor.execute(sql, (datetime, basePrice,
+                         signedChangePrice, signedChangeRate))
     conn.commit()
 
 
@@ -155,19 +156,19 @@ def realtime_remove(conn):
     conn.commit()
 
 
-def xgboost_res(conn, date, dollar_close):
+def xgboost_USD(conn, date, dollar_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO XGBoost_Info(date, dollar_close) values(%s,%s);"
+    sql = "INSERT INTO XGBoost_USDInfo(date, dollar_close) values(%s,%s);"
     cursor.execute(sql, (date, dollar_close))
     conn.commit()
 
 
-def xgboost_res_remove(conn):
+def xgboost_USD_remove(conn):
     cursor = conn.cursor()
 
     sql = """SELECT seq
-             FROM XGBoost_Info  
+             FROM XGBoost_USDInfo  
          ORDER BY seq DESC 
             limit 31"""
 
@@ -176,26 +177,26 @@ def xgboost_res_remove(conn):
 
     print(results[-1][0])
 
-    sql = f"""DELETE FROM XGBoost_Info
+    sql = f"""DELETE FROM XGBoost_USDInfo
               WHERE seq < {results[-1][0]}"""
 
     cursor.execute(sql)
     conn.commit()
 
 
-def lstm_res(conn, date, dollar_close):
+def xgboost_YEN(conn, date, yen_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO LSTM_Info(date, dollar_close) values(%s,%s);"
-    cursor.execute(sql, (date, dollar_close))
+    sql = "INSERT INTO XGBoost_YENInfo(date, yen_close) values(%s,%s);"
+    cursor.execute(sql, (date, yen_close))
     conn.commit()
 
 
-def lstm_res_remove(conn):
+def xgboost_YEN_remove(conn):
     cursor = conn.cursor()
 
     sql = """SELECT seq
-             FROM LSTM_Info  
+             FROM XGBoost_YENInfo  
          ORDER BY seq DESC 
             limit 31"""
 
@@ -204,7 +205,119 @@ def lstm_res_remove(conn):
 
     print(results[-1][0])
 
-    sql = f"""DELETE FROM LSTM_Info
+    sql = f"""DELETE FROM XGBoost_YENInfo
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()
+
+
+def xgboost_EURO(conn, date, euro_close):
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO XGBoost_EUROInfo(date, euro_close) values(%s,%s);"
+    cursor.execute(sql, (date, euro_close))
+    conn.commit()
+
+
+def xgboost_EURO_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT seq
+             FROM XGBoost_EUROInfo  
+         ORDER BY seq DESC 
+            limit 31"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM XGBoost_EUROInfo
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()
+
+
+def lstm_usd_res(conn, date, dollar_close):
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO LSTM_Info_USD(date, dollar_close) values(%s,%s);"
+    cursor.execute(sql, (date, dollar_close))
+    conn.commit()
+
+
+def lstm_usd_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT seq
+             FROM LSTM_Info_USD
+         ORDER BY seq DESC 
+            limit 31"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM LSTM_Info_USD
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()
+
+
+def lstm_yen_res(conn, date, yen_close):
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO LSTM_Info_YEN(date, yen_close) values(%s,%s);"
+    cursor.execute(sql, (date, yen_close))
+    conn.commit()
+
+
+def lstm_yen_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT seq
+             FROM LSTM_Info_YEN
+         ORDER BY seq DESC 
+            limit 31"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM LSTM_Info_YEN
+              WHERE seq < {results[-1][0]}"""
+
+    cursor.execute(sql)
+    conn.commit()
+
+
+def lstm_euro_res(conn, date, euro_close):
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO LSTM_Info_EURO(date, euro_close) values(%s,%s);"
+    cursor.execute(sql, (date, euro_close))
+    conn.commit()
+
+
+def lstm_euro_remove(conn):
+    cursor = conn.cursor()
+
+    sql = """SELECT seq
+             FROM LSTM_Info_EURO
+         ORDER BY seq DESC 
+            limit 31"""
+
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    print(results[-1][0])
+
+    sql = f"""DELETE FROM LSTM_Info_EURO
               WHERE seq < {results[-1][0]}"""
 
     cursor.execute(sql)

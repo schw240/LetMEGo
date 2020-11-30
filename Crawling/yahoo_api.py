@@ -33,4 +33,4 @@ def currency_craw():
     df_oil = df_oil.join(df_euro)
 
     df_currency = df_oil
-    return df_dollar, df_currency
+    return df_dollar, df_yen, df_euro

@@ -48,8 +48,13 @@ from vietnam_craw import viet_crawling
 
 from naver_news_craw import pageCrawl
 from realtime_info import realtime_info_craw
-from xgboost_t import xgboost_forecast
-from lstm_t import lstm_forecast
+from xgboost_USD import xgboost_dollar
+from xgboost_EURO import xgboost_euro, getDay
+from xgboost_YEN import xgboost_yen
+from lstm_USD import lstm_usd
+from lstm_EURO import lstm_euro
+from lstm_YEN import lstm_yen
+from db_connect import lstm_usd_res, lstm_usd_remove, lstm_yen_remove, lstm_yen_res, lstm_euro_res, lstm_euro_remove
 import pandas_datareader as web
 from yahoo_api import currency_craw
 import pandas as pd
@@ -130,28 +135,50 @@ def one_day():
     pageCrawl(conn)
 
     # xgboost로 예측한 데이터 하루 한번 업데이트
-    df_xg = pd.DataFrame()
-    df_xg, df_notuse = currency_craw()
-    df_xg = df_xg.reset_index()
-    xgboost_forecast(conn, 30, df)
-
-    df = web.DataReader('KRW=X', data_source='yahoo', start='2003-01-01')
-    data = df.filter(['Close'])
+    df_usd = pd.DataFrame()
+    df_yen = pd.DataFrame()
+    df_euro = pd.DataFrame()
+    df_usd, df_yen, df_euro = currency_craw()
+    df_usd = df_usd.reset_index()
+    df_yen = df_yen.reset_index()
+    df_euro = df_euro.reset_index()
+    xgboost_dollar(conn, 30, df_usd)
+    xgboost_yen(conn, 30, df_yen)
+    xgboost_euro(conn, 30, df_euro)
+    df_usd = web.DataReader('KRW=X', data_source='yahoo', start='2003-01-01')
+    data_usd = df_usd.filter(['Close'])
+    df_yen = web.DataReader(
+        'JPYKRW=X', data_source='yahoo', start='2003-01-01')
+    data_yen = df_yen.filter(['Close'])
+    df_euro = web.DataReader(
+        'EURKRW=X', data_source='yahoo', start='2003-01-01')
+    data_euro = df_euro.filter(['Close'])
     for i in range(1, 31):
         today = date.today() + relativedelta(days=+i)
         if getDay(today.year, today.month, today.day) == 'Sat' or getDay(today.year, today.month, today.day) == 'Sun':
             continue
         else:
-            result = lstm_forecast(conn, data)
-            print(result, "실행문 result")
-            data = data.reset_index()
-            print(data, "위")
-            data = data.append({"Date": pd.Timestamp(
-                today), "Close": float(result)}, ignore_index=True)
-        data = data.set_index("Date")
-        print(data, "아래")
-        lstm_res(conn, today, result)
-        lstm_res_remove(conn)
+            result_usd = lstm_usd(conn, data_usd)
+            result_yen = lstm_yen(conn, data_yen)
+            result_euro = lstm_euro(conn, data_euro)
+            data_usd = data_usd.reset_index()
+            data_usd = data_usd.append({"Date": pd.Timestamp(
+                today), "Close": float(result_usd)}, ignore_index=True)
+            data_yen = data_yen.reset_index()
+            data_yen = data_yen.append({"Date": pd.Timestamp(
+                today), "Close": float(result_yen)}, ignore_index=True)
+            data_euro = data_euro.reset_index()
+            data_euro = data_euro.append({"Date": pd.Timestamp(
+                today), "Close": float(result_euro)}, ignore_index=True)
+        data_usd = data_usd.set_index("Date")
+        data_yen = data_yen.set_index("Date")
+        data_euro = data_euro.set_index("Date")
+        lstm_usd_res(conn, today, result_usd)
+        lstm_usd_remove(conn)
+        lstm_yen_res(conn, today, result_yen)
+        lstm_yen_remove(conn)
+        lstm_euro_res(conn, today, result_euro)
+        lstm_euro_remove(conn)
     conn.close()
 
 

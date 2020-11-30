@@ -6,6 +6,11 @@ import HighchartsReact from "highcharts-react-official";
 import React, { useEffect } from 'react';
 
 export default function Forecasting() {
+  const country_list = [
+    { value: "usd", label: "미국" },
+    { value: "yen", label: "일본" },
+    { value: "euro", label: "유럽" }]
+  const [selectCountry, setSelectCountry] = React.useState();
   const [options, setOptions] = React.useState({
     chart: {
       type: "line",
@@ -43,7 +48,7 @@ export default function Forecasting() {
     },
     series: [
       {
-        name: 'USDKRW',
+        name: 'USD환율',
         type: 'line',
         lineStyle:{
           color:'#2A265C' //line차트 색상 변경
@@ -108,38 +113,42 @@ export default function Forecasting() {
     ],
   });
 
-  const apiCall = async () => {
+  const selectOption = (e) => {
+    setSelectCountry(e.target.value)
+  }
+ 
+  const apiCall = () => {
     try {
-      
-      Api.get("xgboostinfo/").then((res) => {
-            
-            var api_time = []
-            for(let i of res.data){
-              api_time.push(i.date);
-            }
-            api_time.sort()
-            var bp = []
-            for(let i of res.data){
-              
-              bp.push(Number(i.dollar_close));
-            }
-    
-            setOptions((prev) => ({
-              ...prev,
-              xAxis: 
-                {
-                  categories: api_time
-                },
-              series: [
-                {
-                  data: (bp),
-                },
-              ],
-            }));
-    
-          });
 
-      Api.get("lstminfo/").then((res) => {
+        Api.get("xgboost/"+selectCountry).then((res) => {
+              
+              var api_time = []
+              for(let i of res.data){
+                api_time.push(i.date);
+              }
+              api_time.sort()
+              var bp = []
+              for(let i of res.data){
+                
+                bp.push(Number(i.dollar_close));
+              }
+      
+              setOptions((prev) => ({
+                ...prev,
+                xAxis: 
+                  {
+                    categories: api_time
+                  },
+                series: [
+                  {
+                    data: (bp),
+                  },
+                ],
+              }));
+      
+            });
+          
+      Api.get("lstm_"+selectCountry).then((res) => {
         
         var api_time = []
         for(let i of res.data){
@@ -166,7 +175,6 @@ export default function Forecasting() {
         }));
 
       });
-
     } catch (e) {
     }
   };
@@ -175,6 +183,64 @@ export default function Forecasting() {
     apiCall();
   }, []);
 
+  React.useEffect(()=> {
+    Api.get("xgboost_"+selectCountry).then((res) => {
+              
+      var api_time = []
+      for(let i of res.data){
+        api_time.push(i.date);
+      }
+      api_time.sort()
+      var bp = []
+      for(let i of res.data){
+        
+        bp.push(Number(i.dollar_close));
+      }
+
+      setOptions((prev) => ({
+        ...prev,
+        xAxis: 
+          {
+            categories: api_time
+          },
+        series: [
+          {
+            data: (bp),
+          },
+        ],
+      }));
+
+    });
+  
+    Api.get("lstm_"+selectCountry).then((res) => {
+
+    var api_time = []
+    for(let i of res.data){
+      api_time.push(i.date);
+    }
+    api_time.sort()
+    var bp = []
+    for(let i of res.data){
+      
+      bp.push(Number(i.dollar_close));
+    }
+
+    setOptions2((prev) => ({
+      ...prev,
+      xAxis: 
+        {
+          categories: api_time
+        },
+      series: [
+        {
+          data: (bp),
+        },
+      ],
+    }));
+
+    });
+  },[selectCountry])
+
   return (
     <>
       <SiteWrapper>
@@ -182,11 +248,11 @@ export default function Forecasting() {
           <div style={{ marginLeft: "12px" }}>
             <Grid.Row>
               <Form.Group label="나라">
-                <Form.Select>
-                  <option>미국</option>
-                  <option>중국</option>
-                  <option>일본</option>
-                  <option>유럽</option>
+                <Form.Select xl={4} onChange={selectOption}>
+                  {
+                      country_list.map((v) => 
+                      <option value={v.value}>{v.label}</option>
+                  )}
                 </Form.Select>
               </Form.Group>
             </Grid.Row>
@@ -196,10 +262,17 @@ export default function Forecasting() {
             <Grid.Col>
               <Card title="미래 환율 예측 그래프(XGBoost)" statusColor="blue">
                 <Card.Body>
-                  <HighchartsReact
+                {
+                      selectOption.map((v) => 
+                      <HighchartsReact
+                      Highcharts={Highcharts}
+                      options={options}
+                      />
+                  )}
+                  {/* <HighchartsReact
                     Highcharts={Highcharts}
                     options={options}
-                  />
+                  /> */}
                 </Card.Body>
               </Card>
             </Grid.Col>

@@ -25,12 +25,16 @@ def realtime_info_craw(conn):
     signedChangeRate = json_val[0].get("signedChangeRate")
     provider = json_val[0].get("provider")
 
+    date = date[5:]
+    time = time[:5]
+    datetime = date + " " + time
     if int(time[0:2]) > 18:
         return
     elif int(time[0:2]) < 9:
         return
     else:
-        realtime(conn, time, basePrice, signedChangePrice, signedChangeRate)
+        realtime(conn, datetime, basePrice,
+                 signedChangePrice, signedChangeRate)
         realtime_remove(conn)
 
 
