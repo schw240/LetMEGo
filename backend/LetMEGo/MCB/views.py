@@ -77,7 +77,7 @@ def Wordcloud(request):
 
     count = Counter(words)
     words = [dict(zip(['text', 'value'], i)) for i in count.most_common()]
-    print(words)
+    # print(words)
 
     return Response(json.dumps(words, ensure_ascii=False))
 
@@ -92,6 +92,8 @@ class ListBankGroupInfo(ModelViewSet):
         country_name = self.request.query_params.get('country_name')
         if bank_name and country_name:
             qs = qs.filter(bank_name=bank_name, country_name=country_name)
+        if country_name:
+            qs = qs.filter(country_name=country_name)
         return qs
 
 
