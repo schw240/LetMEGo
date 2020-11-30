@@ -16,9 +16,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BankInfo',
             fields=[
-                ('bank_code', models.CharField(max_length=4, primary_key=True, serialize=False, verbose_name='은행코드')),
-                ('bank_name', models.CharField(max_length=20, null=True, verbose_name='은행명')),
-                ('bank_logo', models.CharField(max_length=20, null=True, verbose_name='은행로고')),
+                ('bank_code', models.CharField(max_length=4,
+                                               primary_key=True, serialize=False, verbose_name='은행코드')),
+                ('bank_name', models.CharField(
+                    max_length=20, null=True, verbose_name='은행명')),
+                ('bank_logo', models.CharField(
+                    max_length=20, null=True, verbose_name='은행로고')),
             ],
             options={
                 'verbose_name': '은행 정보',
@@ -29,9 +32,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CountryInfo',
             fields=[
-                ('country_name', models.CharField(max_length=10, primary_key=True, serialize=False, verbose_name='나라이름(영어)')),
-                ('country_flag', models.CharField(max_length=10, null=True, verbose_name='국기')),
-                ('name_kor', models.CharField(max_length=10, null=True, verbose_name='나라이름(한국어)')),
+                ('country_name', models.CharField(max_length=10,
+                                                  primary_key=True, serialize=False, verbose_name='나라이름(영어)')),
+                ('country_flag', models.CharField(
+                    max_length=10, null=True, verbose_name='국기')),
+                ('name_kor', models.CharField(max_length=10,
+                                              null=True, verbose_name='나라이름(한국어)')),
             ],
             options={
                 'verbose_name': '나라 정보',
@@ -42,10 +48,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ForeignBank',
             fields=[
-                ('country_name', models.CharField(max_length=20, primary_key=True, serialize=False, verbose_name='나라')),
+                ('country_name', models.CharField(max_length=20,
+                                                  primary_key=True, serialize=False, verbose_name='나라')),
                 ('usd', models.FloatField(null=True, verbose_name='달러 환율')),
                 ('jpy', models.FloatField(null=True, verbose_name='엔화 환율')),
-                ('updatedate', models.DateTimeField(auto_now=True, verbose_name='등록날짜')),
+                ('updatedate', models.DateTimeField(
+                    auto_now=True, verbose_name='등록날짜')),
             ],
             options={
                 'verbose_name': '달러&엔화',
@@ -59,11 +67,16 @@ class Migration(migrations.Migration):
                 ('seq', models.AutoField(primary_key=True, serialize=False)),
                 ('title', models.CharField(max_length=100, verbose_name='뉴스 제목')),
                 ('link', models.TextField(max_length=200, null=True, verbose_name='링크')),
-                ('company', models.CharField(max_length=30, null=True, verbose_name='신문사')),
-                ('content', models.TextField(max_length=builtins.max, verbose_name='내용')),
-                ('upload_date', models.CharField(max_length=30, null=True, verbose_name='뉴스 날자')),
-                ('craw_date', models.DateTimeField(auto_now=True, verbose_name='크롤링 날자')),
-                ('words', models.TextField(max_length=builtins.max, verbose_name='단어조각')),
+                ('company', models.CharField(
+                    max_length=30, null=True, verbose_name='신문사')),
+                ('content', models.TextField(
+                    max_length=builtins.max, verbose_name='내용')),
+                ('upload_date', models.CharField(
+                    max_length=30, null=True, verbose_name='뉴스 날자')),
+                ('craw_date', models.DateTimeField(
+                    auto_now=True, verbose_name='크롤링 날자')),
+                ('words', models.TextField(
+                    max_length=builtins.max, verbose_name='단어조각')),
             ],
             options={
                 'verbose_name': '환율 기사',
@@ -76,9 +89,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('seq', models.AutoField(primary_key=True, serialize=False)),
                 ('time', models.CharField(max_length=30, verbose_name='시간')),
-                ('basePrice', models.CharField(max_length=20, null=True, verbose_name='매매 기준율')),
-                ('signedChangePrice', models.CharField(max_length=30, null=True, verbose_name='변동금액')),
-                ('signedChangeRate', models.CharField(max_length=30, null=True, verbose_name='변동 퍼센트')),
+                ('basePrice', models.CharField(
+                    max_length=20, null=True, verbose_name='매매 기준율')),
+                ('signedChangePrice', models.CharField(
+                    max_length=30, null=True, verbose_name='변동금액')),
+                ('signedChangeRate', models.CharField(
+                    max_length=30, null=True, verbose_name='변동 퍼센트')),
             ],
             options={
                 'verbose_name': '실시간 환율 정보',
@@ -87,30 +103,25 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='XGBoostInfo',
-            fields=[
-                ('seq', models.AutoField(primary_key=True, serialize=False)),
-                ('date', models.CharField(max_length=30, verbose_name='날짜')),
-                ('dollar_close', models.FloatField(null=True, verbose_name='달러 종가')),
-            ],
-            options={
-                'verbose_name': 'XGboost예측테이블',
-                'verbose_name_plural': 'XGboost예측테이블',
-                'db_table': 'XGBoost_Info',
-            },
-        ),
-        migrations.CreateModel(
             name='BankgroupInfo',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('bank_name', models.CharField(max_length=20, verbose_name='은행이름')),
-                ('country_name', models.CharField(max_length=20, null=True, verbose_name='외화')),
-                ('buyfeerate', models.CharField(max_length=200, null=True, verbose_name='환전수수료(사실때)')),
-                ('stdprefrate', models.TextField(max_length=20000, null=True, verbose_name='기본우대율(%)')),
-                ('maxprefrate', models.TextField(max_length=20000, null=True, verbose_name='최대우대율(%)')),
-                ('treatandevent', models.TextField(max_length=20000, null=True, verbose_name='우대사항&환전이벤트')),
-                ('basedate', models.CharField(default='-', max_length=30, verbose_name='기준일')),
-                ('updatedate', models.DateTimeField(auto_now=True, verbose_name='데이터 수정 시각')),
+                ('country_name', models.CharField(
+                    max_length=20, null=True, verbose_name='외화')),
+                ('buyfeerate', models.CharField(
+                    max_length=200, null=True, verbose_name='환전수수료(사실때)')),
+                ('stdprefrate', models.TextField(
+                    max_length=20000, null=True, verbose_name='기본우대율(%)')),
+                ('maxprefrate', models.TextField(
+                    max_length=20000, null=True, verbose_name='최대우대율(%)')),
+                ('treatandevent', models.TextField(
+                    max_length=20000, null=True, verbose_name='우대사항&환전이벤트')),
+                ('basedate', models.CharField(
+                    default='-', max_length=30, verbose_name='기준일')),
+                ('updatedate', models.DateTimeField(
+                    auto_now=True, verbose_name='데이터 수정 시각')),
             ],
             options={
                 'verbose_name': '우대사항',
@@ -122,15 +133,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MostCheapBank',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('buy', models.FloatField(null=True, verbose_name='현찰 살 때')),
-                ('buyfeerate', models.CharField(max_length=30, null=True, verbose_name='수수료율')),
+                ('buyfeerate', models.CharField(
+                    max_length=30, null=True, verbose_name='수수료율')),
                 ('sell', models.FloatField(null=True, verbose_name='현찰 팔 때')),
-                ('sellfeerate', models.CharField(max_length=30, null=True, verbose_name='수수료율')),
+                ('sellfeerate', models.CharField(
+                    max_length=30, null=True, verbose_name='수수료율')),
                 ('tradingrate', models.FloatField(null=True, verbose_name='매매기준율')),
-                ('updatedate', models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')),
-                ('bank_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='MCB.bankinfo')),
-                ('country_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='MCB.countryinfo')),
+                ('updatedate', models.DateTimeField(
+                    auto_now_add=True, verbose_name='등록날짜')),
+                ('bank_name', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='MCB.bankinfo')),
+                ('country_name', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='MCB.countryinfo')),
             ],
             options={
                 'verbose_name': '국내환율',

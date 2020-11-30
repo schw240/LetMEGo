@@ -14,3 +14,5 @@ frondend/frontend/public/robots.txt
 Crawling/helper_connect.py
 backend/LetMEGo/LetMEGo/secrets.py
 frondend/frontend/package.json
+frondend/frontend/debug.log
+backend/LetMEGo/MCB/migrations/*.py

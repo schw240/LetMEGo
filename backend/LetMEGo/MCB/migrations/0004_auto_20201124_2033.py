@@ -10,9 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='xgboostinfo',
-            name='date',
-            field=models.DateField(max_length=30, verbose_name='날짜'),
-        ),
+
     ]

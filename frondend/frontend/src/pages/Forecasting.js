@@ -10,7 +10,11 @@ export default function Forecasting() {
     { value: "usd", label: "미국" },
     { value: "yen", label: "일본" },
     { value: "euro", label: "유럽" }]
-  const [selectCountry, setSelectCountry] = React.useState();
+  const [selectCountry, setSelectCountry] = React.useState("usd");
+  const [xglstValue, setXGLstValue] = React.useState(99999);
+  const [xglstdate, setXGLstDate] = React.useState();
+  const [lstmlstValue, setLSTMLstValue] = React.useState(99999);
+  const [lstmlstdate, setLSTMLstDate] = React.useState();
   const [options, setOptions] = React.useState({
     chart: {
       type: "line",
@@ -25,7 +29,6 @@ export default function Forecasting() {
       },
     yAxis: {
       title: {
-        text: "원/달러",
       },
     },
     legend: {
@@ -48,7 +51,7 @@ export default function Forecasting() {
     },
     series: [
       {
-        name: 'USD환율',
+        // name: 'USD환율',
         type: 'line',
         lineStyle:{
           color:'#2A265C' //line차트 색상 변경
@@ -76,7 +79,6 @@ export default function Forecasting() {
       },
     yAxis: {
       title: {
-        text: "원/달러",
       },
     },
     legend: {
@@ -99,7 +101,7 @@ export default function Forecasting() {
     },
     series: [
       {
-        name: 'USDKRW',
+        // name: 'USDKRW',
         type: 'line',
         lineStyle:{
           color:'#2A265C' //line차트 색상 변경
@@ -114,77 +116,15 @@ export default function Forecasting() {
   });
 
   const selectOption = (e) => {
-    setSelectCountry(e.target.value)
+    console.log(e.target.value);
+    setSelectCountry(e.target.value);
   }
  
-  const apiCall = () => {
-    try {
-
-        Api.get("xgboost/"+selectCountry).then((res) => {
-              
-              var api_time = []
-              for(let i of res.data){
-                api_time.push(i.date);
-              }
-              api_time.sort()
-              var bp = []
-              for(let i of res.data){
-                
-                bp.push(Number(i.dollar_close));
-              }
-      
-              setOptions((prev) => ({
-                ...prev,
-                xAxis: 
-                  {
-                    categories: api_time
-                  },
-                series: [
-                  {
-                    data: (bp),
-                  },
-                ],
-              }));
-      
-            });
-          
-      Api.get("lstm_"+selectCountry).then((res) => {
-        
-        var api_time = []
-        for(let i of res.data){
-          api_time.push(i.date);
-        }
-        api_time.sort()
-        var bp = []
-        for(let i of res.data){
-          
-          bp.push(Number(i.dollar_close));
-        }
-
-        setOptions2((prev) => ({
-          ...prev,
-          xAxis: 
-            {
-              categories: api_time
-            },
-          series: [
-            {
-              data: (bp),
-            },
-          ],
-        }));
-
-      });
-    } catch (e) {
-    }
-  };
-
-  useEffect(() => {
-    apiCall();
-  }, []);
 
   React.useEffect(()=> {
-    Api.get("xgboost_"+selectCountry).then((res) => {
+
+    Api.get("xgboost_" + selectCountry).then((res) => {
+
               
       var api_time = []
       for(let i of res.data){
@@ -192,10 +132,20 @@ export default function Forecasting() {
       }
       api_time.sort()
       var bp = []
+
+      var check = 9999
+      var check_date = '';
+
       for(let i of res.data){
-        
-        bp.push(Number(i.dollar_close));
+        bp.push(Number(i.close));
+        if (parseFloat(i.close) < check) {
+            check = parseFloat(i.close)
+            check_date = i.date
+        }
       }
+
+      setXGLstValue(prev=>check)
+      setXGLstDate(prev=>check_date)
 
       setOptions((prev) => ({
         ...prev,
@@ -220,10 +170,20 @@ export default function Forecasting() {
     }
     api_time.sort()
     var bp = []
+
+    var check = 9999
+    var check_date = '';
+
     for(let i of res.data){
-      
-      bp.push(Number(i.dollar_close));
+      bp.push(Number(i.close));
+      if (parseFloat(i.close) < check) {
+        check = parseFloat(i.close)
+        check_date = i.date
     }
+    }
+
+    setLSTMLstValue(prev=>check)
+    setLSTMLstDate(prev=>check_date)
 
     setOptions2((prev) => ({
       ...prev,
@@ -248,13 +208,21 @@ export default function Forecasting() {
           <div style={{ marginLeft: "12px" }}>
             <Grid.Row>
               <Form.Group label="나라">
-                <Form.Select xl={4} onChange={selectOption}>
+                <Form.Select xl={4} onChange={selectOption} value={selectCountry}>
                   {
                       country_list.map((v) => 
                       <option value={v.value}>{v.label}</option>
                   )}
                 </Form.Select>
               </Form.Group>
+              <Grid.Col>
+                <Card>
+                  <Card.Body>
+                    <div>XGBoost 알고리즘에 따라 {xglstdate}에 {xglstValue.toFixed(2)}가격으로 가장 저렴하게 환전할 수 있습니다.</div>
+                    <div>LSTM 알고리즘에 따라 {lstmlstdate}에 {lstmlstValue.toFixed(2)}가격으로 가장 저렴하게 환전할 수 있습니다.</div>
+                  </Card.Body>
+                </Card>
+              </Grid.Col>
             </Grid.Row>
           </div>
 
@@ -262,17 +230,11 @@ export default function Forecasting() {
             <Grid.Col>
               <Card title="미래 환율 예측 그래프(XGBoost)" statusColor="blue">
                 <Card.Body>
-                {
-                      selectOption.map((v) => 
-                      <HighchartsReact
+
+                    <HighchartsReact
                       Highcharts={Highcharts}
                       options={options}
-                      />
-                  )}
-                  {/* <HighchartsReact
-                    Highcharts={Highcharts}
-                    options={options}
-                  /> */}
+                    />
                 </Card.Body>
               </Card>
             </Grid.Col>

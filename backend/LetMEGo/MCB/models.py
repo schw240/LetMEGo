@@ -141,7 +141,7 @@ class RealTimeInfo(models.Model):
 class XGBoostInfo_USD(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜', null=True)
-    dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
+    close = models.FloatField(null=True, verbose_name='달러 종가')
 
     def __str__(self):
         return self.date
@@ -155,7 +155,7 @@ class XGBoostInfo_USD(models.Model):
 class XGBoostInfo_YEN(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜', null=True)
-    yen_close = models.FloatField(null=True, verbose_name='엔 종가')
+    close = models.FloatField(null=True, verbose_name='엔 종가')
 
     def __str__(self):
         return self.date
@@ -169,7 +169,7 @@ class XGBoostInfo_YEN(models.Model):
 class XGBoostInfo_EURO(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜', null=True)
-    euro_close = models.FloatField(null=True, verbose_name='유로 종가')
+    close = models.FloatField(null=True, verbose_name='유로 종가')
 
     def __str__(self):
         return self.date
@@ -183,7 +183,7 @@ class XGBoostInfo_EURO(models.Model):
 class LSTMInfo_USD(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜')
-    dollar_close = models.FloatField(null=True, verbose_name='달러 종가')
+    close = models.FloatField(null=True, verbose_name='달러 종가')
 
     def __str__(self):
         return self.date
@@ -197,7 +197,7 @@ class LSTMInfo_USD(models.Model):
 class LSTMInfo_YEN(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜')
-    yen_close = models.FloatField(null=True, verbose_name='엔 종가')
+    close = models.FloatField(null=True, verbose_name='엔 종가')
 
     def __str__(self):
         return self.date
@@ -211,7 +211,7 @@ class LSTMInfo_YEN(models.Model):
 class LSTMInfo_EURO(models.Model):
     seq = models.AutoField(primary_key=True)
     date = models.DateField(max_length=30, verbose_name='날짜')
-    euro_close = models.FloatField(null=True, verbose_name='유로 종가')
+    close = models.FloatField(null=True, verbose_name='유로 종가')
 
     def __str__(self):
         return self.date

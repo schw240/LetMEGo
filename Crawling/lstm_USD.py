@@ -101,4 +101,4 @@ if __name__ == "__main__":
                 today), "Close": float(result)}, ignore_index=True)
         data = data.set_index("Date")
         lstm_usd_res(conn, today, result)
-        lstm_usd_remove(conn)
+        lstm_usd_remove(conn)x

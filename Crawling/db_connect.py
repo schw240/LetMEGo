@@ -1,7 +1,9 @@
 import pymysql
-from send_mail import sendMail 
+from send_mail import sendMail
 
 # 마이뱅크 크롤링해서 DB에 넣기
+
+
 def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now):
     cursor = conn.cursor()
 
@@ -138,7 +140,7 @@ def realtime_remove(conn):
     sql = """SELECT seq
              FROM RealTime_Info  
          ORDER BY seq DESC 
-            limit 500"""
+            limit 300"""
 
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -155,7 +157,7 @@ def realtime_remove(conn):
 def xgboost_USD(conn, date, dollar_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO XGBoost_USDInfo(date, dollar_close) values(%s,%s);"
+    sql = "INSERT INTO XGBoost_USDInfo(date, close) values(%s,%s);"
     cursor.execute(sql, (date, dollar_close))
     conn.commit()
 
@@ -183,7 +185,7 @@ def xgboost_USD_remove(conn):
 def xgboost_YEN(conn, date, yen_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO XGBoost_YENInfo(date, yen_close) values(%s,%s);"
+    sql = "INSERT INTO XGBoost_YENInfo(date, close) values(%s,%s);"
     cursor.execute(sql, (date, yen_close))
     conn.commit()
 
@@ -211,7 +213,7 @@ def xgboost_YEN_remove(conn):
 def xgboost_EURO(conn, date, euro_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO XGBoost_EUROInfo(date, euro_close) values(%s,%s);"
+    sql = "INSERT INTO XGBoost_EUROInfo(date, close) values(%s,%s);"
     cursor.execute(sql, (date, euro_close))
     conn.commit()
 
@@ -239,7 +241,7 @@ def xgboost_EURO_remove(conn):
 def lstm_usd_res(conn, date, dollar_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO LSTM_Info_USD(date, dollar_close) values(%s,%s);"
+    sql = "INSERT INTO LSTM_Info_USD(date, close) values(%s,%s);"
     cursor.execute(sql, (date, dollar_close))
     conn.commit()
 
@@ -267,7 +269,7 @@ def lstm_usd_remove(conn):
 def lstm_yen_res(conn, date, yen_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO LSTM_Info_YEN(date, yen_close) values(%s,%s);"
+    sql = "INSERT INTO LSTM_Info_YEN(date, close) values(%s,%s);"
     cursor.execute(sql, (date, yen_close))
     conn.commit()
 
@@ -295,7 +297,7 @@ def lstm_yen_remove(conn):
 def lstm_euro_res(conn, date, euro_close):
     cursor = conn.cursor()
 
-    sql = "INSERT INTO LSTM_Info_EURO(date, euro_close) values(%s,%s);"
+    sql = "INSERT INTO LSTM_Info_EURO(date, close) values(%s,%s);"
     cursor.execute(sql, (date, euro_close))
     conn.commit()
 
@@ -337,7 +339,7 @@ def send_user_list(conn):
         user_email = results[0]
 
         email_list.append(user_email)
-        
+
         results = cursor.fetchone()
-    
+
     sendMail(email_list)

@@ -8,7 +8,7 @@ from helper_connect import DBConnect  # 디비 연결
 def bankgroup_crawling(conn):
 
     now = datetime.datetime.now()
-    usd_data = ['USD', 'JPY', 'EUR', 'GBP', 'CAD', 'HKD',
+    usd_data = ['USD', 'JPY', 'EUR', 'GBP', 'CAD', 'CHF', 'HKD',
                 'AUD', 'CNY', 'SGD', 'NZD', 'THB', 'VND', 'TWD', 'PHP']
     headers = {
         "Accept": """text/html, */*; q=0.01""",

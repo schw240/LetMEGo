@@ -10,9 +10,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='xgboostinfo',
-            name='dollar_close',
-            field=models.FloatField(null=True, verbose_name='달러 종가'),
-        ),
     ]
