@@ -6,7 +6,7 @@ import Account from '../Account'
 function RemoveUser({history}) {
     const token = window.localStorage.getItem("token");
     //탈퇴 이유
-    const [reason, setReason] = React.useState('')
+    const [reason, setReason] = React.useState(null)
     const [radioGroup, setRadioGroup] = React.useState({
         service: true,
         benefits: false,
@@ -60,7 +60,7 @@ function RemoveUser({history}) {
             const {data} = response
             if(data.result){
                 console.log(token)
-                Account.post("deleteuser", {
+                Account.post("deleteuser", null, {
                     headers: {
                         Authorization: "JWT " + token
                     }
@@ -69,6 +69,7 @@ function RemoveUser({history}) {
                   const {data} = response
                   if(data.result){
                       alert('성공적으로 탈퇴가 완료되었습니다.')
+                      console.log(history)
                       if (token != null) {
                         window.localStorage.removeItem("token")
                       }

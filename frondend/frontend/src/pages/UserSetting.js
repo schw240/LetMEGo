@@ -10,7 +10,7 @@ import RemoveUser from "./RemoveUser"
 
 import SiteWrapper from "../SiteWrapper";
 
-function StoreCardsPage() {
+function StoreCardsPage({history}) {
   //메뉴 설정
   const [active, setActive] = React.useState({
     modify: true,
@@ -64,7 +64,7 @@ function StoreCardsPage() {
                     else if(screen.mybank)
                       return <BankSetting />
                     else if(screen.remove)
-                      return <RemoveUser />
+                      return <RemoveUser history={history}/>
                   })()
                 }
 
