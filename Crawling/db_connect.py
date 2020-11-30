@@ -1,8 +1,7 @@
 import pymysql
+from send_mail import sendMail 
 
 # 마이뱅크 크롤링해서 DB에 넣기
-
-
 def mybank_info(conn, Bank_name, Country_name, BUY, BuyFeeRate, SELL, SellFeeRate, TradingRate, now):
     cursor = conn.cursor()
 
@@ -59,9 +58,8 @@ def bankgroup_info(conn, Bank_name, Country_name, BuyFeeRate, StdPrefRate, MaxPr
     cursor.execute(sql)
     conn.commit()
 
+
 # 해외은행 크롤링해서 DB에 넣기
-
-
 def foreignbank_info(conn, Country_name, USD, JPY, now):
     cursor = conn.cursor()
     sql = f"""
@@ -101,9 +99,8 @@ def naver_news_info(conn, title, link, company, upload_date, content, words):
     cursor.execute(sql, (title, link, company, upload_date, content, words))
     conn.commit()
 
+
 # 네이버 뉴스기사 100개 이외의 기사 삭제
-
-
 def naver_news_remove(conn):
     cursor = conn.cursor()
 
@@ -124,9 +121,8 @@ def naver_news_remove(conn):
     conn.commit()
     print('기사삭제완료')
 
+
 # 실시간 환율정보 저장
-
-
 def realtime(conn, datetime, basePrice, signedChangePrice, signedChangeRate):
     cursor = conn.cursor()
 
@@ -322,3 +318,26 @@ def lstm_euro_remove(conn):
 
     cursor.execute(sql)
     conn.commit()
+
+
+def send_user_list(conn):
+    cursor = conn.cursor()
+
+    sql = f"""
+                SELECT email
+                FROM account_user
+                WHERE user_emailcheck = 1
+            """
+    cursor.execute(sql)
+    results = cursor.fetchone()
+
+    email_list = []
+
+    while results:
+        user_email = results[0]
+
+        email_list.append(user_email)
+        
+        results = cursor.fetchone()
+    
+    sendMail(email_list)
