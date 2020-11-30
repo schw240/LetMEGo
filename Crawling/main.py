@@ -197,10 +197,6 @@ def email_hour():
 
     # 이메일
     send_email(conn)
-    res_usd, res_yen, res_euro = send_email(conn)
-    img_usd = Image.open(BytesIO(base64.b64decode(res_usd)))
-    img_yen = Image.open(BytesIO(base64.b64decode(res_yen)))
-    img_euro = Image.open(BytesIO(base64.b64decode(res_euro)))
     print("이미지 생성 완료")
     conn.close()
 
@@ -210,6 +206,6 @@ sched.add_job(thirty_minute, 'interval', seconds=1800)  # 1800초마다 돌아�
 sched.add_job(one_hour, 'interval', seconds=3600)  # 3600초마다 돌아감 (1시간)
 # 매일 정해진 hour에 돌아가게 함 # 테스트로 오전 11시에 돌아가게
 sched.add_job(one_day, 'cron', hour=12)
-sched.add_job(email_hour, 'interval', seconds=30)
+sched.add_job(email_hour, 'interval', seconds=50)
 
 sched.start()

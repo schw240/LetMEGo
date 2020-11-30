@@ -98,15 +98,13 @@ def send_email(conn):
     plt.xlabel("2020")
     plt.savefig('./email_images/유럽{}.png'.format(today))
 
-    res = []
-    with open('./email_images/{}{}.png'.format(country[0], today), 'rb') as img:
-        usd_img = base64.b64encode(img.read())
+    # with open('./email_images/{}{}.png'.format(country[0], today), 'rb') as img:
+    #     usd_img = base64.b64encode(img.read())
 
-    with open('./email_images/{}{}.png'.format(country[1], today), 'rb') as img:
-        yen_img = base64.b64encode(img.read())
-    with open('./email_images/{}{}.png'.format(country[2], today), 'rb') as img:
-        euro_img = base64.b64encode(img.read())
-    return usd_img, yen_img, euro_img
+    # with open('./email_images/{}{}.png'.format(country[1], today), 'rb') as img:
+    #     yen_img = base64.b64encode(img.read())
+    # with open('./email_images/{}{}.png'.format(country[2], today), 'rb') as img:
+    #     euro_img = base64.b64encode(img.read())
 
 
 if __name__ == "__main__":
