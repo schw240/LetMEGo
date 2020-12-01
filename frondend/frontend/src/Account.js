@@ -2,7 +2,7 @@ import Axios from 'axios'
 
 const account = Axios.create(
 { 
-    baseURL:"http://127.0.0.1:8000/account/",
+    baseURL:"http://54.180.112.37/account/",
     timeout: 3000,
 });
 export default account;
