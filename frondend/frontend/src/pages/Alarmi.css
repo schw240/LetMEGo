@@ -1,11 +1,11 @@
-
+/* 
 .companyStyle {
     font-style: italic;
     font-size: 13px;
     margin-bottom: 6px;
     padding-left: 6px;
     
-}
+} */
 
 .titleStyle {
     font-style: sans-serif;
@@ -41,8 +41,10 @@
 .scrol {
     overflow-y: scroll;
     height: 500px;
-    width: 500px;
-    
+    /* width: 500px; */
+  }
+
+  .container {
   }
 
 .tableProm {
@@ -109,8 +111,8 @@
 }
 .bounce_button {  
    
-  border-radius: 50%;
-  line-height: 180px;
+  /* border-radius: 50%; */
+  /* line-height: 180px; */
   text-align: center;
   text-transform: uppercase;
   -webkit-animation-duration: 1s;
@@ -121,7 +123,7 @@
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   -webkit-animation-iteration-count: infinite;
-  color: white;
+  /* color: white; */
 }
 .bounce_button:hover {
   cursor: pointer;
