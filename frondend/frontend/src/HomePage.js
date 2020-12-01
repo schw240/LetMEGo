@@ -146,11 +146,11 @@ function Home() {
             <Card
               title="Let ME - Wordcloud"
               statusColor="blue"
-              statusSide
+              statusSide              
             >
               <Card.Body>
-                <br />                
-                <TestRcloud />
+                <br/>                
+               <div className="shadow"><TestRcloud/></div>
               </Card.Body>
             </Card>
           </Grid.Col>

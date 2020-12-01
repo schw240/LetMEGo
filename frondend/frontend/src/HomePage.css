@@ -1,13 +1,58 @@
 .scroll {
     overflow-y: scroll;
     height: 150px;
-    width: 474px;
-    
-    
+    width: 474px;  
   }
   
 
 .block {
   block-size: 430px;
-  padding:
+}
+
+.shadow {
+  width: 500px;
+  height: 300px;
+  margin: 2px auto;
+  overflow: hidden;
+
+}
+
+.shadow_img {
+  width: 300px;
+  height: 300px;
+}
+
+.shadow_img:hover {
+  cursor: pointer;
+  -webkit-transform: scale(20,20);
+  -moz-transform: scale(20,20);
+  -o-transform: scale(20,20);
+  transform: scale(20,20);
+  transition: transform .35s;
+  -webkit-transition: transform .35s;
+  -o-transition: transform .35s;
+  -moz-transition: transform .35s;
+}
+
+
+.bounce_bounce {  
+   
+  border-radius: 50%;
+  line-height: 180px;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  color: white;
+}
+.bounce_bounce:hover {
+  cursor: pointer;
+  animation-name: bounce;
+  -moz-animation-name: bounce;
 }
