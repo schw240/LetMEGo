@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Form, Card, Button } from "tabler-react";
 import Account from '../Account'
-import jwt from 'jwt-decode';
 
 function ModifyInfo() {
     const token = window.localStorage.getItem("token");

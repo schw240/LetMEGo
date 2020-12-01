@@ -1,3 +1,5 @@
-/* .input-group-text {
-  width: 50px;
-} */
+#rgtArrow:hover {
+  cursor: pointer;
+  background-color: skyblue;
+  border-radius: 20px;
+}
