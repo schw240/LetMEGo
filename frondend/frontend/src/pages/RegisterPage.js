@@ -153,7 +153,7 @@ function RegisterPage({history}) {
                             <Card.Title RootComponent="div">Let me Join!</Card.Title>
               
                             <Form.Group>
-                              <Form.InputGroup append={<Button type="button" color="primary" onClick={idCheck}>중복체크</Button>}>
+                              <Form.InputGroup append={<Button type="button" color="primary" size="sm" onClick={idCheck}>중복체크</Button>}>
                                 <Form.Input icon="user" placeholder="id" name="id" value={user.username} onChange={(e)=>setUser({...user, username:e.target.value})} />
                               </Form.InputGroup>
                             </Form.Group>
