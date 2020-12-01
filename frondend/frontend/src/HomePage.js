@@ -150,7 +150,7 @@ function Home() {
             >
               <Card.Body>
                 <br/>                
-               <div className="shadow"><TestRcloud/></div>
+               <div className="shadow shadow_img"><TestRcloud/></div>
               </Card.Body>
             </Card>
           </Grid.Col>

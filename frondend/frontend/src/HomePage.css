@@ -12,22 +12,22 @@
 .shadow {
   width: 500px;
   height: 300px;
-  margin: 2px auto;
+  margin: 10px auto;
   overflow: hidden;
 
 }
 
 .shadow_img {
-  width: 300px;
+  width: 500px;
   height: 300px;
 }
 
 .shadow_img:hover {
   cursor: pointer;
-  -webkit-transform: scale(20,20);
-  -moz-transform: scale(20,20);
-  -o-transform: scale(20,20);
-  transform: scale(20,20);
+  -webkit-transform: scale(1.7,1.7);
+  -moz-transform: scale(1.7, 1.7);
+  -o-transform: scale(1.7,1.7);
+  transform: scale(1.7, 1.7);
   transition: transform .35s;
   -webkit-transition: transform .35s;
   -o-transition: transform .35s;
