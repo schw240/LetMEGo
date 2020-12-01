@@ -270,7 +270,7 @@ function AlarMie() {
 
       <Tab title="ME Promotion">
            
-        <Card className="scrol" className="container"><ProMo/></Card>  
+        <Card className="scrol container"><ProMo/></Card>  
              
       </Tab>
            
