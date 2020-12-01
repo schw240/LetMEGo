@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Api from '../Api';
 import SiteWrapper from '../SiteWrapper';
 import {Page, Card, Tab, Tabs, Table, Button } from "tabler-react";  
-import './Alarmi.css'
+import './Alarmi.css' 
 import AUD_round from '../assets/images/flag/AUD_round.png'
 import CAD_round from '../assets/images/flag/CAD_round.png'
 import CHF_round from '../assets/images/flag/CHF_round.png'
@@ -19,7 +19,6 @@ import TWD_round from '../assets/images/flag/TWD_round.png'
 import USD_round from '../assets/images/flag/USD_round.png'
 import VND_round from '../assets/images/flag/VND_round.png'
 
-import {Animated} from "react-animated-css";
 
 
 function MoreNews() {

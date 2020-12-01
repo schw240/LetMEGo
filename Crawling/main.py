@@ -209,7 +209,7 @@ sched.add_job(five_min, 'interval', seconds=300)  # 1분에 한번씩 저장
 sched.add_job(thirty_minute, 'interval', seconds=1800)  # 1800초마다 돌아감(30분)
 sched.add_job(one_hour, 'interval', seconds=3600)  # 3600초마다 돌아감 (1시간)
 # 매일 정해진 hour에 돌아가게 함
-sched.add_job(graph_day, 'cron', hour=1) # 서버 UTC 시간에 맞춤(한국시간 오전 10시)
-sched.add_job(one_day, 'cron', hour=4) # 서버 UTC 시간에 맞춤(한국시간 오후 1시)
+sched.add_job(graph_day, 'cron', hour=10) # 서버 UTC 시간에 맞춤(한국시간 오전 10시)
+sched.add_job(one_day, 'cron', hour=13) # 서버 UTC 시간에 맞춤(한국시간 오후 1시)
 
 sched.start()
