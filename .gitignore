@@ -1,0 +1,10 @@
+node_modules
+.vscode
+*.pyc
+backend/LetMEGo/db.sqlite3
+frondend/frontend/README.md
+frondend/frontend/public/logo192.png
+frondend/frontend/public/logo512.png
+frondend/frontend/debug.log
+backend/LetMEGo/MCB/migrations/*.py
+backend/LetMEGo/LetMEGo/secrets.py
