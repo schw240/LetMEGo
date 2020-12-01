@@ -135,10 +135,10 @@ function Home() {
         {/* 환율 기사, 워드크라우드 넣는 곳 */}
         <Grid.Row>
           <Grid.Col lg={5}>
-            <Card className="block" title="Let ME - Latest News" statusColor="blue" statusSide>
-              <Card.Body className="scroll">
+            <Card className="block words" title="Let ME - Latest News" statusColor="blue" statusSide>
+              <Card.Body>
                 <br /> 
-                <Upload_news />
+                <div className="scroll"><Upload_news/></div>
               </Card.Body>
             </Card>
           </Grid.Col>

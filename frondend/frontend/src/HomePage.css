@@ -1,8 +1,9 @@
 .scroll {
     overflow-y: scroll;
-    height: 150px;
-    width: 474px;  
-  }
+    height: 340px;
+    width: 105%;
+    margin-top: -40px;  
+}
   
 
 .block {
@@ -24,10 +25,10 @@
 
 .shadow_img:hover {
   cursor: pointer;
-  -webkit-transform: scale(1.7,1.7);
-  -moz-transform: scale(1.7, 1.7);
-  -o-transform: scale(1.7,1.7);
-  transform: scale(1.7, 1.7);
+  -webkit-transform: scale(1.8,1.8);
+  -moz-transform: scale(1.8, 1.8);
+  -o-transform: scale(1.8,1.8);
+  transform: scale(1.8, 1.8);
   transition: transform .35s;
   -webkit-transition: transform .35s;
   -o-transition: transform .35s;
