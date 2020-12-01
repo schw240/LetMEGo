@@ -54,7 +54,7 @@ from xgboost_YEN import xgboost_yen
 from lstm_USD import lstm_usd
 from lstm_EURO import lstm_euro
 from lstm_YEN import lstm_yen
-from db_connect import lstm_usd_res, lstm_usd_remove, lstm_yen_remove, lstm_yen_res, lstm_euro_res, lstm_euro_remove
+from db_connect import lstm_usd_res, lstm_usd_remove, lstm_yen_remove, lstm_yen_res, lstm_euro_res, lstm_euro_remove, send_user_list
 import pandas_datareader as web
 from yahoo_api import currency_craw
 import pandas as pd
@@ -198,6 +198,7 @@ def email_hour():
     # 이메일
     send_email(conn)
     print("이미지 생성 완료")
+    send_user_list(conn)
     conn.close()
 
 
@@ -206,6 +207,6 @@ sched.add_job(thirty_minute, 'interval', seconds=1800)  # 1800초마다 돌아�
 sched.add_job(one_hour, 'interval', seconds=3600)  # 3600초마다 돌아감 (1시간)
 # 매일 정해진 hour에 돌아가게 함 # 테스트로 오전 11시에 돌아가게
 sched.add_job(one_day, 'cron', hour=12)
-sched.add_job(email_hour, 'interval', seconds=50)
+sched.add_job(email_hour, 'cron', hour=13)
 
 sched.start()

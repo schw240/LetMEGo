@@ -44,8 +44,8 @@ def send_email(conn):
     times_xg_yen = []
     res_xg_euro = []
     times_xg_euro = []
-    country = ["미국", "일본", "유럽"]
     today = date.today()
+    print(today)
     for i in range(7):
         times_xg_usd.append(str(result_usd_xg[i][0]))
         times_xg_yen.append(str(result_yen_xg[i][0]))
@@ -70,7 +70,8 @@ def send_email(conn):
         ax.annotate('{}'.format(Z), xy=(X, Y), xytext=(-7, 7), ha='right',
                     textcoords='offset points')
     plt.xlabel("2020")
-    plt.savefig('./email_images/미국{}.png'.format(today))
+    plt.savefig('./email_images/USD.png')
+    # plt.savefig('./email_images/미국{}.png'.format(today))
 
     x = times_xg_yen
     y = res_xg_yen
@@ -83,7 +84,8 @@ def send_email(conn):
         ax.annotate('{}'.format(Z), xy=(X, Y), xytext=(-7, 7), ha='right',
                     textcoords='offset points')
     plt.xlabel("2020")
-    plt.savefig('./email_images/일본{}.png'.format(today))
+    plt.savefig('./email_images/JPY.png')
+    # plt.savefig('./email_images/일본{}.png'.format(today))
 
     x = times_xg_euro
     y = res_xg_euro
@@ -96,23 +98,5 @@ def send_email(conn):
         ax.annotate('{}'.format(Z), xy=(X, Y), xytext=(-7, 7), ha='right',
                     textcoords='offset points')
     plt.xlabel("2020")
-    plt.savefig('./email_images/유럽{}.png'.format(today))
-
-    # with open('./email_images/{}{}.png'.format(country[0], today), 'rb') as img:
-    #     usd_img = base64.b64encode(img.read())
-
-    # with open('./email_images/{}{}.png'.format(country[1], today), 'rb') as img:
-    #     yen_img = base64.b64encode(img.read())
-    # with open('./email_images/{}{}.png'.format(country[2], today), 'rb') as img:
-    #     euro_img = base64.b64encode(img.read())
-
-
-if __name__ == "__main__":
-    conn = DBConnect()
-    res_usd, res_yen, res_euro = send_email(conn)
-    img_usd = Image.open(BytesIO(base64.b64decode(res_usd)))
-    img_yen = Image.open(BytesIO(base64.b64decode(res_yen)))
-    img_euro = Image.open(BytesIO(base64.b64decode(res_euro)))
-    img_usd.show()
-    img_yen.show()
-    img_euro.show()
+    plt.savefig('./email_images/EUR.png')
+    # plt.savefig('./email_images/유럽{}.png'.format(today))
