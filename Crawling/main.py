@@ -128,14 +128,8 @@ def one_hour():
     conn.close()
 
 
-def one_day():
+def graph_day():
     conn = DBConnect()
-
-    # 은행연합회 크롤링 (하루에 한 번)
-    bankgroup_crawling(conn)
-
-    # 네이버 뉴스 크롤링 (하루에 한 번)
-    pageCrawl(conn)
 
     # xgboost로 예측한 데이터 하루 한번 업데이트
     df_usd = pd.DataFrame()
@@ -192,13 +186,22 @@ def five_min():
     conn.close()
 
 
-def email_hour():
+def one_day():
     conn = DBConnect()
+
+    # 네이버 뉴스 크롤링 (하루에 한 번)
+    pageCrawl(conn)
+
+    # 은행연합회 크롤링 (하루에 한 번)
+    bankgroup_crawling(conn)
 
     # 이메일
     send_email(conn)
     print("이미지 생성 완료")
+
+    # 이메일 체크 유저 메일 전송
     send_user_list(conn)
+
     conn.close()
 
 
@@ -206,7 +209,7 @@ sched.add_job(five_min, 'interval', seconds=300)  # 1분에 한번씩 저장
 sched.add_job(thirty_minute, 'interval', seconds=1800)  # 1800초마다 돌아감(30분)
 sched.add_job(one_hour, 'interval', seconds=3600)  # 3600초마다 돌아감 (1시간)
 # 매일 정해진 hour에 돌아가게 함 # 테스트로 오전 11시에 돌아가게
-sched.add_job(one_day, 'cron', hour=12)
-sched.add_job(email_hour, 'cron', hour=13)
+sched.add_job(graph_day, 'cron', hour=1)
+sched.add_job(one_day, 'cron', hour=4)
 
 sched.start()
