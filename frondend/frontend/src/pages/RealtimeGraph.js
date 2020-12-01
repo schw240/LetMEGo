@@ -71,6 +71,9 @@ export default function RealtimeGraph() {
               if (bp[bp.length-1] != Number(res.data[i].basePrice)){
                 bp.push(Number(res.data[i].basePrice));
                 api_time.push(res.data[i].datetime);
+                if (api_time[api_time.length-1] != res.data[i].datetime){
+                  api_time.push("");
+                }
               }
             }
 

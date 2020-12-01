@@ -140,7 +140,7 @@ def realtime_remove(conn):
     sql = """SELECT seq
              FROM RealTime_Info  
          ORDER BY seq DESC 
-            limit 300"""
+            limit 70"""
 
     cursor.execute(sql)
     results = cursor.fetchall()

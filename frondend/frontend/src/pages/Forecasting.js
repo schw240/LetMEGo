@@ -4,8 +4,10 @@ import Api from "../Api";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { useEffect } from 'react';
+import { LoginContext } from "../App";
+import Account from '../Account'
 
-export default function Forecasting() {
+export default function Forecasting({history}) {
   const country_list = [
     { value: "usd", label: "미국" },
     { value: "yen", label: "일본" },
@@ -15,6 +17,8 @@ export default function Forecasting() {
   const [xglstdate, setXGLstDate] = React.useState();
   const [lstmlstValue, setLSTMLstValue] = React.useState(99999);
   const [lstmlstdate, setLSTMLstDate] = React.useState();
+  const token = window.localStorage.getItem("token");
+  const {user, setUser} = React.useContext(LoginContext)
   const [options, setOptions] = React.useState({
     chart: {
       type: "line",
@@ -123,7 +127,11 @@ export default function Forecasting() {
 
   React.useEffect(()=> {
 
-    Api.get("xgboost_" + selectCountry).then((res) => {
+    Api.get("xgboost_" + selectCountry, {
+      headers: {
+        Authorization: "JWT " + token
+      }
+    }).then((res) => {
 
               
       var api_time = []
@@ -162,7 +170,12 @@ export default function Forecasting() {
 
     });
   
-    Api.get("lstm_"+selectCountry).then((res) => {
+  
+    Api.get("lstm_"+selectCountry, {
+      headers: {
+        Authorization: "JWT " + token
+      }
+    }).then((res) => {
 
     var api_time = []
     for(let i of res.data){
@@ -201,57 +214,72 @@ export default function Forecasting() {
     });
   },[selectCountry])
 
+
+  useEffect(()=>{
+
+    const token = window.localStorage.getItem("token")
+
+    if (token===null){
+      alert("로그인이 필요합니다.")
+      history.push("/login")
+    }
+
+  },[]);
+
+
   return (
     <>
       <SiteWrapper>
         <Page.Content>
-          <div style={{ marginLeft: "12px" }}>
+          <LoginContext.Provider value={{ user: user, setUser: setUser }}>
+            <div style={{ marginLeft: "12px" }}>
+              <Grid.Row>
+                <Form.Group label="나라">
+                  <Form.Select xl={4} onChange={selectOption} value={selectCountry}>
+                    {
+                        country_list.map((v) => 
+                        <option value={v.value}>{v.label}</option>
+                    )}
+                  </Form.Select>
+                </Form.Group>
+                <Grid.Col>
+                  <Card>
+                    <Card.Body>
+                      <div>XGBoost 알고리즘에 따라 {xglstdate}에 {xglstValue.toFixed(2)}가격으로 가장 저렴하게 환전할 수 있습니다.</div>
+                      <div>LSTM 알고리즘에 따라 {lstmlstdate}에 {lstmlstValue.toFixed(2)}가격으로 가장 저렴하게 환전할 수 있습니다.</div>
+                    </Card.Body>
+                  </Card>
+                </Grid.Col>
+              </Grid.Row>
+            </div>
+
             <Grid.Row>
-              <Form.Group label="나라">
-                <Form.Select xl={4} onChange={selectOption} value={selectCountry}>
-                  {
-                      country_list.map((v) => 
-                      <option value={v.value}>{v.label}</option>
-                  )}
-                </Form.Select>
-              </Form.Group>
               <Grid.Col>
-                <Card>
+                <Card title="미래 환율 예측 그래프(XGBoost)" statusColor="blue">
                   <Card.Body>
-                    <div>XGBoost 알고리즘에 따라 {xglstdate}에 {xglstValue.toFixed(2)}가격으로 가장 저렴하게 환전할 수 있습니다.</div>
-                    <div>LSTM 알고리즘에 따라 {lstmlstdate}에 {lstmlstValue.toFixed(2)}가격으로 가장 저렴하게 환전할 수 있습니다.</div>
+
+                      <HighchartsReact
+                        Highcharts={Highcharts}
+                        options={options}
+                      />
                   </Card.Body>
                 </Card>
               </Grid.Col>
             </Grid.Row>
-          </div>
 
-          <Grid.Row>
-            <Grid.Col>
-              <Card title="미래 환율 예측 그래프(XGBoost)" statusColor="blue">
-                <Card.Body>
-
+            <Grid.Row>
+              <Grid.Col>
+                <Card title="미래 환율 예측 그래프(LSTM)" statusColor="blue">
+                  <Card.Body>
                     <HighchartsReact
                       Highcharts={Highcharts}
-                      options={options}
+                      options={options2}
                     />
-                </Card.Body>
-              </Card>
-            </Grid.Col>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Col>
-              <Card title="미래 환율 예측 그래프(LSTM)" statusColor="blue">
-                <Card.Body>
-                  <HighchartsReact
-                    Highcharts={Highcharts}
-                    options={options2}
-                  />
-                </Card.Body>
-              </Card>
-            </Grid.Col>
-          </Grid.Row>
+                  </Card.Body>
+                </Card>
+              </Grid.Col>
+            </Grid.Row>
+          </LoginContext.Provider>
         </Page.Content>
       </SiteWrapper>
     </>
