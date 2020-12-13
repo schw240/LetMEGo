@@ -16,3 +16,4 @@ frondend/frontend/debug.log
 backend/LetMEGo/MCB/migrations/*.py
 backend/LetMEGo/LetMEGo/secrets.py
 frondend/frontend/package-lock.json
+backend/LetMEGo/LetMEGo/settings.py
