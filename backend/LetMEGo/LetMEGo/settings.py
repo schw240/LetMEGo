@@ -193,9 +193,6 @@ JWT_AUTH = {
 }
 
 
-AWS_ACCESS_KEY_ID = 'AKIAS5OG6CFQYDACWJPC'  # AccesskeyID(CSV파일)
-# Secretaccesskey(CSV파일)
-AWS_SECRET_ACCESS_KEY = 'koycdQc0AQ18eX/2k/i2faDYhHmQnI37onj2+PRI'
 AWS_REGION = 'ap-northeast-2'  # 위치
 AWS_STORAGE_BUCKET_NAME = 'letmego-react'  # 버킷이름
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
